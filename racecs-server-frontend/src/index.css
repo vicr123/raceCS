@@ -1,0 +1,74 @@
+@font-face {
+  font-family: 'Contemporary';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Contemporary'), local('Contemporary-Regular'), url('https://vicr123.com/typeface/Contemporary-Regular.ttf');
+}
+
+* {
+  font-family: 'Contemporary';
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: black;
+  color: white;
+  
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+}
+
+.headerButton {
+  padding: 9px;
+}
+
+.mainView {
+  display: flex;
+  flex-grow: 1;
+
+  background-color: blue;
+}
+
+.notificationDrawer {
+  position: fixed;
+  right: 10px;
+  bottom: 0px;
+  height: 100vh;
+  width: 300px;
+
+  pointer-events: none;
+
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.notification {
+  
+}
