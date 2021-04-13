@@ -1,0 +1,7 @@
+main: omg.lol.jplexer.race.Race
+name: raceCS
+author: JPlexer
+version: 1.0.0
+commands:
+  raceCS:
+    description: API Stuff
