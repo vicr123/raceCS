@@ -11,7 +11,7 @@ import net.md_5.bungee.api.ChatColor;
 public class Race extends JavaPlugin {
 
 	// Feel free to change this to your own plugin's name and color of your choice.
-	public static final String CHAT_PREFIX = ChatColor.AQUA + "raceCS";
+	public static final String CHAT_PREFIX = ChatColor.RED + "fake" + ChatColor.GRAY + "CS" + ChatColor.WHITE + " > ";
 
 	private static Race plugin; // This is a static plugin instance that is private. Use getPlugin() as seen
 									// further below.
@@ -46,7 +46,7 @@ public class Race extends JavaPlugin {
 		 * say: Yay, Template-Plugin is now enabled!
 		 */
 		this.getLogger()
-				.info("Yay, " + this.pdfFile.getName() + " is now enabled!");
+				.info("raceCS is now enabled! May the races begin!");
 	}
 
 }

@@ -2,12 +2,12 @@ package omg.lol.jplexer.race.command;
 
 import static omg.lol.jplexer.race.Race.CHAT_PREFIX;
 
+import kong.unirest.json.JSONObject;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import net.md_5.bungee.api.ChatColor;
+import kong.unirest.Unirest;
 
 // All command classes need to implement the CommandExecutor interface to be a proper command!
 public class RaceCommand implements CommandExecutor {
@@ -18,20 +18,87 @@ public class RaceCommand implements CommandExecutor {
 
 		// checks if there are no arguments at all (/command)
 		if (args.length == 0) {
-			sender.sendMessage(CHAT_PREFIX + ChatColor.WHITE + " > " + ChatColor.RED + "Invalid usage - there are no arguments.");
+			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Invalid usage - there are no arguments.");
 			return false;
 		}
-		switch (args[0]) {
+		switch (args[0].toLowerCase()) {
 			case "players":
 				viewUsers(sender);
 				return true;
+			case "adduser":
+				addUser(sender, args);
+				return true;
+			case "removeuser":
+				removeUser(sender, args);
+				return true;
+			case "arrived":
+				arrive(sender, args);
+				return true;
 			default:
-				sender.sendMessage(ChatColor.RED + "Sorry, \"" + args[0] + "\" is not a valid verb.");
+				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, \"" + args[0] + "\" is not a valid verb.");
 				return true;
 		}
 
 	}
 	void viewUsers(CommandSender sender) {
-		sender.sendMessage("Hi");
+		JSONObject response = Unirest.get("http://localhost:3000/api/users").queryString("auth", "goOGHNodif34oindsoifg").asJson().getBody().getObject();
+		sender.sendMessage(response.toString());
+	}
+	void addUser(CommandSender sender, String[] args) {
+		if(sender.hasPermission("racecs.jplexer")) {
+			if (args.length != 2) {
+				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name.");
+
+			} else {
+				Unirest.post("http://localhost:3000/api/addUser/{player}")
+						.routeParam("player", args[1])
+						.queryString("auth", "goOGHNodif34oindsoifg")
+						.asString();
+				sender.sendMessage(CHAT_PREFIX + args[1] + " was added.");
+			}
+		} else {
+			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
+		}
+
+	}
+	void removeUser(CommandSender sender, String[] args)  {
+		if(sender.hasPermission("racecs.jplexer")) {
+			if (args.length != 2) {
+				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name.");
+
+			} else {
+				Unirest.post("http://localhost:3000/api/removeUser/{player}")
+						.routeParam("player", args[1])
+						.queryString("auth", "goOGHNodif34oindsoifg")
+						.asString();
+				sender.sendMessage(CHAT_PREFIX + args[1] + " was removed.");
+			}
+		} else {
+			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
+			}
+
+	}
+	void arrive(CommandSender sender, String[] args)  {
+		if (sender.hasPermission("racecs.jplexer")) {
+			if (args.length <= 2) {
+				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name and Location.");
+
+			} else if (args.length != 3) {
+				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Location.");
+
+			} else {
+				Unirest.post("http://localhost:3000/api/arrive/{player}/{location}")
+						.routeParam("player", args[1])
+						.routeParam("location", args[2])
+						.queryString("auth", "goOGHNodif34oindsoifg")
+						.asString();
+			}
+		} else {
+			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
+
+		}
+
 	}
 }
+
+
