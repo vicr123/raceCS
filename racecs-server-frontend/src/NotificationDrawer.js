@@ -16,10 +16,10 @@ class NotificationDrawer extends React.Component {
                 case "visitation":
                     this.pushNotification({
                         "title": "Station Accomplished",
-                        "message": `${data.username} has just arrived at ${data.station}`,
+                        "message": `${data.user} has just arrived at ${data.station}`,
                         "color": "white",
                         "backgroundColor": "green",
-                        "key": `visit${data.username}:${data.station}`
+                        "key": `visit${data.user}:${data.station}`
                     })
                     break;
                 case "newPlayer":
