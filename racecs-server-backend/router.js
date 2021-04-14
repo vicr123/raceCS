@@ -84,22 +84,26 @@ router.post("/addUser/:username", async (req, res) => {
         return;
     }
 
-    mojangApi.nameToUuid(req.params.username, (err, mojangResponse) => {
-        if (mojangResponse.length === 0) {
-            res.sendStatus(400);
-            return;
-        }
+    try {
+        mojangApi.nameToUuid(req.params.username, (err, mojangResponse) => {
+            if (mojangResponse.length === 0) {
+                res.sendStatus(400);
+                return;
+            }
 
-        users[req.params.username] = new User(req.params.username, mojangResponse[0].id);
-    
-        WebSocket.broadcast({
-            "type": "newPlayer",
-            "user": req.params.username,
-            "uuid": mojangResponse[0].id
+            users[req.params.username] = new User(req.params.username, mojangResponse[0].id);
+        
+            WebSocket.broadcast({
+                "type": "newPlayer",
+                "user": req.params.username,
+                "uuid": mojangResponse[0].id
+            });
+
+            res.sendStatus(200);
         });
-
-        res.sendStatus(200);
-    });
+    } catch {
+        res.sendStatus(500);
+    }
 });
 router.post("/arrive/:username/:location", async (req, res) => {
     try {
