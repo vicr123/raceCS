@@ -80,13 +80,13 @@ const password = "goOGHNodif34oindsoifg";
 
 router.post("/addUser/:username", async (req, res) => {
     if (req.query.auth != password) {
-        res.send(401);
+        res.sendStatus(401);
         return;
     }
 
     mojangApi.nameToUuid(req.params.username, (err, mojangResponse) => {
         if (mojangResponse.length === 0) {
-            res.send(400);
+            res.sendStatus(400);
             return;
         }
 
@@ -98,13 +98,13 @@ router.post("/addUser/:username", async (req, res) => {
             "uuid": mojangResponse[0].id
         });
 
-        res.send(200);
+        res.sendStatus(200);
     });
 });
 router.post("/arrive/:username/:location", async (req, res) => {
     try {
         if (req.query.auth != password) {
-            res.send(401);
+            res.sendStatus(401);
             return;
         }
 
@@ -113,15 +113,15 @@ router.post("/arrive/:username/:location", async (req, res) => {
         
         users[req.params.username].markVisited(req.params.location);
 
-        res.send(200);
+        res.sendStatus(200);
     } catch {
-        res.send(500);
+        res.sendStatus(500);
     }
 });
 router.post("/collision/:username1/:username2", async (req, res) => {
     //Don't need to implement right now!
     if (req.query.auth != password) {
-        res.send(401);
+        res.sendStatus(401);
         return;
     }
 
@@ -129,7 +129,7 @@ router.post("/collision/:username1/:username2", async (req, res) => {
 });
 router.post("/removeUser/:username", async (req, res) => {
     if (req.query.auth != password) {
-        res.send(401);
+        res.sendStatus(401);
         return;
     }
 
@@ -139,13 +139,13 @@ router.post("/removeUser/:username", async (req, res) => {
     });
 
     delete users[req.params.username];
-    res.send(200);
+    res.sendStatus(200);
 });
 router.get("/userStatus/:username", async (req, res) => {
     try {
         res.send(users[req.params.username].toObject());
     } catch {
-        res.send(400);
+        res.sendStatus(400);
     }
 });
 router.get("/users", async (req, res) => {
