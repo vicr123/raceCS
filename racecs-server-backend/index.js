@@ -7,13 +7,15 @@ const WebSocket = require("./ws");
 let app = express();
 expressws(app);
 
-app.listen(4000, () => {
-    console.log("Locked and loaded!");
-});
-
 app.use("/api", router);
-
-
 app.ws("/ws", (ws, req) => {
     new WebSocket(ws);
+});
+
+app.use(express.static("../racecs-server-frontend/build/"));
+
+let port = process.env.PORT;
+if (!port) port = 4000;
+app.listen(port, () => {
+    console.log(`Locked and loaded: port ${port}!`);
 });
