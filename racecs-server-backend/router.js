@@ -1,5 +1,6 @@
 const express = require("express");
 const mojangApi = require('mojang-api');
+const fetch = require('node-fetch');
 const User = require('./user');
 const WebSocket = require("./ws");
 
@@ -92,26 +93,27 @@ router.post("/addUser/:username", async (req, res) => {
 
     console.log(`Adding ${req.params.username} to race!`);
 
-    try {
-        mojangApi.nameToUuid(req.params.username, (err, mojangResponse) => {
-            if (err || mojangResponse.length === 0) {
-                res.sendStatus(400);
-                return;
-            }
-
-            users[req.params.username] = new User(req.params.username, mojangResponse[0].id);
-        
-            WebSocket.broadcast({
-                "type": "newPlayer",
-                "user": req.params.username,
-                "uuid": mojangResponse[0].id
-            });
-
-            res.sendStatus(200);
+    fetch("https://api.mojang.com/profiles/minecraft", {
+        method: "POST",
+        body: JSON.stringify([req.params.username]),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(response => {
+        users[req.params.username] = new User(req.params.username, response[0].id);
+    
+        WebSocket.broadcast({
+            "type": "newPlayer",
+            "user": req.params.username,
+            "uuid": response[0].id
         });
-    } catch {
-        res.sendStatus(500);
-    }
+
+        res.sendStatus(200);
+    }).catch(err => {
+        res.sendStatus(400);
+    });
 });
 router.post("/arrive/:username/:location", async (req, res) => {
     try {
