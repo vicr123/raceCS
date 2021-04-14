@@ -84,9 +84,11 @@ router.post("/addUser/:username", async (req, res) => {
         return;
     }
 
+    console.log(`Adding ${req.params.username} to race!`);
+
     try {
         mojangApi.nameToUuid(req.params.username, (err, mojangResponse) => {
-            if (mojangResponse.length === 0) {
+            if (err || mojangResponse.length === 0) {
                 res.sendStatus(400);
                 return;
             }
@@ -136,6 +138,8 @@ router.post("/removeUser/:username", async (req, res) => {
         res.sendStatus(401);
         return;
     }
+
+    console.log(`Removing ${req.params.username} to race!`);
 
     WebSocket.broadcast({
         "type": "removePlayer",
