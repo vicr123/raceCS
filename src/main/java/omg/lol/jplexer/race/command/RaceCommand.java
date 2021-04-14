@@ -36,6 +36,9 @@ public class RaceCommand implements CommandExecutor {
 			case "arrived":
 				arrive(sender, args);
 				return true;
+			case "completion":
+				complete(sender, args);
+				return true;
 			default:
 				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, \"" + args[0] + "\" is not a valid verb.");
 				return true;
@@ -98,6 +101,29 @@ public class RaceCommand implements CommandExecutor {
 				Unirest.post(Race.API_BASE + "/arrive/{player}/{location}")
 						.routeParam("player", user)
 						.routeParam("location", args[2])
+						.queryString("auth", Race.AUTH_TOKEN)
+						.asString();
+			}
+		} else {
+			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
+
+		}
+
+	}
+	void complete(CommandSender sender, String[] args)  {
+		if (sender.hasPermission("racecs.jplexer")) {
+			if (args.length <= 2) {
+				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name and Place.");
+
+			} else if (args.length != 3) {
+				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Place.");
+
+			} else {
+				String user = CommandUtils.getTarget(sender, args[1]).getName();
+
+				Unirest.post(Race.API_BASE + "/completion/{player}/{place}")
+						.routeParam("player", user)
+						.routeParam("place", args[2])
 						.queryString("auth", Race.AUTH_TOKEN)
 						.asString();
 			}
