@@ -122,6 +122,11 @@ router.post("/arrive/:username/:location", async (req, res) => {
             return;
         }
 
+        if (!users[req.params.username]) {
+            res.sendStatus(400);
+            return;
+        }
+
         //req.params.username
         //req.params.location
         
@@ -143,6 +148,21 @@ router.post("/collision/:username1/:username2", async (req, res) => {
         "player1" : req.params.username1,
         "player2": req.params.username2
     });
+    res.sendStatus(200);
+});
+router.post("/completion/:username/:place", async (req, res) => {
+    if (req.query.auth != password) {
+        res.sendStatus(401);
+        return;
+    }
+
+
+    if (!users[req.params.username]) {
+        res.sendStatus(400);
+        return;
+    }
+
+    users[req.params.username].setPlace(parseInt(req.params.place));
     res.sendStatus(200);
 });
 router.post("/removeUser/:username", async (req, res) => {

@@ -4,6 +4,7 @@ class User {
     visited = [];
     username = null;
     id = null;
+    place = -1;
 
     constructor(username, id) {
         this.username = username;
@@ -20,10 +21,20 @@ class User {
         });
     }
 
+    setPlace(place) {
+        this.place = place;
+        WebSocket.broadcast({
+            "type": "completion",
+            "username" : this.username,
+            "place": place
+        });
+    }
+
     toObject() {
         return {
             uuid: this.id,
-            visited: this.visited
+            visited: this.visited,
+            place: this.place
         }
     }
 }

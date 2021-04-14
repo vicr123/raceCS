@@ -1,4 +1,5 @@
 import React from 'react';
+import Common from './common';
 
 class Leaderboard extends React.Component {
     renderPlayerData() {
@@ -10,14 +11,23 @@ class Leaderboard extends React.Component {
             users.push({
                 username: user,
                 visited: this.props.playerData[user].visited.length,
-                uuid: this.props.playerData[user].uuid
+                uuid: this.props.playerData[user].uuid,
+                place: this.props.playerData[user].place
             });
         }
 
         users.sort((first, second) => {
-            if (first.visited == second.visited) return 0;
-
-            return first.visited > second.visited ? -1 : 1;
+            if (first.place === -1 && second.place === -1) {
+                if (first.visited == second.visited) return 0;
+    
+                return first.visited > second.visited ? -1 : 1;
+            } else if (first.place === -1 && second.place !== -1) {
+                return 1;
+            } else if (first.place !== -1 && second.place === -1) {
+                return -1;
+            } else {
+                return first.place < second.place ? -1 : 1;
+            }
         });
 
         for (let user of users) {
@@ -25,7 +35,16 @@ class Leaderboard extends React.Component {
                 this.props.onPlayerClicked(user);
             };
 
+            let renderPlace = () => {
+                if (user.place !== -1) {
+                    return Common.getOrdinal(user.place)
+                } else {
+                    return "---";
+                }
+            }
+
             els.push(<div className="leaderboardGridItem" key={`${user.username}-image`} onClick={clickHandler}><img height="30" src={`https://crafatar.com/avatars/${user.uuid}?overlay=true`}></img></div>);
+            els.push(<div className="leaderboardGridItem placeItem" key={`${user.username}-place`} onClick={clickHandler}>{renderPlace()}</div>)
             els.push(<div className="leaderboardGridItem" key={`${user.username}-username`} onClick={clickHandler}>{user.username}</div>)
             els.push(<div className="leaderboardGridItem" key={`${user.username}-visited`} onClick={clickHandler}>{user.visited}</div>)
         }
@@ -56,6 +75,7 @@ class Leaderboard extends React.Component {
         return <div className="mainView">
             <div className="leaderboardGridWrapper">
                 <div className="leaderboardGrid">
+                    <div className="sectionHeader"></div>
                     <div className="sectionHeader"></div>
                     <div className="sectionHeader">Name</div>
                     <div className="sectionHeader">Stations Visited</div>

@@ -34,7 +34,8 @@ class App extends React.Component {
             let pdata = JSON.parse(JSON.stringify(state.playerData));
             pdata[data.user] = {
               "uuid": data.uuid,
-              "visited": []
+              "visited": [],
+              "place": -1
             };
 
             return {
@@ -61,6 +62,18 @@ class App extends React.Component {
               playerData: pdata
             }
           });
+          break;
+        case "completion":
+          this.setState(state => {
+            let pdata = JSON.parse(JSON.stringify(state.playerData));
+            pdata[data.username].place = data.place;
+            
+            return {
+              playerData: pdata
+            }
+          });
+          break;
+
       }
     });
     ws.on("open", () => {

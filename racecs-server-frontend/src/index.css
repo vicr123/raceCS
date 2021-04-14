@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
-/*Do not load unneccessary Resources*/
-/*@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 
 * {
   font-family: 'Noto Sans';
@@ -128,7 +126,13 @@ h1 {
 
 .leaderboardGrid {
   display: grid;
-  grid-template-columns: auto 100fr auto;
+  grid-template-columns: auto auto 100fr auto;
+}
+
+.leaderboardGridItem.placeItem {
+  font-family: 'Roboto Mono';
+  color: #5d5d5d;
+  justify-content: center;
 }
 
 .sectionHeader {

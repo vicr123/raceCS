@@ -1,8 +1,12 @@
 import React from 'react';
+import Common from './common';
+
 import LoginIcon from './login_black_24dp.svg';
 import RailwayAlertIcon from './railway_alert_black_24dp.svg';
+import FlagIcon from './sports_score_black_24dp.svg';
 import WhiteLoginIcon from './login_white_24dp.svg';
 import WhiteRailwayAlertIcon from './railway_alert_white_24dp.svg';
+import WhiteFlagIcon from './sports_score_white_24dp.svg';
 
 class NotificationDrawer extends React.Component {
     constructor(props) {
@@ -18,7 +22,7 @@ class NotificationDrawer extends React.Component {
             switch (data.type) {
                 case "visitation":
                     this.pushNotification({
-                        "title": "Station Accomplished",
+                        "title": "Arrival",
                         "message": `${data.user} has arrived at ${this.props.stationData[data.station].name}`,
                         "color": "white",
                         "backgroundColor": "green",
@@ -40,6 +44,19 @@ class NotificationDrawer extends React.Component {
                         "type": "collision"
                     });
                     break;
+                case "completion": {
+                    this.pushNotification({
+                        "title": "Finished",
+                        "message": `${data.username} has finished in ${Common.getOrdinal(data.place)}`,
+                        "color": "white",
+                        "backgroundColor": "orange",
+                        "key": `completion${data.username}`,
+                        "image": FlagIcon,
+                        "whiteIcon": WhiteFlagIcon,
+                        "type": "completion"
+                    });
+                    break;
+                }
                 case "newPlayer":
                 case "removePlayer":
                     break;
@@ -59,7 +76,7 @@ class NotificationDrawer extends React.Component {
                     gridArea: "splash"
                 }}>
                     <img src={notification.whiteIcon} />
-                    {notification.type == "collision" ? "Collision" : "Arrival"}
+                    {notification.title}
                 </div>
                 <p>{notification.message}</p>
             </div>)
