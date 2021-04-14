@@ -1,4 +1,5 @@
 const express = require("express");
+const mojangApi = require('mojang-api');
 const User = require('./user');
 const WebSocket = require("./ws");
 
@@ -83,15 +84,22 @@ router.post("/addUser/:username", async (req, res) => {
         return;
     }
 
-    //req.params.username
-    users[req.params.username] = new User(req.params.username);
+    mojangApi.nameToUuid(req.params.username, (err, mojangResponse) => {
+        if (mojangResponse.length === 0) {
+            res.send(400);
+            return;
+        }
 
-    WebSocket.broadcast({
-        "type": "newPlayer",
-        "user": req.params.username
+        users[req.params.username] = new User(req.params.username, mojangResponse[0].id);
+    
+        WebSocket.broadcast({
+            "type": "newPlayer",
+            "user": req.params.username,
+            "uuid": mojangResponse[0].id
+        });
+
+        res.send(200);
     });
-
-    res.send(200);
 });
 router.post("/arrive/:username/:location", async (req, res) => {
     try {
@@ -141,8 +149,12 @@ router.get("/userStatus/:username", async (req, res) => {
     }
 });
 router.get("/users", async (req, res) => {
-    //Return a list of all the users
-    res.send(Object.keys(users));
+    //Returns all the users
+    let retval = {};
+    for (let username of Object.keys(users)) {
+        retval[username] = users[username].toObject();
+    }
+    res.send(retval);
 });
 router.get("/stations", async (req, res) => {
     //Return a list of all the users

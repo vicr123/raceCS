@@ -3,9 +3,11 @@ const WebSocket = require("./ws");
 class User {
     visited = [];
     username = null;
+    id = null;
 
-    constructor(username) {
+    constructor(username, id) {
         this.username = username;
+        this.id = id;
     }
 
     markVisited(station) {
@@ -13,12 +15,14 @@ class User {
         WebSocket.broadcast({
             "type": "visitation",
             "user": this.username,
+            "uuid": this.id,
             "station": station
         });
     }
 
     toObject() {
         return {
+            uuid: this.id,
             visited: this.visited
         }
     }

@@ -16,11 +16,14 @@ class NotificationDrawer extends React.Component {
                 case "visitation":
                     this.pushNotification({
                         "title": "Station Accomplished",
-                        "message": `${data.user} has just arrived at ${data.station}`,
+                        "message": `${data.user} has arrived at ${this.props.stationData[data.station].name}`,
                         "color": "white",
                         "backgroundColor": "green",
-                        "key": `visit${data.user}:${data.station}`
-                    })
+                        "key": `visit${data.user}:${data.station}`,
+                        "user": data.user,
+                        "userUuid": data.uuid,
+                        "type": "visitation"
+                    });
                     break;
                 case "newPlayer":
                 case "removePlayer":
@@ -60,6 +63,8 @@ class NotificationDrawer extends React.Component {
                 }
             })
         }, 5000);
+
+        this.props.onNotification(notification);
     }
 
     render() {

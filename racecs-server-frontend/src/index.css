@@ -1,12 +1,11 @@
-@font-face {
-  font-family: 'Contemporary';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Contemporary'), local('Contemporary-Regular'), url('https://vicr123.com/typeface/Contemporary-Regular.ttf');
-}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+/*Do not load unneccessary Resources*/
+/*@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');*/
 
 * {
-  font-family: 'Contemporary';
+  font-family: 'Noto Sans';
+  /* font-family: "Press Start 2P"; */
 }
 
 body {
@@ -20,6 +19,7 @@ body {
   background-color: black;
   color: white;
   
+  overflow: hidden;
 }
 
 #root {
@@ -33,9 +33,17 @@ code {
     monospace;
 }
 
+h1 {
+  margin: 0px;
+}
+
 .mainContainer {
   display: flex;
   flex-direction: column;
+
+  max-height: 100vh;
+  max-width: 100vw;
+  box-sizing: border-box;
 
   flex-grow: 1;
 }
@@ -43,17 +51,27 @@ code {
 .header {
   display: flex;
   flex-direction: row;
+
+  border-top: 1px solid red;
 }
 
 .headerButton {
   padding: 9px;
+  cursor: pointer;
+}
+
+.headerButton.selected {
+  background: red;
 }
 
 .mainView {
   display: flex;
   flex-grow: 1;
 
-  background-color: blue;
+  box-sizing: border-box;
+  overflow: auto;
+
+  padding: 20px;
 }
 
 .notificationDrawer {
@@ -69,6 +87,187 @@ code {
   flex-direction: column-reverse;
 }
 
-.notification {
+.leaderboardGridWrapper {
+  display: flex;
+  flex-direction: column;
+
+  overflow-y: auto;
+
+  flex-grow: 4;
+}
+
+.leaderboardGrid {
+  display: grid;
+  grid-template-columns: auto 100fr auto;
+}
+
+.sectionHeader {
+  background-color: #5d5d5d;
+  color: white;
+  padding: 9px;
+
+  position: sticky;
+  top: 0px;
+
+  display: flex;
+  align-items: center;
+}
+
+.leaderboardGridItem {
+  padding: 9px;
+  background-color: white;
+  color: black;
+  border-top: 1px solid #5d5d5d;
   
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.ticker {
+  display: flex;
+  align-items: center;
+
+  border-bottom: 1px solid red;
+}
+
+.stationsGridWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+
+  flex-grow: 1;
+}
+
+.stationsGridInnerWrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+
+  color: #5d5d5d;
+  background-color: white;
+  width: 300px;
+  height: 500px;
+
+  margin: 10px;
+  box-sizing: border-box;
+
+  overflow-y: auto;
+}
+
+.stationsGrid {
+  display: grid;
+  grid-template-columns: auto 100fr;
+  grid-template-areas:
+    "header header";
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  color: #5d5d5d;
+
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.playersListWrapper {
+  display: flex;
+  flex-direction: column;
+
+  overflow-y: auto;
+
+  flex-grow: 1;
+}
+
+.playersListGrid {
+  display: grid;
+  grid-template-columns: auto 100fr;
+  grid-template-areas:
+    "header header";
+}
+
+.playersListItem {
+  padding: 9px;
+  background-color: white;
+  color: black;
+  border-top: 1px solid #5d5d5d;
+  
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.playersListItem.selected {
+  background-color: red;
+  color: white;
+}
+
+.playerStatsWrapper {
+  display: flex;
+  flex-direction: column;
+
+  overflow-y: auto;
+
+  flex-grow: 1;
+}
+
+.playerStats {
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+}
+
+.playerStatsContents {
+  flex-grow: 1;
+  background-color: white;
+  color: black;
+
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.playerStatsNotSelected {
+  flex-grow: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recentEventsWrapper {
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow-y: auto;
+}
+
+.recentEventItem {
+  background-color: white;
+  color: black;
+
+  padding: 9px;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .mainView {
+    flex-direction: column;
+  }
+
+  .hspacer {
+    display: none;
+  }
+
+  .leaderboardGridWrapper {
+    flex-grow: unset;
+  }
 }
