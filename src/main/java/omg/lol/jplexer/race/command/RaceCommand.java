@@ -4,6 +4,7 @@ import static omg.lol.jplexer.race.Race.CHAT_PREFIX;
 
 import kong.unirest.json.JSONObject;
 import omg.lol.jplexer.race.CommandUtils;
+import omg.lol.jplexer.race.Race;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,7 +43,7 @@ public class RaceCommand implements CommandExecutor {
 
 	}
 	void viewUsers(CommandSender sender) {
-		JSONObject response = Unirest.get("http://localhost:3000/api/users").queryString("auth", "goOGHNodif34oindsoifg").asJson().getBody().getObject();
+		JSONObject response = Unirest.get(Race.API_BASE + "/users").queryString("auth", Race.AUTH_TOKEN).asJson().getBody().getObject();
 		sender.sendMessage(response.toString());
 	}
 	void addUser(CommandSender sender, String[] args) {
@@ -53,9 +54,9 @@ public class RaceCommand implements CommandExecutor {
 			} else {
 				String user = CommandUtils.getTarget(sender, args[1]).getName();
 
-				Unirest.post("http://localhost:3000/api/addUser/{player}")
+				Unirest.post(Race.API_BASE + "/addUser/{player}")
 						.routeParam("player", user)
-						.queryString("auth", "goOGHNodif34oindsoifg")
+						.queryString("auth", Race.AUTH_TOKEN)
 						.asString();
 				sender.sendMessage(CHAT_PREFIX + user + " was added.");
 			}
@@ -72,9 +73,9 @@ public class RaceCommand implements CommandExecutor {
 			} else {
 				String user = CommandUtils.getTarget(sender, args[1]).getName();
 
-				Unirest.post("http://localhost:3000/api/removeUser/{player}")
+				Unirest.post(Race.API_BASE + "/removeUser/{player}")
 						.routeParam("player", user)
-						.queryString("auth", "goOGHNodif34oindsoifg")
+						.queryString("auth", Race.AUTH_TOKEN)
 						.asString();
 				sender.sendMessage(CHAT_PREFIX + user + " was removed.");
 			}
@@ -94,10 +95,10 @@ public class RaceCommand implements CommandExecutor {
 			} else {
 				String user = CommandUtils.getTarget(sender, args[1]).getName();
 
-				Unirest.post("http://localhost:3000/api/arrive/{player}/{location}")
+				Unirest.post(Race.API_BASE + "/arrive/{player}/{location}")
 						.routeParam("player", user)
 						.routeParam("location", args[2])
-						.queryString("auth", "goOGHNodif34oindsoifg")
+						.queryString("auth", Race.AUTH_TOKEN)
 						.asString();
 			}
 		} else {

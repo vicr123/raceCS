@@ -1,6 +1,7 @@
 package omg.lol.jplexer.race;
 
 import omg.lol.jplexer.race.command.RaceCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,10 +12,14 @@ import net.md_5.bungee.api.ChatColor;
 public class Race extends JavaPlugin {
 
 	// Feel free to change this to your own plugin's name and color of your choice.
-	public static final String CHAT_PREFIX = ChatColor.RED + "race" + ChatColor.GRAY + "CS" + ChatColor.WHITE + " > ";
+	public static final String CHAT_PREFIX = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Air" + ChatColor.WHITE + "" + ChatColor.BOLD + "CS" + ChatColor.GOLD + "" + ChatColor.BOLD + " Race Update: " + ChatColor.WHITE;
+	public static final String API_BASE = "http://localhost:3000/api";
+	public static final String AUTH_TOKEN = "goOGHNodif34oindsoifg";
 
 	private static Race plugin; // This is a static plugin instance that is private. Use getPlugin() as seen
 									// further below.
+
+	private CollisionDetection collisionDetection;
 
 	PluginDescriptionFile pdfFile; // plugin.yml
 
@@ -45,8 +50,11 @@ public class Race extends JavaPlugin {
 		 * This line lets you send out information to the console. In this case it would
 		 * say: Yay, Template-Plugin is now enabled!
 		 */
-		this.getLogger()
-				.info("raceCS is now enabled! May the races begin!");
-	}
+		this.getLogger().info("raceCS is now enabled! May the races begin!");
 
+		/*
+		 * Set up a timer for collision detection
+		 */
+		this.collisionDetection = new CollisionDetection(getServer(), plugin);
+	}
 }
