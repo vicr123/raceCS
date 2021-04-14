@@ -84,6 +84,12 @@ router.post("/addUser/:username", async (req, res) => {
         return;
     }
 
+    if (users[req.params.username]) {
+        console.log(`Adding ${req.params.username} not possible because the user is already in the race.`);
+        res.sendStatus(400);
+        return;
+    }
+
     console.log(`Adding ${req.params.username} to race!`);
 
     try {
@@ -136,6 +142,12 @@ router.post("/collision/:username1/:username2", async (req, res) => {
 router.post("/removeUser/:username", async (req, res) => {
     if (req.query.auth != password) {
         res.sendStatus(401);
+        return;
+    }
+
+    if (!users[req.params.username]) {
+        console.log(`Removing ${req.params.username} not possible because the user is not in the race.`);
+        res.sendStatus(400);
         return;
     }
 
