@@ -126,8 +126,9 @@ class App extends React.Component {
   renderState() {
     switch (this.state.state) {
       case "load":
-        return <div>
-          Loading...
+        return <div className="errorContainer">
+          <h1>Loading...</h1>
+          <p>Please wait a second.</p>
         </div>
       case "ready":
         return <>
