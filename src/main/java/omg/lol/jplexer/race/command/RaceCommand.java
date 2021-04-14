@@ -3,6 +3,7 @@ package omg.lol.jplexer.race.command;
 import static omg.lol.jplexer.race.Race.CHAT_PREFIX;
 
 import kong.unirest.json.JSONObject;
+import omg.lol.jplexer.race.CommandUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -50,11 +51,13 @@ public class RaceCommand implements CommandExecutor {
 				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name.");
 
 			} else {
+				String user = CommandUtils.getTarget(sender, args[1]).getName();
+
 				Unirest.post("http://localhost:3000/api/addUser/{player}")
-						.routeParam("player", args[1])
+						.routeParam("player", user)
 						.queryString("auth", "goOGHNodif34oindsoifg")
 						.asString();
-				sender.sendMessage(CHAT_PREFIX + args[1] + " was added.");
+				sender.sendMessage(CHAT_PREFIX + user + " was added.");
 			}
 		} else {
 			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
@@ -67,11 +70,13 @@ public class RaceCommand implements CommandExecutor {
 				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name.");
 
 			} else {
+				String user = CommandUtils.getTarget(sender, args[1]).getName();
+
 				Unirest.post("http://localhost:3000/api/removeUser/{player}")
-						.routeParam("player", args[1])
+						.routeParam("player", user)
 						.queryString("auth", "goOGHNodif34oindsoifg")
 						.asString();
-				sender.sendMessage(CHAT_PREFIX + args[1] + " was removed.");
+				sender.sendMessage(CHAT_PREFIX + user + " was removed.");
 			}
 		} else {
 			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
@@ -87,8 +92,10 @@ public class RaceCommand implements CommandExecutor {
 				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Location.");
 
 			} else {
+				String user = CommandUtils.getTarget(sender, args[1]).getName();
+
 				Unirest.post("http://localhost:3000/api/arrive/{player}/{location}")
-						.routeParam("player", args[1])
+						.routeParam("player", user)
 						.routeParam("location", args[2])
 						.queryString("auth", "goOGHNodif34oindsoifg")
 						.asString();
