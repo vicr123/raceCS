@@ -50,7 +50,7 @@ const Stations = {
         name: "Underwater Go-Karting"
     },
     "VIC":{
-        name: "Victor's Intessting City"
+        name: "Victor's Interesting City"
     },
     "ALI": {
         name: "Alee Isle"
@@ -133,13 +133,17 @@ router.post("/arrive/:username/:location", async (req, res) => {
     }
 });
 router.post("/collision/:username1/:username2", async (req, res) => {
-    //Don't need to implement right now!
     if (req.query.auth != password) {
         res.sendStatus(401);
         return;
     }
 
-    res.send(500);
+    WebSocket.broadcast({
+        "type": "collision",
+        "player1" : req.params.username1,
+        "player2": req.params.username2
+    });
+    res.sendStatus(200);
 });
 router.post("/removeUser/:username", async (req, res) => {
     if (req.query.auth != password) {

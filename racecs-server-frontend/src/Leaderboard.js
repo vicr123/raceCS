@@ -42,7 +42,7 @@ class Leaderboard extends React.Component {
         let i = 0;
         for (let event of events) {
             els.push(<div className="recentEventItem" key={i}>
-                <img height="30" src={`https://crafatar.com/avatars/${event.userUuid}?overlay=true`} style={{paddingRight: "9px"}}></img>
+                <img height="30" src={event.image} style={{paddingRight: "9px"}}></img>
                 {event.message}
             </div>)
 

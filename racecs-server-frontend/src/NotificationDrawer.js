@@ -1,12 +1,15 @@
 import React from 'react';
+import LoginIcon from './login_black_24dp.svg';
+import RailwayAlertIcon from './railway_alert_black_24dp.svg';
+import WhiteLoginIcon from './login_white_24dp.svg';
+import WhiteRailwayAlertIcon from './railway_alert_white_24dp.svg';
 
 class NotificationDrawer extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            notifications: [
-            ]
+            notifications: []
         }
     }
 
@@ -20,9 +23,21 @@ class NotificationDrawer extends React.Component {
                         "color": "white",
                         "backgroundColor": "green",
                         "key": `visit${data.user}:${data.station}`,
-                        "user": data.user,
-                        "userUuid": data.uuid,
+                        "image": LoginIcon,
+                        "whiteIcon": WhiteLoginIcon,
                         "type": "visitation"
+                    });
+                    break;
+                case "collision":
+                    this.pushNotification({
+                        "title": "Collision",
+                        "message": `${data.player1} has collided with ${data.player2}`,
+                        "color": "white",
+                        "backgroundColor": "red",
+                        "key": `collide${data.player1}:${data.player2}`,
+                        "image": RailwayAlertIcon,
+                        "whiteIcon": WhiteRailwayAlertIcon,
+                        "type": "collision"
                     });
                     break;
                 case "newPlayer":
@@ -37,11 +52,15 @@ class NotificationDrawer extends React.Component {
 
         for (let notification of this.state.notifications) {
             console.log(notification);
-            els.push(<div className="notification" key={notification.key} style={{
-                backgroundColor: notification.backgroundColor,
-                color: notification.color
-            }}>
-                <p>{notification.title}</p>
+            els.push(<div className="notification" key={notification.key}>
+                <div className="notificationSplash" style={{
+                    backgroundColor: notification.backgroundColor,
+                    color: notification.color,
+                    gridArea: "splash"
+                }}>
+                    <img src={notification.whiteIcon} />
+                    {notification.type == "collision" ? "Collision" : "Arrival"}
+                </div>
                 <p>{notification.message}</p>
             </div>)
         }
