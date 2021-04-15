@@ -4,7 +4,7 @@ class Wsh {
     handlers = {};
 
     constructor(url) {
-        this.ws = new WebSocket(`wss://${window.location.host}/ws`);
+        this.ws = new WebSocket(`ws${window.location.protocol.startsWith("https") ? "s" : ""}://${window.location.host}/ws`);
         this.ws.onmessage = this.messageHandler.bind(this);
         this.ws.onopen = this.openHandler.bind(this);
         this.ws.onclose = this.closeHandler.bind(this);

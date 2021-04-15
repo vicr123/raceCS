@@ -42,7 +42,7 @@ class Players extends React.Component {
     renderPlayerStats() {
         if (this.state.selectedPlayer) {
             return <div className="playerStats">
-                <div className="sectionHeader"><img height="30" src={`https://crafatar.com/avatars/${this.state.selectedPlayer.uuid}`} style={{paddingRight: "9px"}}></img>{this.state.selectedPlayer.username}</div>
+                <div className="sectionHeader" style={{zIndex: "1000"}}><img height="30" src={`https://crafatar.com/avatars/${this.state.selectedPlayer.uuid}`} style={{paddingRight: "9px"}}></img>{this.state.selectedPlayer.username}</div>
                 <PlayerStats stationData={this.props.stationData} playerData={this.props.playerData} selectedPlayer={this.state.selectedPlayer} />
             </div>
         } else {
