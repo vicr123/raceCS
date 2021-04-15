@@ -15,7 +15,7 @@ class WebSocket extends EventEmitter {
         ws.on('close', () => {
             this.emit("closed");
 
-            let idx = websockets.indexOf(ws);
+            let idx = websockets.indexOf(this);
             websockets.splice(idx, 1);
 
             clearInterval(this.interval);

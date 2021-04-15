@@ -216,8 +216,10 @@ h1 {
   flex-direction: column;
 
   overflow-y: auto;
+  min-height: 300px;
 
   flex-grow: 1;
+  background-color: white;
 }
 
 .playersListGrid {
