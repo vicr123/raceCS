@@ -32,8 +32,11 @@ class WebSocket extends EventEmitter {
 
     static broadcast(data) {
         for (let socket of websockets) {
-            if (socket.socket.readyState != 1) continue;
-            socket.socket.send(JSON.stringify(data));
+            try {
+                socket.socket.send(JSON.stringify(data));
+            } catch {
+                //meh
+            }
         }
     }
 }
