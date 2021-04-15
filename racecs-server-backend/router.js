@@ -41,7 +41,7 @@ const Stations = {
         name: "Akiba Island"
     },
     "WOVR": {
-        name: "Westover"
+        name: "Westover ❤️"
     },
     "BRP": {
         name: "Bridgett's Port"
