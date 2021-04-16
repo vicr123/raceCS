@@ -1,15 +1,27 @@
 package omg.lol.jplexer.race.command;
 
 import static omg.lol.jplexer.race.Race.CHAT_PREFIX;
+import static omg.lol.jplexer.race.Race.getPlugin;
 
 import kong.unirest.json.JSONObject;
 import omg.lol.jplexer.race.CommandUtils;
 import omg.lol.jplexer.race.Race;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import net.md_5.bungee.api.ChatColor;
 import kong.unirest.Unirest;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
 
 // All command classes need to implement the CommandExecutor interface to be a proper command!
 public class RaceCommand implements CommandExecutor {
@@ -43,7 +55,6 @@ public class RaceCommand implements CommandExecutor {
 				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, \"" + args[0] + "\" is not a valid verb.");
 				return true;
 		}
-
 	}
 	void viewUsers(CommandSender sender) {
 		JSONObject response = Unirest.get(Race.API_BASE + "/users").queryString("auth", Race.AUTH_TOKEN).asJson().getBody().getObject();
@@ -55,10 +66,12 @@ public class RaceCommand implements CommandExecutor {
 				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name.");
 
 			} else {
-				String user = CommandUtils.getTarget(sender, args[1]).getName();
+				Entity target = CommandUtils.getTarget(sender, args[1]);
+				String user = target.getName();
 
-				Unirest.post(Race.API_BASE + "/addUser/{player}")
+				Unirest.post(Race.API_BASE + "/addUser/{player}/{uuid}")
 						.routeParam("player", user)
+						.routeParam("uuid", target.getUniqueId().toString())
 						.queryString("auth", Race.AUTH_TOKEN)
 						.asString();
 				sender.sendMessage(CHAT_PREFIX + user + " was added.");
@@ -112,18 +125,19 @@ public class RaceCommand implements CommandExecutor {
 	}
 	void complete(CommandSender sender, String[] args)  {
 		if (sender.hasPermission("racecs.jplexer")) {
-			if (args.length <= 2) {
-				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name and Place.");
-
-			} else if (args.length != 3) {
-				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Place.");
-
+			if (args.length <= 1) {
+				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name.");
 			} else {
 				String user = CommandUtils.getTarget(sender, args[1]).getName();
 
+				Scoreboard sb = getPlugin().getServer().getScoreboardManager().getMainScoreboard();
+				Objective objective = sb.getObjective("acsfinish");
+				Score score = objective.getScore("finish");
+				int place = score.getScore();
+
 				Unirest.post(Race.API_BASE + "/completion/{player}/{place}")
 						.routeParam("player", user)
-						.routeParam("place", args[2])
+						.routeParam("place", String.valueOf(place))
 						.queryString("auth", Race.AUTH_TOKEN)
 						.asString();
 			}
