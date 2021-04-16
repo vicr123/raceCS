@@ -79,7 +79,7 @@ let users = {};
 
 const password = "goOGHNodif34oindsoifg";
 
-router.post("/addUser/:username", async (req, res) => {
+router.post("/addUser/:username/:uuid", async (req, res) => {
     if (req.query.auth != password) {
         res.sendStatus(401);
         return;
@@ -93,29 +93,40 @@ router.post("/addUser/:username", async (req, res) => {
 
     console.log(`Adding ${req.params.username} to race!`);
 
-    fetch("https://api.mojang.com/profiles/minecraft", {
-        method: "POST",
-        body: JSON.stringify([req.params.username]),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => response.json())
-    .then(response => {
-        users[req.params.username] = new User(req.params.username, response[0].id);
+    // fetch("https://api.mojang.com/profiles/minecraft", {
+    //     method: "POST",
+    //     body: JSON.stringify([req.params.username]),
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     }
+    // })
+    // .then(response => response.json())
+    // .then(response => {
+    //     users[req.params.username] = new User(req.params.username, response[0].id);
     
-        WebSocket.broadcast({
-            "type": "newPlayer",
-            "user": req.params.username,
-            "uuid": response[0].id
-        });
+    //     WebSocket.broadcast({
+    //         "type": "newPlayer",
+    //         "user": req.params.username,
+    //         "uuid": response[0].id
+    //     });
 
-        res.sendStatus(200);
-    }).catch(err => {
-        console.log(`Failed to add to race!`);
-        console.log(err);
-        res.sendStatus(400);
+    //     res.sendStatus(200);
+    // }).catch(err => {
+    //     console.log(`Failed to add to race!`);
+    //     console.log(err);
+    //     res.sendStatus(400);
+    // });
+
+
+    users[req.params.username] = new User(req.params.username, response[0].id);
+    
+    WebSocket.broadcast({
+        "type": "newPlayer",
+        "user": req.params.username,
+        "uuid": req.params.uuid
     });
+
+    res.sendStatus(200);
 });
 router.post("/arrive/:username/:location", async (req, res) => {
     try {
