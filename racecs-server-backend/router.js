@@ -118,7 +118,7 @@ router.post("/addUser/:username/:uuid", async (req, res) => {
     // });
 
 
-    users[req.params.username] = new User(req.params.username, response[0].id);
+    users[req.params.username] = new User(req.params.username, req.params.uuid);
     
     WebSocket.broadcast({
         "type": "newPlayer",
