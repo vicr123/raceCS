@@ -195,13 +195,19 @@ router.post("/collision/:username1/:username2", async (req, res) => {
         return;
     }
 
+    if (!users[req.params.username1] || !users[req.params.username2]) {
+        res.sendStatus(400);
+        return;
+    }
+
     WebSocket.broadcast({
         "type": "collision",
         "player1" : req.params.username1,
         "player2": req.params.username2
     });
     WebSocket.broadcastNotification({
-        body: `${req.params.username1} has collided with ${req.params.username2}!`
+        body: `${req.params.username1} has collided with ${req.params.username2}!`,
+        icon: "collision_notification.png"
     });
     res.sendStatus(200);
 });

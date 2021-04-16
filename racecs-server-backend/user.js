@@ -21,7 +21,8 @@ class User {
         });
 
         WebSocket.broadcastNotification({
-            body: `${this.username} has arrived at ${stationData.name}!`
+            body: `${this.username} has arrived at ${stationData.name}!`,
+            icon: "login_notification.png"
         });
     }
 
@@ -34,7 +35,8 @@ class User {
         });
 
         WebSocket.broadcastNotification({
-            body: `${this.username} has finished as #${place}!`
+            body: `${this.username} has finished as #${place}!`,
+            icon: "finish_notification.png"
         });
     }
 

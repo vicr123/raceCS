@@ -8,6 +8,9 @@ self.addEventListener('push', (event) => {
         }
         
         let data = event.data.json();
+        if (data.icon) {
+            data.icon = `${self.location.protocol}//${self.location.host}/${data.icon}`;
+        }
         event.waitUntil(self.registration.showNotification("AirCS Race Update", data));
     }));
 });

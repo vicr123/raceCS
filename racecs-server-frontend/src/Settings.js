@@ -1,23 +1,33 @@
 import fetch from 'node-fetch';
 import React from 'react';
-import Common from './common';
 
 class Settings extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            notificationsRegistered: false,
+            processing: false
+        }
+    }
+
+    componentDidMount() {
+        this.updateNotificationState();
+    }
+
     renderNotificationsButtons() {
         if (!window.PushManager) {
             return <span>Notifications are not supported on this browser.</span>
         }
+        if (this.state.processing) {
+            return <span>Enabling notifications...</span>
+        }
 
         switch (Notification.permission) {
             case "granted": {
-                if (localStorage.getItem("notifications") == "true") {
+                if (this.state.notificationsRegistered) {
                     return <div>
                         <button onClick={this.disableNotifications.bind(this)}>Disable Notifications</button>
-                        <button onClick={() => {
-                            let notification = new Notification("Test Notification", {
-                                body: "This is a test notification"
-                            });
-                        }}>Test</button>
                     </div>
                 } else {
                     return <div>
@@ -46,36 +56,46 @@ class Settings extends React.Component {
         }
     }
 
-    async enableNotifications() {
-        localStorage.setItem("notifications", "true");
-        let worker = await navigator.serviceWorker.register("/NotificationsServiceWorker.js");
-        await navigator.serviceWorker.ready;
-        let subscription = await worker.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: process.env.REACT_APP_VAPID_SERVER_KEY
+    enableNotifications() {
+        this.setState({
+            processing: true
+        }, async () => {
+            let worker = await navigator.serviceWorker.register("/NotificationsServiceWorker.js");
+            await navigator.serviceWorker.ready;
+            let subscription = await worker.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: process.env.REACT_APP_VAPID_SERVER_KEY
+            });
+    
+            //Send the subscription to the server
+            await fetch("/api/registerpush", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    subscription: JSON.parse(JSON.stringify(subscription))
+                })
+            });
+    
+            await this.updateNotificationState();
+            this.setState({
+                processing: false
+            });
         });
-
-        //Send the subscription to the server
-        await fetch("/api/registerpush", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                subscription: JSON.parse(JSON.stringify(subscription))
-            })
-        });
-
-        console.log(subscription);
-
-        this.forceUpdate();
     }
 
     async disableNotifications() {
-        localStorage.setItem("notifications", "false");
         let registration = await navigator.serviceWorker.getRegistration("/NotificationsServiceWorker.js");
         if (registration) await registration.unregister();
-        this.forceUpdate();
+        this.updateNotificationState();
+    }
+
+    async updateNotificationState() {
+        let registration = await navigator.serviceWorker.getRegistration("/NotificationsServiceWorker.js");
+        this.setState({
+            notificationsRegistered: registration ? true : false
+        });
     }
 
     render() {
