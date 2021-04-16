@@ -112,6 +112,8 @@ router.post("/addUser/:username", async (req, res) => {
 
         res.sendStatus(200);
     }).catch(err => {
+        console.log(`Failed to add to race!`);
+        console.log(err);
         res.sendStatus(400);
     });
 });
