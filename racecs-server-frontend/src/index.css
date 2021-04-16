@@ -164,6 +164,7 @@ h1 {
 .ticker {
   display: flex;
   align-items: center;
+  justify-content: stretch;
 
   border-bottom: 1px solid red;
 }
@@ -307,6 +308,28 @@ h1 {
   padding: 9px;
   display: flex;
   align-items: center;
+}
+
+marquee {
+  flex-grow: 1;
+}
+
+.settingsWrapper {
+  display: flex;
+  flex-direction: column;
+
+  background: white;
+  color: black;
+
+  flex-grow: 1;
+}
+
+.settingsInnerWrapper {
+  display: flex;
+  flex-direction: column;
+
+  padding: 10px;
+  flex-grow: 1;
 }
 
 @media (max-width: 900px) {

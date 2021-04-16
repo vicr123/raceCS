@@ -25,6 +25,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
+            "cwd": "${workspaceFolder}/racecs-server-backend",
             "program": "${workspaceFolder}/racecs-server-backend/index.js"
         }
     ]

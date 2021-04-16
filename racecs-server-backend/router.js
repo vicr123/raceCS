@@ -1,6 +1,7 @@
 const express = require("express");
 const mojangApi = require('mojang-api');
 const fetch = require('node-fetch');
+const settings = require("./settings");
 const User = require('./user');
 const WebSocket = require("./ws");
 
@@ -128,6 +129,44 @@ router.post("/addUser/:username/:uuid", async (req, res) => {
 
     res.sendStatus(200);
 });
+router.post("/addUser/:username", async (req, res) => {
+    if (req.query.auth != password) {
+        res.sendStatus(401);
+        return;
+    }
+
+    if (users[req.params.username]) {
+        console.log(`Adding ${req.params.username} not possible because the user is already in the race.`);
+        res.sendStatus(400);
+        return;
+    }
+
+    console.log(`Adding ${req.params.username} to race!`);
+
+    fetch("https://api.mojang.com/profiles/minecraft", {
+        method: "POST",
+        body: JSON.stringify([req.params.username]),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(response => {
+        users[req.params.username] = new User(req.params.username, response[0].id);
+    
+        WebSocket.broadcast({
+            "type": "newPlayer",
+            "user": req.params.username,
+            "uuid": response[0].id
+        });
+
+        res.sendStatus(200);
+    }).catch(err => {
+        console.log(`Failed to add to race!`);
+        console.log(err);
+        res.sendStatus(400);
+    });
+});
 router.post("/arrive/:username/:location", async (req, res) => {
     try {
         if (req.query.auth != password) {
@@ -143,7 +182,7 @@ router.post("/arrive/:username/:location", async (req, res) => {
         //req.params.username
         //req.params.location
         
-        users[req.params.username].markVisited(req.params.location);
+        users[req.params.username].markVisited(req.params.location, Stations[req.params.location]);
 
         res.sendStatus(200);
     } catch {
@@ -160,6 +199,9 @@ router.post("/collision/:username1/:username2", async (req, res) => {
         "type": "collision",
         "player1" : req.params.username1,
         "player2": req.params.username2
+    });
+    WebSocket.broadcastNotification({
+        body: `${req.params.username1} has collided with ${req.params.username2}!`
     });
     res.sendStatus(200);
 });
@@ -218,6 +260,18 @@ router.get("/users", async (req, res) => {
 router.get("/stations", async (req, res) => {
     //Return a list of all the users
     res.send(Stations);
+});
+
+router.use("/registerpush", express.json({
+
+}));
+router.post("/registerpush", (req, res) => {
+    let subscription = req.body.subscription;
+    let oldSubscriptions = settings.get("pushSubscriptions", []);
+    oldSubscriptions.push(subscription);
+    settings.set("pushSubscriptions", oldSubscriptions);
+
+    res.sendStatus(200);
 });
 
 module.exports = router;

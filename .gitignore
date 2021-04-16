@@ -24,3 +24,6 @@ yarn-error.log*
 
 racecs-server-frontend/node_modules/
 racecs-server-frontend/build/
+data.json
+racecs-server-backend/vapid-privkey
+racecs-server-backend/vapid-pubkey

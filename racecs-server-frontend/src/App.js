@@ -9,6 +9,7 @@ import Stations from './Stations';
 import NotificationDrawer from './NotificationDrawer';
 import Wsh from './wsh';
 import Ticker from './ticker';
+import Settings from './Settings';
 
 class App extends React.Component {
   constructor(props) {
@@ -111,6 +112,8 @@ class App extends React.Component {
         return <Players stationData={this.state.stationData} playerData={this.state.playerData} selectPlayer={this.state.selectPlayer} />
       case "stations":
         return <Stations stationData={this.state.stationData} playerData={this.state.playerData} onPlayerClicked={this.playerClicked.bind(this)} />
+      case "settings":
+        return <Settings />
     }
   }
 
@@ -151,6 +154,7 @@ class App extends React.Component {
             <div className={`headerButton ${this.state.currentView == "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>Leaderboard</div>
             <div className={`headerButton ${this.state.currentView == "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>Stations</div>
             <div className={`headerButton ${this.state.currentView == "players" && "selected"}`}onClick={this.changeView.bind(this, "players")}>Players</div>
+            <div className={`headerButton ${this.state.currentView == "settings" && "selected"}`}onClick={this.changeView.bind(this, "settings")}>Settings</div>
             <div style={{flexGrow: 1}}></div>
             <img src={aircs} style={{height: "100%", padding: "9px", boxSizing: "border-box"}}></img>
           </div>

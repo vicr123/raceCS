@@ -11,13 +11,17 @@ class User {
         this.id = id;
     }
 
-    markVisited(station) {
+    markVisited(station, stationData) {
         this.visited.push(station);
         WebSocket.broadcast({
             "type": "visitation",
             "user": this.username,
             "uuid": this.id,
             "station": station
+        });
+
+        WebSocket.broadcastNotification({
+            body: `${this.username} has arrived at ${stationData.name}!`
         });
     }
 
@@ -27,6 +31,10 @@ class User {
             "type": "completion",
             "username" : this.username,
             "place": place
+        });
+
+        WebSocket.broadcastNotification({
+            body: `${this.username} has finished as #${place}!`
         });
     }
 

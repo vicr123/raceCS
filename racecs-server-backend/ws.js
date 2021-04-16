@@ -1,6 +1,19 @@
 const EventEmitter = require('events');
+const settings = require('./settings');
+const webPush = require('web-push');
+const fs = require('fs');
 
 let websockets = [];
+
+const vapidDetails = {
+    publicKey: fs.readFileSync("vapid-pubkey", {
+        encoding: "utf-8"
+    }),
+    privateKey: fs.readFileSync("vapid-privkey", {
+        encoding: "utf-8"
+    }),
+    subject: "mailto:vicr12345@gmail.com"
+}
 
 class WebSocket extends EventEmitter {
     socket = null;
@@ -37,6 +50,24 @@ class WebSocket extends EventEmitter {
             } catch {
                 //meh
             }
+        }
+    }
+
+    static async broadcastNotification(data) {
+        let payload = JSON.stringify(data);
+        let options = {
+            vapidDetails: vapidDetails
+        }
+
+        let promises = [];
+        for (let subscription of settings.get("pushSubscriptions", [])) {
+            promises.push(webPush.sendNotification(subscription, payload, options));
+        }
+
+        try {
+            await Promise.all(promises);
+        } catch {
+            
         }
     }
 }
