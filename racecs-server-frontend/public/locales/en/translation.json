@@ -32,6 +32,8 @@
     "SETTINGS_LOCALE_DESCRIPTION": "Change the langauge that the AirCS Race interface is shown in",
     "SETTINGS_LOCALE_SYSTEM": "System",
     "NOTIFICATION_ARRIVAL": "Arrival",
+    "SETTINGS_STATION_LOCALE": "STATION LOCALE",
+    "SETTINGS_STATION_LOCALE_DESCRIPTION": "Change the langauge that the stations show in",
     "NOTIFICATION_ARRIVAL_MESSAGE": "{{ user }} has arrived at {{ stationName }}",
     "NOTIFICATION_COLLISION": "Collision",
     "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} has collided with {{ player2 }}",

@@ -95,10 +95,16 @@ class App extends React.Component {
 
     (async () => {
       this.setState({
-        stationData: await Fetch.get("/stations"),
         playerData: await Fetch.get("/users")
       });
+      await this.updateStations();
     })();
+  }
+
+  async updateStations() {
+    this.setState({
+      stationData: await Fetch.get("/stations")
+    })
   }
 
   componentWillUnmount() {
@@ -118,8 +124,12 @@ class App extends React.Component {
       case "stations":
         return <Stations stationData={this.state.stationData} playerData={this.state.playerData} onPlayerClicked={this.playerClicked.bind(this)} />
       case "settings":
-        return <Settings />
+        return <Settings onLocaleChange={this.onLocaleChange.bind(this)} />
     }
+  }
+
+  onLocaleChange() {
+    this.updateStations();
   }
 
   playerClicked(player) {

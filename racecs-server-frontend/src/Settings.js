@@ -10,7 +10,8 @@ class Settings extends React.Component {
         this.state = {
             notificationsRegistered: false,
             processing: false,
-            locale: localStorage.getItem("locale") || "sys"
+            locale: localStorage.getItem("locale") || "sys",
+            stationLocale: localStorage.getItem("stationLocale") || "sys"
         }
     }
 
@@ -113,10 +114,30 @@ class Settings extends React.Component {
             i18n.changeLanguage(event.target.value);
         }
         
+        this.props.onLocaleChange();
     }
 
     renderLocale() {
         return <select value={this.state.locale} onChange={this.localeChanged.bind(this)}>
+            <option value="sys">{this.props.t("SETTINGS_LOCALE_SYSTEM")}</option>
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="pt_BR">português</option>
+            <option value="vi">Tiếng Việt</option>
+        </select>
+    }
+
+    stationLocaleChanged(event) {
+        this.setState({
+            stationLocale: event.target.value
+        });
+
+        localStorage.setItem("stationLocale", event.target.value);
+        this.props.onLocaleChange();
+    }
+
+    renderStationLocale() {
+        return <select value={this.state.stationLocale} onChange={this.stationLocaleChanged.bind(this)}>
             <option value="sys">{this.props.t("SETTINGS_LOCALE_SYSTEM")}</option>
             <option value="en">English</option>
             <option value="de">Deutsch</option>
@@ -137,6 +158,10 @@ class Settings extends React.Component {
                     <b>{this.props.t("SETTINGS_LOCALE")}</b>
                     <span>{this.props.t("SETTINGS_LOCALE_DESCRIPTION")}</span>
                     {this.renderLocale()}
+
+                    <b>{this.props.t("SETTINGS_STATION_LOCALE")}</b>
+                    <span>{this.props.t("SETTINGS_STATION_LOCALE_DESCRIPTION")}</span>
+                    {this.renderStationLocale()}
                 </div>
             </div>
         </div>

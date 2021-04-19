@@ -1,4 +1,5 @@
 import React from 'react';
+import i18n from './i18n';
 // import Loader from './Loader';
 // import Modal from './Modal';
 
@@ -29,9 +30,16 @@ class Fetch {
         let err = null;
         // Display loading animation for the user
         // if (showLoader) Loader.mount();
+        let headers = Fetch.headers();
+
+        let stationLang = localStorage.getItem("stationLocale");
+        if (url == "/stations" && stationLang && stationLang != "sys") {
+            headers["Accept-Language"] = stationLang;
+        }
+
         let result = await fetch("/api" + url, {
             method: method,
-            headers: Fetch.headers()
+            headers: headers
         }).catch((error) => {
             err = error;
         }).finally(() => {
