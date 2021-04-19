@@ -52,19 +52,32 @@ class Players extends React.Component {
         }
     }
 
+    renderMainView() {
+        if (Object.keys(this.props.playerData).length === 0) {
+            return <div className="errorContainer">
+                <h1>No race in progress</h1>
+                <p>Join an AirCS race to get started!</p>
+            </div>
+        } else {
+            return <>
+                <div className="playersListWrapper" style={{flexGrow: 1}}>
+                    <div className="playersListGrid">
+                        <div className="sectionHeader" style={{gridArea: "header"}}>Players</div>
+                        {this.renderPlayers()}
+                    </div>
+                    <div className="hspacer"></div>
+                </div>
+                <div style={{width: "20px", height: "20px"}}></div>
+                <div className="playerStatsWrapper" style={{flexGrow: 4}}>
+                    {this.renderPlayerStats()}
+                </div>
+            </>
+        }
+    }
+
     render() {
         return <div className="mainView">
-            <div className="playersListWrapper" style={{flexGrow: 1}}>
-                <div className="playersListGrid">
-                    <div className="sectionHeader" style={{gridArea: "header"}}>Players</div>
-                    {this.renderPlayers()}
-                </div>
-                <div className="hspacer"></div>
-            </div>
-            <div style={{width: "20px", height: "20px"}}></div>
-            <div className="playerStatsWrapper" style={{flexGrow: 4}}>
-                {this.renderPlayerStats()}
-            </div>
+            {this.renderMainView()}
         </div>
     }
 };

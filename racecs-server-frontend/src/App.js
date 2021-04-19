@@ -101,7 +101,11 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    this.state.ws.close();
+    try {
+      if (this.state.ws) this.state.ws.close();
+    } catch {
+
+    }
   }
 
   renderMainView() {
@@ -153,8 +157,8 @@ class App extends React.Component {
           <div className="header">
             <div className={`headerButton ${this.state.currentView == "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>Leaderboard</div>
             <div className={`headerButton ${this.state.currentView == "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>Stations</div>
-            <div className={`headerButton ${this.state.currentView == "players" && "selected"}`}onClick={this.changeView.bind(this, "players")}>Players</div>
-            <div className={`headerButton ${this.state.currentView == "settings" && "selected"}`}onClick={this.changeView.bind(this, "settings")}>Settings</div>
+            <div className={`headerButton ${this.state.currentView == "players" && "selected"}`} onClick={this.changeView.bind(this, "players")}>Players</div>
+            <div className={`headerButton ${this.state.currentView == "settings" && "selected"}`} onClick={this.changeView.bind(this, "settings")}>Settings</div>
             <div style={{flexGrow: 1}}></div>
             <img src={aircs} style={{height: "100%", padding: "9px", boxSizing: "border-box"}}></img>
           </div>
@@ -175,4 +179,27 @@ class App extends React.Component {
   }
 }
 
-export default App;
+class AppContainer extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hasError: false
+    }
+  }
+
+  render() {
+    return this.state.hasError ? <div className="errorContainer">
+      <h1>Ouch!</h1>
+      <p>That hurt :(</p>
+      <button onClick={() => window.location.reload()}>Reload</button>
+    </div> : <App />
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+}
+
+export default AppContainer;

@@ -53,12 +53,23 @@ class Stations extends React.Component {
         return els;
     }
 
+
     render() {
-        return <div className="mainView" style={{padding: "10px", flexDirection: "row"}}>
-            <div className="stationsGridWrapper">
-                {this.renderStations()}
+        if (Object.keys(this.props.playerData).length === 0) {
+            return <div className="mainView">
+                <div className="errorContainer">
+                    <h1>No race in progress</h1>
+                    <p>Join an AirCS race to get started!</p>
+                </div>
             </div>
-        </div>
+        } else {
+            return <div className="mainView" style={{padding: "10px", flexDirection: "row"}}>
+                <div className="stationsGridWrapper">
+                    {this.renderStations()}
+                </div>
+            </div>
+        }
+        return 
     }
 };
 

@@ -71,24 +71,37 @@ class Leaderboard extends React.Component {
         return els;
     }
 
+    renderMainView() {
+        if (Object.keys(this.props.playerData).length === 0) {
+            return <div className="errorContainer">
+                <h1>No race in progress</h1>
+                <p>Join an AirCS race to get started!</p>
+            </div>
+        } else {
+            return <>
+                <div className="leaderboardGridWrapper">
+                    <div className="leaderboardGrid">
+                        <div className="sectionHeader"></div>
+                        <div className="sectionHeader"></div>
+                        <div className="sectionHeader">Name</div>
+                        <div className="sectionHeader">Stations Visited</div>
+
+                        {this.renderPlayerData()}
+                    </div>
+                    <div className="hspacer"></div>
+                </div>
+                <div style={{width: "20px", height: "20px"}}></div>
+                <div className="recentEventsWrapper">
+                    <div className="sectionHeader">Recent Events</div>
+                    {this.renderRecentEvents()}
+                </div>
+            </>
+        }
+    }
+
     render() {
         return <div className="mainView">
-            <div className="leaderboardGridWrapper">
-                <div className="leaderboardGrid">
-                    <div className="sectionHeader"></div>
-                    <div className="sectionHeader"></div>
-                    <div className="sectionHeader">Name</div>
-                    <div className="sectionHeader">Stations Visited</div>
-
-                    {this.renderPlayerData()}
-                </div>
-                <div className="hspacer"></div>
-            </div>
-            <div style={{width: "20px", height: "20px"}}></div>
-            <div className="recentEventsWrapper">
-                <div className="sectionHeader">Recent Events</div>
-                {this.renderRecentEvents()}
-            </div>
+            {this.renderMainView()}
         </div>
     }
 };
