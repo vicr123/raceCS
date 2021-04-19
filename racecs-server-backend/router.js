@@ -4,77 +4,114 @@ const fetch = require('node-fetch');
 const settings = require("./settings");
 const User = require('./user');
 const WebSocket = require("./ws");
+const fs = require("fs");
+const path = require("path");
 
 let router = express.Router();
 
-const Stations = {
-    "WC": {
-        name: "Whale City Central"
-    },
-    "WCC": {
-        name: "Whale City Commercial"
-    },
-    "WCR": {
-        name: "Whale City Residential"
-    },
-    "WCA": {
-        name: "Whale City Airport"
-    },
-    "LD": {
-        name: "Legal District"
-    },
-    "AKL": {
-        name: "Auckland"
-    },
-    "UFO": {
-        name: "RMUFO"
-    },
-    "SMT": {
-        name: "Spawn Memorial Transfer"
-    },
-    "LI" : {
-        name: "Long Island"
-    },
-    "DT": {
-        name: "Downtown Melanie City"
-    },
-    "AKI": {
-        name: "Akiba Island"
-    },
-    "WOVR": {
-        name: "Westover ❤️"
-    },
-    "BRP": {
-        name: "Bridgett's Port"
-    },
-    "UWGK": {
-        name: "Underwater Go-Karting"
-    },
-    "VIC":{
-        name: "Victor's Interesting City"
-    },
-    "ALI": {
-        name: "Alee Isle"
-    },
-    "SIL": {
-        name: "Silicon Valley"
-    },
-    "SKY": {
-        name: "SkyCity"
-    },
-    "BCO": {
-        name: "BreadCroust"
-    },
-    "BBT": {
-        name: "Birch Boat Town"
-    },
-    "SHC": {
-        name: "ShiftCity"
-    },
-    "BLO": {
-        name: "Birch Lodges"
-    }
-};
+//Load all the stations
+let Stations = {};
+let files = fs.readdirSync("stations");
+for (let file of files) {
+    let basename = path.basename(file, ".json");
+    Stations[basename] = JSON.parse(fs.readFileSync(`./stations/${file}`, {
+        encoding: "utf-8"
+    }));
+}
+
+const usedStations = [
+    "WC",
+    "WCC",
+    "WCR",
+    "WCA",
+    "LD",
+    "AKL",
+    "UFO",
+    "SMT",
+    "LI",
+    "DT",
+    "AKI",
+    "WOVR",
+    "BRP",
+    "UWGK",
+    "VIC",
+    "ALI",
+    "SIL",
+    "SKY",
+    "BCO",
+    "BBT",
+    "SHC",
+    "BLO"
+]
+
+// const Stations = {
+//     "WC": {
+//         name: "Whale City Central"
+//     },
+//     "WCC": {
+//         name: "Whale City Commercial"
+//     },
+//     "WCR": {
+//         name: "Whale City Residential"
+//     },
+//     "WCA": {
+//         name: "Whale City Airport"
+//     },
+//     "LD": {
+//         name: "Legal District"
+//     },
+//     "AKL": {
+//         name: "Auckland"
+//     },
+//     "UFO": {
+//         name: "RMUFO"
+//     },
+//     "SMT": {
+//         name: "Spawn Memorial Transfer"
+//     },
+//     "LI" : {
+//         name: "Long Island"
+//     },
+//     "DT": {
+//         name: "Downtown Melanie City"
+//     },
+//     "AKI": {
+//         name: "Akiba Island"
+//     },
+//     "WOVR": {
+//         name: "Westover ❤️"
+//     },
+//     "BRP": {
+//         name: "Bridgett's Port"
+//     },
+//     "UWGK": {
+//         name: "Underwater Go-Karting"
+//     },
+//     "VIC":{
+//         name: "Victor's Interesting City"
+//     },
+//     "ALI": {
+//         name: "Alee Isle"
+//     },
+//     "SIL": {
+//         name: "Silicon Valley"
+//     },
+//     "SKY": {
+//         name: "SkyCity"
+//     },
+//     "BCO": {
+//         name: "BreadCroust"
+//     },
+//     "BBT": {
+//         name: "Birch Boat Town"
+//     },
+//     "SHC": {
+//         name: "ShiftCity"
+//     },
+//     "BLO": {
+//         name: "Birch Lodges"
+//     }
+// };
 
 let users = {};
 
@@ -264,8 +301,20 @@ router.get("/users", async (req, res) => {
     res.send(retval);
 });
 router.get("/stations", async (req, res) => {
-    //Return a list of all the users
-    res.send(Stations);
+    //Return a list of all the stations
+    // res.send(Stations);
+    let localised = Stations["en"];
+    let requestedLang = req.acceptsLanguages(Object.keys(Stations));
+    if (requestedLang) localised = Stations[requestedLang];
+
+    let stations = {}
+    for (let station of usedStations) {
+        stations[station] = {
+            name: localised[station]
+        }
+    }
+
+    res.send(stations);
 });
 
 router.use("/registerpush", express.json({
