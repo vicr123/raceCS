@@ -11,7 +11,7 @@ class User {
         this.id = id;
     }
 
-    markVisited(station, stationData) {
+    markVisited(station, stationName) {
         this.visited.push(station);
         WebSocket.broadcast({
             "type": "visitation",
@@ -21,7 +21,7 @@ class User {
         });
 
         WebSocket.broadcastNotification({
-            body: `${this.username} has arrived at ${stationData.name}!`,
+            body: `${this.username} has arrived at ${stationName}!`,
             icon: "login_notification.png"
         });
     }

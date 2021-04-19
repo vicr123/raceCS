@@ -219,10 +219,10 @@ router.post("/arrive/:username/:location", async (req, res) => {
         //req.params.username
         //req.params.location
         
-        users[req.params.username].markVisited(req.params.location, Stations[req.params.location]);
+        users[req.params.username].markVisited(req.params.location, Stations["en"][req.params.location]);
 
         res.sendStatus(200);
-    } catch {
+    } catch (err) {
         res.sendStatus(500);
     }
 });
