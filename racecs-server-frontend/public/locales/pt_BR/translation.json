@@ -38,5 +38,6 @@
     "SETTINGS_LOCALE_DESCRIPTION": "Muda a língua da interface da Corrida AirCS",
     "SETTINGS_LOCALE": "LÍNGUA",
     "SETTINGS_STATION_LOCALE_DESCRIPTION": "Muda a língua em que o nome das estaçöes",
-    "SETTINGS_STATION_LOCALE": "LÍNGUA DAS ESTAÇÕES"
+    "SETTINGS_STATION_LOCALE": "LÍNGUA DAS ESTAÇÕES",
+    "APP_AIRCS_MAP": "Mapa AirCS"
 }
