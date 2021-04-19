@@ -35,6 +35,8 @@
     "NOTIFICATION_ARRIVAL_MESSAGE": "{{ user }} chegou em {{ stationName }}",
     "NOTIFICATION_ARRIVAL": "Chegada",
     "SETTINGS_LOCALE_SYSTEM": "Sistema",
-    "SETTINGS_LOCALE_DESCRIPTION": "Mude a língua da interface da Corrida AirCS",
-    "SETTINGS_LOCALE": "LÍNGUA"
+    "SETTINGS_LOCALE_DESCRIPTION": "Muda a língua da interface da Corrida AirCS",
+    "SETTINGS_LOCALE": "LÍNGUA",
+    "SETTINGS_STATION_LOCALE_DESCRIPTION": "Muda a língua em que o nome das estaç",
+    "SETTINGS_STATION_LOCALE": "LÍNGUA DAS ESTAÇÕES"
 }
