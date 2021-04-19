@@ -27,5 +27,14 @@
     "SETTINGS_NOTIFICATIONS_DISABLE": "Benachrichtigungen deaktivieren",
     "SETTINGS_NOTIFICATIONS_NOT_SUPPORTED": "Benachrichtigungen werden in diesem Browser nicht unterstützt.",
     "SETTINGS_NOTIFICATIONS_ENABLING": "Benachrichtigungen werden aktiviert...",
-    "SETTINGS_NOTIFICAITONS_DECLINED": "Überprüfe die Einstellungen für Benachrichtigungen von dieser Webseite in deinem Browser und lade sie erneut, um es erneut zu versuchen."
+    "SETTINGS_NOTIFICAITONS_DECLINED": "Überprüfe die Einstellungen für Benachrichtigungen von dieser Webseite in deinem Browser und lade sie erneut, um es erneut zu versuchen.",
+    "NOTIFICATION_FINISH_MESSAGE": "{{ player }} ist auf Platz {{ place }} angekommen",
+    "NOTIFICATION_FINISH": "Fertig",
+    "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} ist mit {{ player2 }} kollidiert",
+    "NOTIFICATION_COLLISION": "Kollision",
+    "NOTIFICATION_ARRIVAL_MESSAGE": "{{ user }} ist bei {{ stationName }} angekommen",
+    "NOTIFICATION_ARRIVAL": "Ankunft",
+    "SETTINGS_LOCALE_SYSTEM": "System",
+    "SETTINGS_LOCALE_DESCRIPTION": "Änder die Sprache, in der das Interface der AirCS-Rennen angezeigt wird",
+    "SETTINGS_LOCALE": "SPRACHE"
 }
