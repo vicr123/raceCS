@@ -36,5 +36,7 @@
     "NOTIFICATION_ARRIVAL": "ĐẾN",
     "SETTINGS_LOCALE_SYSTEM": "Hệ thống",
     "SETTINGS_LOCALE_DESCRIPTION": "Thay đổi ngôn ngữ giao diện AirCS Race sẽ hiển lên",
-    "SETTINGS_LOCALE": "NGÔN NGỮ"
+    "SETTINGS_LOCALE": "NGÔN NGỮ",
+    "SETTINGS_STATION_LOCALE_DESCRIPTION": "Thay đổi ngôn ngữ mà các trạm sẽ hiển thị",
+    "SETTINGS_STATION_LOCALE": "NGÔN NGỮ TRẠM"
 }
