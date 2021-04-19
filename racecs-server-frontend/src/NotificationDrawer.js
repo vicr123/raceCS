@@ -1,5 +1,6 @@
 import React from 'react';
 import Common from './common';
+import { withTranslation } from 'react-i18next';
 
 import LoginIcon from './login_black_24dp.svg';
 import RailwayAlertIcon from './railway_alert_black_24dp.svg';
@@ -22,8 +23,11 @@ class NotificationDrawer extends React.Component {
             switch (data.type) {
                 case "visitation":
                     this.pushNotification({
-                        "title": "Arrival",
-                        "message": `${data.user} has arrived at ${this.props.stationData[data.station].name}`,
+                        "title": this.props.t("NOTIFICATION_ARRIVAL"),
+                        "message": this.props.t("NOTIFICATION_ARRIVAL_MESSAGE", {
+                            user: data.user,
+                            stationName: this.props.stationData[data.station].name
+                        }),
                         "color": "white",
                         "backgroundColor": "green",
                         "key": `visit${data.user}:${data.station}`,
@@ -34,8 +38,11 @@ class NotificationDrawer extends React.Component {
                     break;
                 case "collision":
                     this.pushNotification({
-                        "title": "Collision",
-                        "message": `${data.player1} has collided with ${data.player2}`,
+                        "title": this.props.t("NOTIFICATION_COLLISION"),
+                        "message": this.props.t("NOTIFICATION_COLLISION_MESSAGE", {
+                            player1: data.player1,
+                            player2: data.player2
+                        }),
                         "color": "white",
                         "backgroundColor": "red",
                         "key": `collide${data.player1}:${data.player2}`,
@@ -46,8 +53,11 @@ class NotificationDrawer extends React.Component {
                     break;
                 case "completion": {
                     this.pushNotification({
-                        "title": "Finished",
-                        "message": `${data.username} has finished in ${Common.getOrdinal(data.place)}`,
+                        "title": this.props.t("NOTIFICATION_FINISH"),
+                        "message": this.props.t("NOTIFICATION_FINISH_MESSAGE", {
+                            player: data.username,
+                            place: Common.getOrdinal(data.place)
+                        }),
                         "color": "white",
                         "backgroundColor": "orange",
                         "key": `completion${data.username}`,
@@ -110,4 +120,4 @@ class NotificationDrawer extends React.Component {
     }
 }
 
-export default NotificationDrawer;
+export default withTranslation()(NotificationDrawer);

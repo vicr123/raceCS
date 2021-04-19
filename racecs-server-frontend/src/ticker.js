@@ -33,7 +33,8 @@ class Ticker extends React.Component {
             "Melanie McDonald sues Melanie City for using her name without permission",
             "Lionel Richie sues Adele for reusing the name of his song: Hello",
             "Auckland changes colour scheme, imposing a $1t bill to rebrand the city",
-            "Walnut encounters unexpected shortage on walnuts"
+            "Walnut encounters unexpected shortage on walnuts",
+            "Local Chair addicted to League of Legends"
         ]
         
         for (let i = 0; i < 10; i++) {

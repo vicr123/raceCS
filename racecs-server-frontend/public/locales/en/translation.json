@@ -30,5 +30,11 @@
     "SETTINGS_NOTIFICAITONS_DECLINED": "Check the settings for notifications for this webpage in your browser, and reload to try again.",
     "SETTINGS_LOCALE": "LOCALE",
     "SETTINGS_LOCALE_DESCRIPTION": "Change the langauge that the AirCS Race interface is shown in",
-    "SETTINGS_LOCALE_SYSTEM": "System"
+    "SETTINGS_LOCALE_SYSTEM": "System",
+    "NOTIFICATION_ARRIVAL": "Arrival",
+    "NOTIFICATION_ARRIVAL_MESSAGE": "{{ user }} has arrived at {{ stationName }}",
+    "NOTIFICATION_COLLISION": "Collision",
+    "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} has collided with {{ player2 }}",
+    "NOTIFICATION_FINISH": "Finished",
+    "NOTIFICATION_FINISH_MESSAGE": "{{ player }} has finished in {{ place }}"
 }

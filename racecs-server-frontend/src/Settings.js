@@ -120,7 +120,7 @@ class Settings extends React.Component {
             <option value="sys">{this.props.t("SETTINGS_LOCALE_SYSTEM")}</option>
             <option value="en">English</option>
             <option value="de">Deutsch</option>
-            <option value="pt">português</option>
+            <option value="pt_BR">português</option>
             <option value="vi">Tiếng Việt</option>
         </select>
     }
