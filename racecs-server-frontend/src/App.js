@@ -125,6 +125,8 @@ class App extends React.Component {
         return <Stations stationData={this.state.stationData} playerData={this.state.playerData} onPlayerClicked={this.playerClicked.bind(this)} />
       case "settings":
         return <Settings onLocaleChange={this.onLocaleChange.bind(this)} />
+      case "aircsmap":
+        return <iframe src="https://thepixelpolygon.github.io/aircsnetmap" style={{flexGrow: 1, border: "none"}}/>
     }
   }
 
@@ -169,6 +171,7 @@ class App extends React.Component {
             <div className={`headerButton ${this.state.currentView == "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>{this.props.t("APP_LEADERBOARD")}</div>
             <div className={`headerButton ${this.state.currentView == "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>{this.props.t("APP_STATIONS")}</div>
             <div className={`headerButton ${this.state.currentView == "players" && "selected"}`} onClick={this.changeView.bind(this, "players")}>{this.props.t("APP_PLAYERS")}</div>
+            <div className={`headerButton ${this.state.currentView == "aircsmap" && "selected"}`} onClick={this.changeView.bind(this, "aircsmap")}>{this.props.t("APP_AIRCS_MAP")}</div>
             <div className={`headerButton ${this.state.currentView == "settings" && "selected"}`} onClick={this.changeView.bind(this, "settings")}>{this.props.t("APP_SETTINGS")}</div>
             <div style={{flexGrow: 1}}></div>
             <img src={aircs} style={{height: "100%", padding: "9px", boxSizing: "border-box"}}></img>
