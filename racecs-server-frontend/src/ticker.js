@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { withTranslation } from 'react-i18next';
 
 class Ticker extends React.Component {
     constructor(props) {
@@ -47,10 +47,10 @@ class Ticker extends React.Component {
 
     render() {
         return <div className="ticker">
-            <div className={`headerButton selected`}>NEWS</div>
+            <div className={`headerButton selected`}>{this.props.t("TICKER_NEWS")}</div>
             <marquee>{this.state.tickerItems.join(" • ")}</marquee>
         </div>
     }
 }
 
-export default Ticker;
+export default withTranslation()(Ticker);

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import { withTranslation } from 'react-i18next';
 import Fetch from './Fetch';
 import aircs from './aircs.svg';
 import './App.css';
@@ -147,18 +148,18 @@ class App extends React.Component {
     switch (this.state.state) {
       case "load":
         return <div className="errorContainer">
-          <h1>Loading...</h1>
-          <p>Please wait a second.</p>
+          <h1>{this.props.t("APP_LOADING")}</h1>
+          <p>{this.props.t("APP_PLEASE_WAIT")}</p>
         </div>
       case "ready":
         return <>
         <Ticker websocket={this.state.ws} />
           {this.renderMainView()}
           <div className="header">
-            <div className={`headerButton ${this.state.currentView == "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>Leaderboard</div>
-            <div className={`headerButton ${this.state.currentView == "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>Stations</div>
-            <div className={`headerButton ${this.state.currentView == "players" && "selected"}`} onClick={this.changeView.bind(this, "players")}>Players</div>
-            <div className={`headerButton ${this.state.currentView == "settings" && "selected"}`} onClick={this.changeView.bind(this, "settings")}>Settings</div>
+            <div className={`headerButton ${this.state.currentView == "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>{this.props.t("APP_LEADERBOARD")}</div>
+            <div className={`headerButton ${this.state.currentView == "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>{this.props.t("APP_STATIONS")}</div>
+            <div className={`headerButton ${this.state.currentView == "players" && "selected"}`} onClick={this.changeView.bind(this, "players")}>{this.props.t("APP_PLAYERS")}</div>
+            <div className={`headerButton ${this.state.currentView == "settings" && "selected"}`} onClick={this.changeView.bind(this, "settings")}>{this.props.t("APP_SETTINGS")}</div>
             <div style={{flexGrow: 1}}></div>
             <img src={aircs} style={{height: "100%", padding: "9px", boxSizing: "border-box"}}></img>
           </div>
@@ -166,18 +167,20 @@ class App extends React.Component {
         </>
         case "error":
           return <div className="errorContainer">
-            <h1>Disconnected</h1>
-            <p>Please reload the page</p>
+            <h1>{this.props.t("APP_DISCONNECTED")}</h1>
+            <p>{this.props.t("APP_PLEASE_RELOAD")}</p>
           </div>
     }
   }
 
   render() {
     return <div className="mainContainer">
-      {this.renderState()}
-    </div>
+        {this.renderState()}
+      </div>
   }
 }
+
+const AppT = withTranslation()(App);
 
 class AppContainer extends React.Component {
   constructor(props) {
@@ -189,11 +192,17 @@ class AppContainer extends React.Component {
   }
 
   render() {
-    return this.state.hasError ? <div className="errorContainer">
-      <h1>Ouch!</h1>
-      <p>That hurt :(</p>
-      <button onClick={() => window.location.reload()}>Reload</button>
-    </div> : <App />
+    return this.state.hasError ? 
+        <div className="errorContainer">
+        <h1>Ouch!</h1>
+        <p>That hurt :(</p>
+        <button onClick={() => window.location.reload()}>Reload</button>
+      </div> : <Suspense fallback={
+        <div className="errorContainer">
+          <h1>Loading...</h1>
+          <p>Please wait a second.</p>
+        </div>
+      }><AppT /></Suspense>
   }
 
   static getDerivedStateFromError(error) {

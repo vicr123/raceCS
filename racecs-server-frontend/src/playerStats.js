@@ -1,4 +1,5 @@
 import React from 'react';
+import { withTranslation } from 'react-i18next';
 
 class Section extends React.Component {
     render() {
@@ -20,7 +21,7 @@ class PlayerStats extends React.Component {
         }
 
         if (els.length === 0) {
-            els.push(<div>No stations visited yet!</div>)
+            els.push(<div>{this.props.t("PLAYERSTATS_NONE_VISITED")}</div>)
         }
 
         return els;
@@ -44,7 +45,7 @@ class PlayerStats extends React.Component {
         }
 
         if (els.length === 0) {
-            els.push(<div>All stations visited!</div>)
+            els.push(<div>{this.props.t("PLAYERSTATS_ALL_VISITED")}</div>)
         }
 
         return els;
@@ -57,18 +58,18 @@ class PlayerStats extends React.Component {
             <h1>Stats:</h1>
             <p>Visited stations: {this.props.playerData[this.props.selectedPlayer.username].visited.length}</p>
             <p>Stations remaining: {Object.keys(this.props.stationData).length - this.props.playerData[this.props.selectedPlayer.username].visited.length}</p> */}
-            <Section header="Overview">
-                <div>Visited stations: {this.props.playerData[this.props.selectedPlayer.username].visited.length}</div>
-                <div>Stations remaining: {Object.keys(this.props.stationData).length - this.props.playerData[this.props.selectedPlayer.username].visited.length}</div>
+            <Section header={this.props.t("PLAYERSTATS_OVERVIEW")}>
+                <div>{this.props.t("PLAYERSTATS_VISITED")}: {this.props.playerData[this.props.selectedPlayer.username].visited.length}</div>
+                <div>{this.props.t("PLAYERSTATS_REMAINING")}: {Object.keys(this.props.stationData).length - this.props.playerData[this.props.selectedPlayer.username].visited.length}</div>
             </Section>
-            <Section header="Visited Stations">
+            <Section header={this.props.t("PLAYERSTATS_VISITED")}>
                 {this.renderVisitedStations()}
             </Section>
-            <Section header="Stations Remaining">
+            <Section header={this.props.t("PLAYERSTATS_REMAINING")}>
                 {this.renderUnvisitedStations()}
             </Section>
         </div>
     }
 }
 
-export default PlayerStats;
+export default withTranslation()(PlayerStats);

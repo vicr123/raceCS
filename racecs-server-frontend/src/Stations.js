@@ -1,4 +1,5 @@
 import React from 'react';
+import { withTranslation } from 'react-i18next';
 
 class Stations extends React.Component {
     renderStations() {
@@ -47,7 +48,7 @@ class Stations extends React.Component {
         }
 
         if (els.length == 0) {
-            els.push(<div style={{justifySelf: "center", alignSelf: "center", padding: "20px"}} key="noArrivals">No one has arrived at this station!</div>)
+            els.push(<div style={{justifySelf: "center", alignSelf: "center", padding: "20px"}} key="noArrivals">{this.props.t("STATIONS_NO_ARRIVALS")}</div>)
         }
 
         return els;
@@ -58,8 +59,8 @@ class Stations extends React.Component {
         if (Object.keys(this.props.playerData).length === 0) {
             return <div className="mainView">
                 <div className="errorContainer">
-                    <h1>No race in progress</h1>
-                    <p>Join an AirCS race to get started!</p>
+                    <h1>{this.props.t("NO_RACE")}</h1>
+                    <p>{this.props.t("JOIN_RACE_PROMPT")}</p>
                 </div>
             </div>
         } else {
@@ -69,8 +70,7 @@ class Stations extends React.Component {
                 </div>
             </div>
         }
-        return 
     }
 };
 
-export default Stations;
+export default withTranslation()(Stations);

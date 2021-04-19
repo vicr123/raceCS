@@ -1,5 +1,6 @@
 import React from 'react';
 import PlayerStats from './playerStats';
+import { withTranslation } from 'react-i18next';
 
 class Players extends React.Component {
     constructor(props) {
@@ -47,7 +48,7 @@ class Players extends React.Component {
             </div>
         } else {
             return <div className="playerStatsNotSelected">
-                Select a player to get started.
+                {this.props.t("PLAYERS_SELECT_PROMPT")}
             </div>
         }
     }
@@ -55,14 +56,14 @@ class Players extends React.Component {
     renderMainView() {
         if (Object.keys(this.props.playerData).length === 0) {
             return <div className="errorContainer">
-                <h1>No race in progress</h1>
-                <p>Join an AirCS race to get started!</p>
+                <h1>{this.props.t("NO_RACE")}</h1>
+                <p>{this.props.t("JOIN_RACE_PROMPT")}</p>
             </div>
         } else {
             return <>
                 <div className="playersListWrapper" style={{flexGrow: 1}}>
                     <div className="playersListGrid">
-                        <div className="sectionHeader" style={{gridArea: "header"}}>Players</div>
+                        <div className="sectionHeader" style={{gridArea: "header"}}>{this.props.t("PLAYERS_PLAYERS")}</div>
                         {this.renderPlayers()}
                     </div>
                     <div className="hspacer"></div>
@@ -82,4 +83,4 @@ class Players extends React.Component {
     }
 };
 
-export default Players;
+export default withTranslation()(Players);

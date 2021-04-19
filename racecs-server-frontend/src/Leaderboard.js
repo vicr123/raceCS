@@ -1,5 +1,6 @@
 import React from 'react';
 import Common from './common';
+import { withTranslation } from 'react-i18next';
 
 class Leaderboard extends React.Component {
     renderPlayerData() {
@@ -74,8 +75,8 @@ class Leaderboard extends React.Component {
     renderMainView() {
         if (Object.keys(this.props.playerData).length === 0) {
             return <div className="errorContainer">
-                <h1>No race in progress</h1>
-                <p>Join an AirCS race to get started!</p>
+                <h1>{this.props.t("NO_RACE")}</h1>
+                <p>{this.props.t("JOIN_RACE_PROMPT")}</p>
             </div>
         } else {
             return <>
@@ -83,8 +84,8 @@ class Leaderboard extends React.Component {
                     <div className="leaderboardGrid">
                         <div className="sectionHeader"></div>
                         <div className="sectionHeader"></div>
-                        <div className="sectionHeader">Name</div>
-                        <div className="sectionHeader">Stations Visited</div>
+                        <div className="sectionHeader">{this.props.t("LEADERBOARD_NAME")}</div>
+                        <div className="sectionHeader">{this.props.t("LEADERBOARD_STATIONS_VISITED")}</div>
 
                         {this.renderPlayerData()}
                     </div>
@@ -92,7 +93,7 @@ class Leaderboard extends React.Component {
                 </div>
                 <div style={{width: "20px", height: "20px"}}></div>
                 <div className="recentEventsWrapper">
-                    <div className="sectionHeader">Recent Events</div>
+                    <div className="sectionHeader">{this.props.t("LEADERBOARD_RECENT_EVENTS")}</div>
                     {this.renderRecentEvents()}
                 </div>
             </>
@@ -106,4 +107,4 @@ class Leaderboard extends React.Component {
     }
 };
 
-export default Leaderboard;
+export default withTranslation()(Leaderboard);

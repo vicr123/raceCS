@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import React from 'react';
+import { withTranslation } from 'react-i18next';
 
 class Settings extends React.Component {
     constructor(props) {
@@ -17,26 +18,26 @@ class Settings extends React.Component {
 
     renderNotificationsButtons() {
         if (!window.PushManager) {
-            return <span>Notifications are not supported on this browser.</span>
+            return <span>{this.props.t("SETTINGS_NOTIFICATIONS_NOT_SUPPORTED")}</span>
         }
         if (this.state.processing) {
-            return <span>Enabling notifications...</span>
+            return <span>{this.props.t("SETTINGS_NOTIFICATIONS_ENABLING")}</span>
         }
 
         switch (Notification.permission) {
             case "granted": {
                 if (this.state.notificationsRegistered) {
                     return <div>
-                        <button onClick={this.disableNotifications.bind(this)}>Disable Notifications</button>
+                        <button onClick={this.disableNotifications.bind(this)}>{this.props.t("SETTINGS_NOTIFICATIONS_DISABLE")}</button>
                     </div>
                 } else {
                     return <div>
-                        <button onClick={this.enableNotifications.bind(this)}>Enable Notifications</button>
+                        <button onClick={this.enableNotifications.bind(this)}>{this.props.t("SETTINGS_NOTIFICATIONS_ENABLE")}</button>
                     </div>
                 }
             }
             case "denied": {
-                return <span>Check the settings for notifications for this webpage in your browser, and reload to try again.</span>
+                return <span>{this.props.t("SETTINGS_NOTIFICATIONS_DECLINED")}</span>
             }
             default: {
                 let enableNotifications = async () => {
@@ -50,7 +51,7 @@ class Settings extends React.Component {
                 };
 
                 return <div>
-                    <button onClick={enableNotifications}>Enable Notifications</button>
+                    <button onClick={enableNotifications}>{this.props.t("SETTINGS_NOTIFICATIONS_ENABLE")}</button>
                 </div>
             }
         }
@@ -101,10 +102,10 @@ class Settings extends React.Component {
     render() {
         return <div className="mainView">
             <div className="settingsWrapper">
-                <div className="sectionHeader">Settings</div>
+                <div className="sectionHeader">{this.props.t("APP_SETTINGS")}</div>
                 <div className="settingsInnerWrapper">
-                    <b>NOTIFICATIONS</b>
-                    <span>Enable notifications to get AirCS Race updates in the background.</span>
+                    <b>{this.props.t("SETTINGS_NOTIFICATIONS")}</b>
+                    <span>{this.props.t("SETTINGS_NOTIFICATIONS_DESCRIPTION")}</span>
                     {this.renderNotificationsButtons()}
                 </div>
             </div>
@@ -112,4 +113,4 @@ class Settings extends React.Component {
     }
 };
 
-export default Settings;
+export default withTranslation()(Settings);
