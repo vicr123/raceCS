@@ -9,7 +9,7 @@
     "APP_PLEASE_RELOAD": "Please reload the page.",
     "TICKER_NEWS": "NEWS",
     "NO_RACE": "No race in progress",
-    "JOIN_RACE_PROMPT": "Join an AirCS race to get started!",
+    "JOIN_RACE_PROMPT": "Join an AirCS Race to get started!",
     "LEADERBOARD_NAME": "Name",
     "LEADERBOARD_STATIONS_VISITED": "Stations Visited",
     "LEADERBOARD_RECENT_EVENTS": "Recent Events",
@@ -27,5 +27,8 @@
     "SETTINGS_NOTIFICATIONS_DISABLE": "Disable Notifications",
     "SETTINGS_NOTIFICATIONS_NOT_SUPPORTED": "Notifications are not supported on this browser.",
     "SETTINGS_NOTIFICATIONS_ENABLING": "Enabling notifications...",
-    "SETTINGS_NOTIFICAITONS_DECLINED": "Check the settings for notifications for this webpage in your browser, and reload to try again."
+    "SETTINGS_NOTIFICAITONS_DECLINED": "Check the settings for notifications for this webpage in your browser, and reload to try again.",
+    "SETTINGS_LOCALE": "LOCALE",
+    "SETTINGS_LOCALE_DESCRIPTION": "Change the langauge that the AirCS Race interface is shown in",
+    "SETTINGS_LOCALE_SYSTEM": "System"
 }

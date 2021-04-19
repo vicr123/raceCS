@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import React from 'react';
+import i18n from './i18n';
 import { withTranslation } from 'react-i18next';
 
 class Settings extends React.Component {
@@ -8,7 +9,8 @@ class Settings extends React.Component {
 
         this.state = {
             notificationsRegistered: false,
-            processing: false
+            processing: false,
+            locale: localStorage.getItem("locale") || "sys"
         }
     }
 
@@ -99,6 +101,30 @@ class Settings extends React.Component {
         });
     }
 
+    localeChanged(event) {
+        this.setState({
+            locale: event.target.value
+        });
+
+        localStorage.setItem("locale", event.target.value);
+        if (event.target.value === "sys") {
+            i18n.changeLanguage();
+        } else {
+            i18n.changeLanguage(event.target.value);
+        }
+        
+    }
+
+    renderLocale() {
+        return <select value={this.state.locale} onChange={this.localeChanged.bind(this)}>
+            <option value="sys">{this.props.t("SETTINGS_LOCALE_SYSTEM")}</option>
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="pt">português</option>
+            <option value="vi">Tiếng Việt</option>
+        </select>
+    }
+
     render() {
         return <div className="mainView">
             <div className="settingsWrapper">
@@ -107,6 +133,10 @@ class Settings extends React.Component {
                     <b>{this.props.t("SETTINGS_NOTIFICATIONS")}</b>
                     <span>{this.props.t("SETTINGS_NOTIFICATIONS_DESCRIPTION")}</span>
                     {this.renderNotificationsButtons()}
+
+                    <b>{this.props.t("SETTINGS_LOCALE")}</b>
+                    <span>{this.props.t("SETTINGS_LOCALE_DESCRIPTION")}</span>
+                    {this.renderLocale()}
                 </div>
             </div>
         </div>
