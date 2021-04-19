@@ -27,5 +27,14 @@
     "SETTINGS_NOTIFICATIONS_DISABLE": "Desativar notificações",
     "SETTINGS_NOTIFICATIONS_NOT_SUPPORTED": "Seu navegador não tem suporte para notificações.",
     "SETTINGS_NOTIFICATIONS_ENABLING": "Ativando notificações...",
-    "SETTINGS_NOTIFICAITONS_DECLINED": "Verifique as configurações para notificações dessa página no seu navegador, recarregue a página e tente novamente."
+    "SETTINGS_NOTIFICAITONS_DECLINED": "Verifique as configurações para notificações dessa página no seu navegador, recarregue a página e tente novamente.",
+    "NOTIFICATION_FINISH_MESSAGE": "{{ player }} terminou em {{ place }}",
+    "NOTIFICATION_FINISH": "Terminou",
+    "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} colidiu com {{ player2 }}",
+    "NOTIFICATION_COLLISION": "Colisão",
+    "NOTIFICATION_ARRIVAL_MESSAGE": "{{ user }} chegou em {{ stationName }}",
+    "NOTIFICATION_ARRIVAL": "Chegada",
+    "SETTINGS_LOCALE_SYSTEM": "Sistema",
+    "SETTINGS_LOCALE_DESCRIPTION": "Mude a língua da interface da Corrida AirCS",
+    "SETTINGS_LOCALE": "LÍNGUA"
 }
