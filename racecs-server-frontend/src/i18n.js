@@ -18,10 +18,18 @@ if (setLng && setLng !== "system") options.lng = setLng;
 i18n.use(detector).use(backend).use(initReactI18next).init(options);
 
 i18n.on("initialized", (options) => {
-    if (options.lng) numeral.locale(options.lng.toLowerCase().replace("_", "-"));
+    if (options.lng) {
+        numeral.locale(options.lng.toLowerCase().replace("_", "-"));
+    } else {
+        numeral.locale("en");
+    }
 });
 i18n.on("languageChanged", (lng) => {
-    if (lng) numeral.locale(lng.toLowerCase().replace("_", "-"));
+    if (lng) {
+        numeral.locale(lng.toLowerCase().replace("_", "-"));
+    } else {
+        numeral.locale("en");
+    }
 });
 
 export default i18n;
