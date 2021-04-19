@@ -27,5 +27,14 @@
     "APP_PLEASE_RELOAD": "Vui lòng tải lại trang.",
     "APP_PLEASE_WAIT": "Vui lòng chờ một chút.",
     "APP_DISCONNECTED": "Kết nối bị ngắt",
-    "APP_LOADING": "Đang tải..."
+    "APP_LOADING": "Đang tải...",
+    "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} mới đụng xe với {{ player2 }}",
+    "NOTIFICATION_ARRIVAL_MESSAGE": "{{ user }} mới ghé thăm {{ stationName }}",
+    "NOTIFICATION_FINISH_MESSAGE": "{{ player }} đã hoàn tất vị trí {{ place }}",
+    "NOTIFICATION_FINISH": "Hoàn tất",
+    "NOTIFICATION_COLLISION": "Đụng nhau",
+    "NOTIFICATION_ARRIVAL": "ĐẾN",
+    "SETTINGS_LOCALE_SYSTEM": "Hệ thống",
+    "SETTINGS_LOCALE_DESCRIPTION": "Thay đổi ngôn ngữ giao diện AirCS Race sẽ hiển lên",
+    "SETTINGS_LOCALE": "NGÔN NGỮ"
 }
