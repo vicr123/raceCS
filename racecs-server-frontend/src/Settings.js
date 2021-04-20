@@ -123,6 +123,7 @@ class Settings extends React.Component {
             <option value="en">English</option>
             <option value="de">Deutsch</option>
             <option value="de_AT">Deutsch (Österreichischer Dialekt)</option>
+            <option value="fr_CA">Français (Canadien)</option>
             <option value="nl">Nederlands</option>
             <option value="pt_BR">português</option>
             <option value="vi">Tiếng Việt</option>
@@ -145,6 +146,7 @@ class Settings extends React.Component {
             <option value="en">English</option>
             <option value="de">Deutsch</option>
             <option value="de_AT">Deutsch (Österreichischer Dialekt)</option>
+            <option value="fr_CA">Français (Canadien)</option>
             <option value="nl">Nederlands</option>
             <option value="pt_BR">português</option>
             <option value="vi">Tiếng Việt</option>
