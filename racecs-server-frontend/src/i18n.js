@@ -9,6 +9,7 @@ let options = {
     interpolation: {
         escapeValue: false
     },
+    fallbackLng: "en",
     defaultNS: "translation"
 }
 
@@ -23,15 +24,20 @@ let getLocale = (locale) => {
         l = locale.toLowerCase().replace("_", "-");
     }
     if (l === "nl") l = "nl-nl";
+    if (l === "gt") l = "en";
 
     return l;
 }
 
 i18n.on("initialized", (options) => {
     numeral.locale(getLocale(options.lng));
+
+    document.title = i18n.t("PAGE_TITLE");
 });
 i18n.on("languageChanged", (lng) => {
     numeral.locale(getLocale(lng));
+
+    document.title = i18n.t("PAGE_TITLE");
 });
 
 export default i18n;
