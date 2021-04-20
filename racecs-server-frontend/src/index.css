@@ -56,6 +56,8 @@ h1 {
 .headerButton {
   padding: 9px;
   cursor: pointer;
+
+  white-space: nowrap;
 }
 
 .headerButton.selected {
@@ -329,6 +331,13 @@ marquee {
 
   padding: 10px;
   flex-grow: 1;
+}
+
+.headerButtons {
+  display: flex;
+  flex-grow: 1;
+
+  overflow-x: auto;
 }
 
 @media (max-width: 900px) {
