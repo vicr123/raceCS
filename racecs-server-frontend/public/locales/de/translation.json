@@ -39,5 +39,6 @@
     "SETTINGS_LOCALE": "SPRACHE",
     "SETTINGS_STATION_LOCALE_DESCRIPTION": "Änder die Sprache in denen die Stationen angezeigt werden",
     "SETTINGS_STATION_LOCALE": "Sprache der Stationen",
-    "APP_AIRCS_MAP": "AirCS Karte"
+    "APP_AIRCS_MAP": "AirCS Karte",
+    "PAGE_TITLE": "Das AirCS Rennen"
 }
