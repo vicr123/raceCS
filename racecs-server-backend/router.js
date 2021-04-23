@@ -115,10 +115,8 @@ const usedStations = [
 
 let users = {};
 
-const password = "goOGHNodif34oindsoifg";
-
 router.post("/addUser/:username/:uuid", async (req, res) => {
-    if (req.query.auth != password) {
+    if (req.query.auth != settings.get("password")) {
         res.sendStatus(401);
         return;
     }
@@ -167,7 +165,7 @@ router.post("/addUser/:username/:uuid", async (req, res) => {
     res.sendStatus(200);
 });
 router.post("/addUser/:username", async (req, res) => {
-    if (req.query.auth != password) {
+    if (req.query.auth != settings.get("password")) {
         res.sendStatus(401);
         return;
     }
@@ -206,7 +204,7 @@ router.post("/addUser/:username", async (req, res) => {
 });
 router.post("/arrive/:username/:location", async (req, res) => {
     try {
-        if (req.query.auth != password) {
+        if (req.query.auth != settings.get("password")) {
             res.sendStatus(401);
             return;
         }
@@ -227,7 +225,7 @@ router.post("/arrive/:username/:location", async (req, res) => {
     }
 });
 router.post("/collision/:username1/:username2", async (req, res) => {
-    if (req.query.auth != password) {
+    if (req.query.auth != settings.get("password")) {
         res.sendStatus(401);
         return;
     }
@@ -249,7 +247,7 @@ router.post("/collision/:username1/:username2", async (req, res) => {
     res.sendStatus(200);
 });
 router.post("/completion/:username/:place", async (req, res) => {
-    if (req.query.auth != password) {
+    if (req.query.auth != settings.get("password")) {
         res.sendStatus(401);
         return;
     }
@@ -264,7 +262,7 @@ router.post("/completion/:username/:place", async (req, res) => {
     res.sendStatus(200);
 });
 router.post("/removeUser/:username", async (req, res) => {
-    if (req.query.auth != password) {
+    if (req.query.auth != settings.get("password")) {
         res.sendStatus(401);
         return;
     }

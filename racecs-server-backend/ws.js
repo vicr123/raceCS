@@ -70,6 +70,10 @@ class WebSocket extends EventEmitter {
             
         }
     }
+
+    static async broadcastDiscord(data) {
+        let webhooks = settings.get("webhooks", []);
+    }
 }
 
 module.exports = WebSocket;

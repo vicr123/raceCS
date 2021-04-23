@@ -14,7 +14,7 @@ class Settings {
     }
 
     write() {
-        fs.writeFile("data.json", JSON.stringify(this.settings), () => {});
+        fs.writeFile("data.json", JSON.stringify(this.settings, null, 4), () => {});
     }
 
     set(key, value) {
