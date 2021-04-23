@@ -19,10 +19,17 @@ class User {
             "uuid": this.id,
             "station": station
         });
-
         WebSocket.broadcastNotification({
             body: `${this.username} has arrived at ${stationName}!`,
             icon: "login_notification.png"
+        });
+        WebSocket.broadcastDiscord({
+            author: {
+                name: "Arrival!",
+                icon_url: "https://aircs.racing/login_notification.png"
+            },
+            description: `${this.username} has arrived at ${stationName}!`,
+            color: 32768
         });
     }
 
@@ -33,10 +40,17 @@ class User {
             "username" : this.username,
             "place": place
         });
-
         WebSocket.broadcastNotification({
             body: `${this.username} has finished as #${place}!`,
             icon: "finish_notification.png"
+        });
+        WebSocket.broadcastDiscord({
+            author: {
+                name: "Finished!",
+                icon_url: "https://aircs.racing/finish_notification.png"
+            },
+            description: `${this.username} has finished as #${place}!`,
+            color: 16753920
         });
     }
 

@@ -244,6 +244,14 @@ router.post("/collision/:username1/:username2", async (req, res) => {
         body: `${req.params.username1} has collided with ${req.params.username2}!`,
         icon: "collision_notification.png"
     });
+    WebSocket.broadcastDiscord({
+        author: {
+            name: "Collision!",
+            icon_url: "https://aircs.racing/collision_notification.png"
+        },
+        description: `${req.params.username1} has collided with ${req.params.username2}!`,
+        color: 16711680
+    });
     res.sendStatus(200);
 });
 router.post("/completion/:username/:place", async (req, res) => {

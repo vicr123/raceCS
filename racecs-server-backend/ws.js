@@ -2,6 +2,7 @@ const EventEmitter = require('events');
 const settings = require('./settings');
 const webPush = require('web-push');
 const fs = require('fs');
+const fetch = require('node-fetch');
 
 let websockets = [];
 
@@ -72,7 +73,26 @@ class WebSocket extends EventEmitter {
     }
 
     static async broadcastDiscord(data) {
-        let webhooks = settings.get("webhooks", []);
+        let promises = [];
+        for (let webhook of settings.get("webhooks", [])) {
+            promises.push(fetch(webhook, {
+                method: "POST",
+                body: JSON.stringify({
+                    embeds: [
+                        data
+                    ]
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }));
+        }
+
+        try {
+            await Promise.all(promises);
+        } catch (err) {
+            console.log(err);
+        }
     }
 }
 
