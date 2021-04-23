@@ -113,6 +113,8 @@ const usedStations = [
 //     }
 // };
 
+let events = [];
+
 let users = {};
 
 router.post("/addUser/:username/:uuid", async (req, res) => {
@@ -187,6 +189,8 @@ router.post("/addUser/:username", async (req, res) => {
     })
     .then(response => response.json())
     .then(response => {
+        if (Object.keys(users).length === 0) events = [];
+
         users[req.params.username] = new User(req.params.username, response[0].id);
     
         WebSocket.broadcast({
@@ -218,6 +222,13 @@ router.post("/arrive/:username/:location", async (req, res) => {
         //req.params.location
         
         users[req.params.username].markVisited(req.params.location, Stations["en"][req.params.location]);
+
+        events.push({
+            type: "arrival",
+            player: req.params.username,
+            location: req.params.location,
+            time: (new Date()).getTime()
+        })
 
         res.sendStatus(200);
     } catch (err) {
@@ -252,6 +263,12 @@ router.post("/collision/:username1/:username2", async (req, res) => {
         description: `${req.params.username1} has collided with ${req.params.username2}!`,
         color: 16711680
     });
+    events.push({
+        type: "collision",
+        player1: req.params.username1,
+        player2: req.params.username2,
+        time: (new Date()).getTime()
+    })
     res.sendStatus(200);
 });
 router.post("/completion/:username/:place", async (req, res) => {
@@ -267,6 +284,14 @@ router.post("/completion/:username/:place", async (req, res) => {
     }
 
     users[req.params.username].setPlace(parseInt(req.params.place));
+
+    events.push({
+        type: "completion",
+        player: req.params.username,
+        place: req.params.place,
+        time: (new Date()).getTime()
+    })
+
     res.sendStatus(200);
 });
 router.post("/removeUser/:username", async (req, res) => {
@@ -333,6 +358,10 @@ router.post("/registerpush", (req, res) => {
     settings.set("pushSubscriptions", oldSubscriptions);
 
     res.sendStatus(200);
+});
+
+router.get("/events", async (req, res) => {
+    res.send(events);
 });
 
 module.exports = router;
