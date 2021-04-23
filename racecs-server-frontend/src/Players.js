@@ -1,5 +1,6 @@
 import React from 'react';
 import PlayerStats from './playerStats';
+import heads from './heads';
 import { withTranslation } from 'react-i18next';
 
 class Players extends React.Component {
@@ -33,7 +34,7 @@ class Players extends React.Component {
                 });
             };
 
-            els.push(<div className={`playersListItem ${this.state.selectedPlayer?.username === user.username && "selected"}`} key={`${user.username}-image`} onClick={clickHandler}><img height="30" src={`https://crafatar.com/avatars/${user.uuid}?overlay=true`}></img></div>);
+            els.push(<div className={`playersListItem ${this.state.selectedPlayer?.username === user.username && "selected"}`} key={`${user.username}-image`} onClick={clickHandler}><img height="30" src={heads(user.uuid)}></img></div>);
             els.push(<div className={`playersListItem ${this.state.selectedPlayer?.username === user.username && "selected"}`} key={`${user.username}-username`} onClick={clickHandler}>{user.username}</div>)
         }
 
@@ -43,7 +44,7 @@ class Players extends React.Component {
     renderPlayerStats() {
         if (this.state.selectedPlayer) {
             return <div className="playerStats">
-                <div className="sectionHeader" style={{zIndex: "1000"}}><img height="30" src={`https://crafatar.com/avatars/${this.state.selectedPlayer.uuid}?overlay=true`} style={{paddingRight: "9px"}}></img>{this.state.selectedPlayer.username}</div>
+                <div className="sectionHeader" style={{zIndex: "1000"}}><img height="30" src={heads(this.state.selectedPlayer.uuid)} style={{paddingRight: "9px"}}></img>{this.state.selectedPlayer.username}</div>
                 <PlayerStats stationData={this.props.stationData} playerData={this.props.playerData} selectedPlayer={this.state.selectedPlayer} />
             </div>
         } else {

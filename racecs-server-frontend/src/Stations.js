@@ -1,4 +1,5 @@
 import React from 'react';
+import heads from './heads';
 import { withTranslation } from 'react-i18next';
 
 class Stations extends React.Component {
@@ -42,7 +43,7 @@ class Stations extends React.Component {
                         uuid: user.uuid
                     });
                 };
-                els.push(<div className="leaderboardGridItem" key={`${username}-image`} onClick={clickHandler}><img height="30" src={`https://crafatar.com/avatars/${user.uuid}?overlay=true`}></img></div>);
+                els.push(<div className="leaderboardGridItem" key={`${username}-image`} onClick={clickHandler}><img height="30" src={heads(user.uuid)}></img></div>);
                 els.push(<div className="leaderboardGridItem" key={`${username}-username`} onClick={clickHandler}>{username}</div>)
             }
         }

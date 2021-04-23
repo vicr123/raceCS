@@ -1,5 +1,6 @@
 import React from 'react';
 import Common from './common';
+import heads from './heads';
 import { withTranslation } from 'react-i18next';
 
 class Leaderboard extends React.Component {
@@ -44,7 +45,7 @@ class Leaderboard extends React.Component {
                 }
             }
 
-            els.push(<div className="leaderboardGridItem" key={`${user.username}-image`} onClick={clickHandler}><img height="30" src={`https://crafatar.com/avatars/${user.uuid}?overlay=true`}></img></div>);
+            els.push(<div className="leaderboardGridItem" key={`${user.username}-image`} onClick={clickHandler}><img height="30" src={heads(user.uuid)}></img></div>);
             els.push(<div className="leaderboardGridItem placeItem" key={`${user.username}-place`} onClick={clickHandler}>{renderPlace()}</div>)
             els.push(<div className="leaderboardGridItem" key={`${user.username}-username`} onClick={clickHandler}>{user.username}</div>)
             els.push(<div className="leaderboardGridItem" key={`${user.username}-visited`} onClick={clickHandler}>{user.visited}</div>)
