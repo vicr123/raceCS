@@ -54,6 +54,11 @@ class User {
         });
     }
 
+    clear() {
+        this.visited = [];
+        this.place = -1;
+    }
+
     toObject() {
         return {
             uuid: this.id,

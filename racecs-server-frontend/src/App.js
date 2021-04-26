@@ -29,7 +29,7 @@ class App extends React.Component {
   componentDidMount() {
     //Set up the WS connection
     let ws = new Wsh(`ws://${window.location.host}/ws`);
-    ws.on("message", (data) => {
+    ws.on("message", async (data) => {
       switch (data.type) {
         case "newPlayer":
           this.setState(state => {
@@ -75,7 +75,11 @@ class App extends React.Component {
             }
           });
           break;
-
+        case "stationChange":
+          await Promise.all([
+            await this.updatePlayers(),
+            await this.updateStations()
+          ]);
       }
     });
     ws.on("open", () => {
@@ -94,11 +98,17 @@ class App extends React.Component {
     });
 
     (async () => {
-      this.setState({
-        playerData: await Fetch.get("/users")
-      });
-      await this.updateStations();
+      await Promise.all([
+        await this.updatePlayers(),
+        await this.updateStations()
+      ])
     })();
+  }
+
+  async updatePlayers() {
+    this.setState({
+      playerData: await Fetch.get("/users")
+    });
   }
 
   async updateStations() {

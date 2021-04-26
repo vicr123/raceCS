@@ -19,106 +19,27 @@ for (let file of files) {
     }));
 }
 
-const usedStations = [
-    "WC",
-    "WCC",
-    "WCR",
-    "WCA",
-    "LD",
-    "AKL",
-    "UFO",
-    "SMT",
-    "LI",
-    "DT",
-    "AKI",
-    "WOVR",
-    "BRP",
-    "UWGK",
-    "VIC",
-    "ALI",
-    "SIL",
-    "SKY",
-    "BCO",
-    "BBT",
-    "SHC",
-    "BLO"
-]
-
-// const Stations = {
-//     "WC": {
-//         name: "Whale City Central"
-//     },
-//     "WCC": {
-//         name: "Whale City Commercial"
-//     },
-//     "WCR": {
-//         name: "Whale City Residential"
-//     },
-//     "WCA": {
-//         name: "Whale City Airport"
-//     },
-//     "LD": {
-//         name: "Legal District"
-//     },
-//     "AKL": {
-//         name: "Auckland"
-//     },
-//     "UFO": {
-//         name: "RMUFO"
-//     },
-//     "SMT": {
-//         name: "Spawn Memorial Transfer"
-//     },
-//     "LI" : {
-//         name: "Long Island"
-//     },
-//     "DT": {
-//         name: "Downtown Melanie City"
-//     },
-//     "AKI": {
-//         name: "Akiba Island"
-//     },
-//     "WOVR": {
-//         name: "Westover ❤️"
-//     },
-//     "BRP": {
-//         name: "Bridgett's Port"
-//     },
-//     "UWGK": {
-//         name: "Underwater Go-Karting"
-//     },
-//     "VIC":{
-//         name: "Victor's Interesting City"
-//     },
-//     "ALI": {
-//         name: "Alee Isle"
-//     },
-//     "SIL": {
-//         name: "Silicon Valley"
-//     },
-//     "SKY": {
-//         name: "SkyCity"
-//     },
-//     "BCO": {
-//         name: "BreadCroust"
-//     },
-//     "BBT": {
-//         name: "Birch Boat Town"
-//     },
-//     "SHC": {
-//         name: "ShiftCity"
-//     },
-//     "BLO": {
-//         name: "Birch Lodges"
-//     }
-// };
-
+let usedStations = settings.get("stations", []);
 let events = [];
 
 let users = {};
 
+router.use(express.json({
+
+}));
+router.use((req, res, next) => {
+    req.authorised = false;
+
+    let auth = req.get("Authorization");
+    if (auth === `Bearer ${settings.get("password")}`) {
+        req.authorised = true;
+    }
+
+    next();
+});
+
 router.post("/addUser/:username/:uuid", async (req, res) => {
-    if (req.query.auth != settings.get("password")) {
+    if (!req.authorised) {
         res.sendStatus(401);
         return;
     }
@@ -131,31 +52,6 @@ router.post("/addUser/:username/:uuid", async (req, res) => {
 
     console.log(`Adding ${req.params.username} to race!`);
 
-    // fetch("https://api.mojang.com/profiles/minecraft", {
-    //     method: "POST",
-    //     body: JSON.stringify([req.params.username]),
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     }
-    // })
-    // .then(response => response.json())
-    // .then(response => {
-    //     users[req.params.username] = new User(req.params.username, response[0].id);
-    
-    //     WebSocket.broadcast({
-    //         "type": "newPlayer",
-    //         "user": req.params.username,
-    //         "uuid": response[0].id
-    //     });
-
-    //     res.sendStatus(200);
-    // }).catch(err => {
-    //     console.log(`Failed to add to race!`);
-    //     console.log(err);
-    //     res.sendStatus(400);
-    // });
-
-
     users[req.params.username] = new User(req.params.username, req.params.uuid);
     
     WebSocket.broadcast({
@@ -167,7 +63,7 @@ router.post("/addUser/:username/:uuid", async (req, res) => {
     res.sendStatus(200);
 });
 router.post("/addUser/:username", async (req, res) => {
-    if (req.query.auth != settings.get("password")) {
+    if (!req.authorised) {
         res.sendStatus(401);
         return;
     }
@@ -208,7 +104,7 @@ router.post("/addUser/:username", async (req, res) => {
 });
 router.post("/arrive/:username/:location", async (req, res) => {
     try {
-        if (req.query.auth != settings.get("password")) {
+        if (!req.authorised) {
             res.sendStatus(401);
             return;
         }
@@ -236,7 +132,7 @@ router.post("/arrive/:username/:location", async (req, res) => {
     }
 });
 router.post("/collision/:username1/:username2", async (req, res) => {
-    if (req.query.auth != settings.get("password")) {
+    if (!req.authorised) {
         res.sendStatus(401);
         return;
     }
@@ -272,7 +168,7 @@ router.post("/collision/:username1/:username2", async (req, res) => {
     res.sendStatus(200);
 });
 router.post("/completion/:username/:place", async (req, res) => {
-    if (req.query.auth != settings.get("password")) {
+    if (!req.authorised) {
         res.sendStatus(401);
         return;
     }
@@ -295,7 +191,7 @@ router.post("/completion/:username/:place", async (req, res) => {
     res.sendStatus(200);
 });
 router.post("/removeUser/:username", async (req, res) => {
-    if (req.query.auth != settings.get("password")) {
+    if (!req.authorised) {
         res.sendStatus(401);
         return;
     }
@@ -335,22 +231,53 @@ router.get("/stations", async (req, res) => {
     //Return a list of all the stations
     // res.send(Stations);
     let localised = Stations["en"];
+    let english = Stations["en"]
     let requestedLang = req.acceptsLanguages(Object.keys(Stations));
     if (requestedLang) localised = Stations[requestedLang];
 
     let stations = {}
     for (let station of usedStations) {
         stations[station] = {
-            name: localised[station]
+            name: localised[station] || english[station]
         }
     }
 
     res.send(stations);
 });
 
-router.use("/registerpush", express.json({
+router.post("/stations", async (req, res) => {
+    if (!req.authorised) {
+        res.sendStatus(401);
+        return;
+    }
 
-}));
+    if (!Array.isArray(req.body)) {
+        res.status(400).send("Invalid Syntax");
+        return;
+    }
+
+    for (let station of req.body) {
+        if (!Object.keys(Stations["en"]).includes(station)) {
+            res.status(400).send(`${station} is not a valid station!`);
+            return;
+        }
+    }
+
+    console.log(`Setting stations to ${req.body}!`);
+    usedStations = req.body;
+    settings.set("stations", usedStations);
+
+    for (let user of Object.keys(users)) {
+        users[user].clear();
+    }
+
+    WebSocket.broadcast({
+        "type": "stationChange"
+    });
+
+    res.sendStatus(200);
+});
+
 router.post("/registerpush", (req, res) => {
     let subscription = req.body.subscription;
     let oldSubscriptions = settings.get("pushSubscriptions", []);
