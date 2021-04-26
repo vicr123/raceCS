@@ -114,15 +114,14 @@ router.post("/arrive/:username/:location", async (req, res) => {
             return;
         }
 
-        //req.params.username
-        //req.params.location
+        let location = req.params.location.toUpperCase();
         
-        users[req.params.username].markVisited(req.params.location, Stations["en"][req.params.location]);
+        users[req.params.username].markVisited(location, Stations["en"][location]);
 
         events.push({
             type: "arrival",
             player: req.params.username,
-            location: req.params.location,
+            location: location,
             time: (new Date()).getTime()
         })
 
@@ -256,15 +255,16 @@ router.post("/stations", async (req, res) => {
         return;
     }
 
-    for (let station of req.body) {
+    let stations = req.body.map(station => station.toUpperCase());
+    for (let station of stations) {
         if (!Object.keys(Stations["en"]).includes(station)) {
             res.status(400).send(`${station} is not a valid station!`);
             return;
         }
     }
 
-    console.log(`Setting stations to ${req.body}!`);
-    usedStations = req.body;
+    console.log(`Setting stations to ${stations}!`);
+    usedStations = stations;
     settings.set("stations", usedStations);
 
     for (let user of Object.keys(users)) {
