@@ -89,7 +89,6 @@ public class CollisionDetection {
                     Unirest.post(Race.API_BASE + "/collision/{player1}/{player2}")
                             .routeParam("player1", p.getName())
                             .routeParam("player2", otherPlayer.getName())
-                            .queryString("auth", Race.AUTH_TOKEN)
                             .asString();
 
                     //Reverse the direction of each minecart

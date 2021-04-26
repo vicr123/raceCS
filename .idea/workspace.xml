@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add in player selectors">
+    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add automatic reversal">
       <change afterPath="$PROJECT_DIR$/.attach_pid8798" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +137,21 @@
       <option name="project" value="LOCAL" />
       <updated>1618407461284</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add collision detection">
+      <created>1618418270035</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1618418270035</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add automatic reversal">
+      <created>1618567477272</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1618567477272</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,6 +172,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Add in player selectors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add in player selectors" />
+    <MESSAGE value="Add collision detection" />
+    <MESSAGE value="Add automatic reversal" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add automatic reversal" />
   </component>
 </project>

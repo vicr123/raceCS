@@ -3,6 +3,8 @@ package omg.lol.jplexer.race.command;
 import static omg.lol.jplexer.race.Race.CHAT_PREFIX;
 import static omg.lol.jplexer.race.Race.getPlugin;
 
+import kong.unirest.HttpRequestWithBody;
+import kong.unirest.HttpResponse;
 import kong.unirest.json.JSONObject;
 import omg.lol.jplexer.race.CommandUtils;
 import omg.lol.jplexer.race.Race;
@@ -19,9 +21,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 // All command classes need to implement the CommandExecutor interface to be a proper command!
 public class RaceCommand implements CommandExecutor {
@@ -51,15 +55,41 @@ public class RaceCommand implements CommandExecutor {
 			case "completion":
 				complete(sender, args);
 				return true;
+			case "setstations":
+				setStations(sender, args);
+				return true;
 			default:
 				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, \"" + args[0] + "\" is not a valid verb.");
 				return true;
 		}
 	}
+
+	void setStations(CommandSender sender, String[] args) {
+		if(sender.hasPermission("racecs.jplexer")) {
+			if (args.length != 2) {
+				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify the stations as a JSON Array.");
+			} else {
+				Unirest.post("/stations")
+						.contentType("application/json")
+						.body(args[1])
+						.asStringAsync((response) -> {
+					if (response.isSuccess()) {
+						sender.sendMessage(CHAT_PREFIX + "The stations were set.");
+					} else {
+						sender.sendMessage(CHAT_PREFIX + "Could not set stations: " + response.getBody());
+					}
+				});
+			}
+		} else {
+			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
+		}
+	}
+
 	void viewUsers(CommandSender sender) {
-		JSONObject response = Unirest.get(Race.API_BASE + "/users").queryString("auth", Race.AUTH_TOKEN).asJson().getBody().getObject();
+		JSONObject response = Unirest.get("/users").asJson().getBody().getObject();
 		sender.sendMessage(response.toString());
 	}
+
 	void addUser(CommandSender sender, String[] args) {
 		if(sender.hasPermission("racecs.jplexer")) {
 			if (args.length != 2) {
@@ -69,10 +99,9 @@ public class RaceCommand implements CommandExecutor {
 				Entity target = CommandUtils.getTarget(sender, args[1]);
 				String user = target.getName();
 
-				Unirest.post(Race.API_BASE + "/addUser/{player}/{uuid}")
+				Unirest.post("/addUser/{player}/{uuid}")
 						.routeParam("player", user)
 						.routeParam("uuid", target.getUniqueId().toString())
-						.queryString("auth", Race.AUTH_TOKEN)
 						.asString();
 				sender.sendMessage(CHAT_PREFIX + user + " was added.");
 			}
@@ -89,9 +118,8 @@ public class RaceCommand implements CommandExecutor {
 			} else {
 				String user = CommandUtils.getTarget(sender, args[1]).getName();
 
-				Unirest.post(Race.API_BASE + "/removeUser/{player}")
+				Unirest.post("/removeUser/{player}")
 						.routeParam("player", user)
-						.queryString("auth", Race.AUTH_TOKEN)
 						.asString();
 				sender.sendMessage(CHAT_PREFIX + user + " was removed.");
 			}
@@ -111,10 +139,9 @@ public class RaceCommand implements CommandExecutor {
 			} else {
 				String user = CommandUtils.getTarget(sender, args[1]).getName();
 
-				Unirest.post(Race.API_BASE + "/arrive/{player}/{location}")
+				Unirest.post("/arrive/{player}/{location}")
 						.routeParam("player", user)
 						.routeParam("location", args[2])
-						.queryString("auth", Race.AUTH_TOKEN)
 						.asString();
 			}
 		} else {
@@ -135,10 +162,9 @@ public class RaceCommand implements CommandExecutor {
 				Score score = objective.getScore("finish");
 				int place = score.getScore();
 
-				Unirest.post(Race.API_BASE + "/completion/{player}/{place}")
+				Unirest.post("/completion/{player}/{place}")
 						.routeParam("player", user)
 						.routeParam("place", String.valueOf(place))
-						.queryString("auth", Race.AUTH_TOKEN)
 						.asString();
 			}
 		} else {
