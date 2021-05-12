@@ -11,13 +11,14 @@ import NotificationDrawer from './NotificationDrawer';
 import Wsh from './wsh';
 import Ticker from './ticker';
 import Settings from './Settings';
+import Home from './home';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     
     this.state = {
-      currentView: "leaderboard",
+      currentView: "home",
       state: "load",
       selectPlayer: null,
       playerData: {},
@@ -127,6 +128,8 @@ class App extends React.Component {
 
   renderMainView() {
     switch (this.state.currentView) {
+      case "home":
+        return <Home />
       case "leaderboard":
         return <Leaderboard stationData={this.state.stationData} playerData={this.state.playerData} recentEvents={this.state.recentEvents} onPlayerClicked={this.playerClicked.bind(this)}/>
       case "players":
@@ -166,6 +169,16 @@ class App extends React.Component {
     });
   }
 
+  renderRaceOnlyItems() {
+    if (Object.keys(this.state.playerData).length === 0) return null;
+    
+    return <>
+      <div className={`headerButton ${this.state.currentView == "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>{this.props.t("APP_LEADERBOARD")}</div>
+      <div className={`headerButton ${this.state.currentView == "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>{this.props.t("APP_STATIONS")}</div>
+      <div className={`headerButton ${this.state.currentView == "players" && "selected"}`} onClick={this.changeView.bind(this, "players")}>{this.props.t("APP_PLAYERS")}</div>
+    </>
+  }
+
   renderState() {
     switch (this.state.state) {
       case "load":
@@ -179,9 +192,8 @@ class App extends React.Component {
           {this.renderMainView()}
           <div className="header">
             <div className="headerButtons">
-              <div className={`headerButton ${this.state.currentView == "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>{this.props.t("APP_LEADERBOARD")}</div>
-              <div className={`headerButton ${this.state.currentView == "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>{this.props.t("APP_STATIONS")}</div>
-              <div className={`headerButton ${this.state.currentView == "players" && "selected"}`} onClick={this.changeView.bind(this, "players")}>{this.props.t("APP_PLAYERS")}</div>
+              <div className={`headerButton ${this.state.currentView == "home" && "selected"}`} onClick={this.changeView.bind(this, "home")}>{this.props.t("APP_HOME")}</div>
+              {this.renderRaceOnlyItems()}
               <div className={`headerButton ${this.state.currentView == "aircsmap" && "selected"}`} onClick={this.changeView.bind(this, "aircsmap")}>{this.props.t("APP_AIRCS_MAP")}</div>
               <div className={`headerButton ${this.state.currentView == "settings" && "selected"}`} onClick={this.changeView.bind(this, "settings")}>{this.props.t("APP_SETTINGS")}</div>
             </div>

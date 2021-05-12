@@ -291,6 +291,20 @@ router.get("/events", async (req, res) => {
     res.send(events);
 });
 
+router.get("/home", async (req, res) => {
+    // res.send(settings)
+    fs.readFile("./homedata.json", {
+        encoding: "utf-8"
+    }, (err, data) => {
+        if (err) {
+            res.sendStatus(500);
+            return;
+        }
+
+        res.send(JSON.parse(data));
+    });
+})
+
 module.exports = router;
 
 /*

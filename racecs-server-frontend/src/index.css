@@ -340,6 +340,27 @@ marquee {
   overflow-x: auto;
 }
 
+.postListItem {
+  padding: 9px;
+  background-color: white;
+  color: black;
+  border-top: 1px solid #5d5d5d;
+  
+  display: grid;
+  align-items: center;
+  cursor: pointer;
+
+  grid-template-columns: max-content 1fr max-content;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+    "image title date"
+    "image subtitle date";
+}
+
+.postSubtitle {
+  color: #5d5d5d;
+}
+
 @media (max-width: 900px) {
   .mainView {
     flex-direction: column;

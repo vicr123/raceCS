@@ -1,0 +1,43 @@
+{
+    "videos": {
+        "data": [
+            {
+                "title": "The Great AirCS Race",
+                "subtitle": "by Victor Tran",
+                "click": {
+                    "type": "url",
+                    "url": "https://youtu.be/21RhiW_hvDs"
+                }
+            }
+        ],
+        "empty": {
+            "title": "No Videos!",
+            "subtitle": "Come back later!"
+        }
+    },
+    "races": {
+        "data": [
+            {
+                "title": "The First AirCS Race",
+                "subtitle": "Done",
+                "date": 1539565232000
+            },
+            {
+                "title": "The AirCS Race of April 2021",
+                "subtitle": "Done",
+                "date": 1619286501000
+            }
+        ],
+        "empty": {
+            "title": "No Races!",
+            "subtitle": "Come back later!"
+        }
+    },
+    "news": {
+        "data": [],
+        "empty": {
+            "title": "No News!",
+            "subtitle": "Come back later!"
+        }
+    }
+}
