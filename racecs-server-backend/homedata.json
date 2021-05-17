@@ -34,10 +34,28 @@
         }
     },
     "news": {
-        "data": [],
+        "data": [
+            {
+                "title": "Videos announced: The AirCS Race of April 2021",
+                "subtitle": "Are you ready?",
+                "click": {
+                    "type": "post",
+                    "text": [
+                        "Videos for the AirCS Race of April 2021 have been announced by members of the race. More details about each video will be available once the video is public."
+                    ]
+                }
+            }
+        ],
         "empty": {
             "title": "No News!",
             "subtitle": "Come back later!"
         }
-    }
+    },
+    "links": [
+        {
+            "text": "Join the bits & Bytes Discord Server",
+            "href": "https://discord.gg/QjyRUpP",
+            "image": "/Discord-Logo-Black.svg"
+        }
+    ]
 }

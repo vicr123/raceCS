@@ -361,6 +361,25 @@ marquee {
   color: #5d5d5d;
 }
 
+.postText {
+  display: flex;
+  flex-direction: column;
+
+  padding: 10px;
+  flex-grow: 1;
+
+  background-color: white;
+  color: black;
+}
+
+.postText p:first-child {
+  margin-top: 0px;
+}
+
+.postText p:last-child {
+  margin-bottom: 0px;
+}
+
 @media (max-width: 900px) {
   .mainView {
     flex-direction: column;

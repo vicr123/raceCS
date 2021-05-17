@@ -4,6 +4,21 @@ import heads from './heads';
 import Fetch from './Fetch';
 import { withTranslation } from 'react-i18next';
 
+import NewsIcon from './article_black_24dp.svg';
+import VideosIcon from './movie_black_24dp.svg';
+import EventsIcon from './event_black_24dp.svg';
+
+class Post extends React.Component {
+    render() {
+        return <div>
+            <div className="sectionHeader" style={{gridArea: "header"}}>{this.props.title}</div>
+            <div className="postText">
+                {this.props.data.text.map(text => <p>{text}</p>)}
+            </div>
+        </div>
+    }
+}
+
 class PostList extends React.Component {
     renderList() {
         let els = [];
@@ -21,6 +36,8 @@ class PostList extends React.Component {
                         //Open the URL in another window
                         window.open(item.click.url, "_blank");
                         break;
+                    case "post":
+                        this.props.onPush(<Post title={item.title} data={item.click} />)
                 }
             };
 
@@ -85,7 +102,13 @@ class Home extends React.Component {
     }
 
     pushPage(page) {
-
+        this.setState(state => {
+            let pages = state.pages;
+            pages.push(page);
+            return {
+                pages: pages
+            }
+        });
     }
 
     popPage() {
@@ -114,6 +137,21 @@ class Home extends React.Component {
         });
     }
 
+    renderLinks() {
+        let els = [];
+
+        for (let link of this.state.data.links) {
+            let clickHandler = () => {
+                window.open(link.href, "_blank");
+            }
+
+            els.push(<div className={`playersListItem`} onClick={clickHandler}><img width="24" src={link.image}></img></div>)
+            els.push(<div className={`playersListItem`} onClick={clickHandler}>{link.text}</div>)
+        }
+
+        return els;
+    }
+
     renderMainView() {
         if (this.state.state === "loading") {
             return <div className="errorContainer">
@@ -127,14 +165,16 @@ class Home extends React.Component {
                         <div className="sectionHeader" style={{gridArea: "header"}}>{this.props.t("HOME_TITLE")}</div>
                         {/* {this.renderPlayers()} */}
 
-                        <div className={`playersListItem ${this.state.selectedPage === "news" && "selected"}`} onClick={this.setPage.bind(this, "news")}><img height="30" src=""></img></div>
+                        <div className={`playersListItem ${this.state.selectedPage === "news" && "selected"}`} onClick={this.setPage.bind(this, "news")}><img width="24" src={NewsIcon}></img></div>
                         <div className={`playersListItem ${this.state.selectedPage === "news" && "selected"}`} onClick={this.setPage.bind(this, "news")}>{this.props.t("HOME_NEWS")}</div>
 
-                        <div className={`playersListItem ${this.state.selectedPage === "videos" && "selected"}`} onClick={this.setPage.bind(this, "videos")}><img height="30" src=""></img></div>
+                        <div className={`playersListItem ${this.state.selectedPage === "videos" && "selected"}`} onClick={this.setPage.bind(this, "videos")}><img width="24" src={VideosIcon}></img></div>
                         <div className={`playersListItem ${this.state.selectedPage === "videos" && "selected"}`} onClick={this.setPage.bind(this, "videos")}>{this.props.t("HOME_VIDEOS")}</div>
 
-                        <div className={`playersListItem ${this.state.selectedPage === "events" && "selected"}`} onClick={this.setPage.bind(this, "events")}><img height="30" src=""></img></div>
+                        <div className={`playersListItem ${this.state.selectedPage === "events" && "selected"}`} onClick={this.setPage.bind(this, "events")}><img width="24" src={EventsIcon}></img></div>
                         <div className={`playersListItem ${this.state.selectedPage === "events" && "selected"}`} onClick={this.setPage.bind(this, "events")}>{this.props.t("HOME_EVENTS")}</div>
+
+                        {this.renderLinks()}
                     </div>
                     <div className="hspacer"></div>
                 </div>
