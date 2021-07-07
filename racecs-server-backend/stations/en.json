@@ -2,7 +2,7 @@
     "WC": "Whale City",
     "WCC": "Whale City Commercial",
     "WCR": "Whale City Residential",
-    "WCA": "Whale City Airport",
+    "WCA": "Whale City Airport Termional 1",
     "LD": "Legal District",
     "AKL": "Auckland",
     "UFO": "RMUFO",
@@ -28,5 +28,8 @@
     "BWLK": "Melanie City Boardwalk",
     "DLI": "Melanie City Doodly Island",
     "NCT": "New Clygro Town",
-    "NCA": "New Clygro Town Airport"
+    "NCA": "New Clygro Town Airport",
+    "WCAB": "Whale City Airport Terminal 2",
+    "ATI": "Anatoli",
+    "ATIA": "Anatoli Airport"
 }
