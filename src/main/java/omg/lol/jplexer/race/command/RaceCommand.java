@@ -8,6 +8,10 @@ import kong.unirest.HttpResponse;
 import kong.unirest.json.JSONObject;
 import omg.lol.jplexer.race.CommandUtils;
 import omg.lol.jplexer.race.Race;
+import omg.lol.jplexer.race.RaceSession;
+import omg.lol.jplexer.race.command.management.RaceManagement;
+import omg.lol.jplexer.race.command.management.RegionManagement;
+import omg.lol.jplexer.race.command.management.StationManagement;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,6 +29,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 // All command classes need to implement the CommandExecutor interface to be a proper command!
@@ -32,7 +37,7 @@ public class RaceCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
-
+		args = CommandUtils.getArgs(args);
 
 		// checks if there are no arguments at all (/command)
 		if (args.length == 0) {
@@ -40,23 +45,32 @@ public class RaceCommand implements CommandExecutor {
 			return false;
 		}
 		switch (args[0].toLowerCase()) {
-			case "players":
-				viewUsers(sender);
+//			case "players":
+//				viewUsers(sender);
+//				return true;
+			case "race":
+				RaceManagement.RaceManagementCommand(sender, Arrays.copyOfRange(args, 1, args.length));
 				return true;
-			case "adduser":
-				addUser(sender, args);
+//			case "adduser":
+//				addUser(sender, args);
+//				return true;
+//			case "removeuser":
+//				removeUser(sender, args);
+//				return true;
+//			case "arrived":
+//				arrive(sender, args);
+//				return true;
+//			case "completion":
+//				complete(sender, args);
+//				return true;
+//			case "setstations":
+//				setStations(sender, args);
+//				return true;
+			case "stations":
+				StationManagement.StationManagementCommand(sender, Arrays.copyOfRange(args, 1, args.length));
 				return true;
-			case "removeuser":
-				removeUser(sender, args);
-				return true;
-			case "arrived":
-				arrive(sender, args);
-				return true;
-			case "completion":
-				complete(sender, args);
-				return true;
-			case "setstations":
-				setStations(sender, args);
+			case "regions":
+				RegionManagement.RegionManagementCommand(sender, Arrays.copyOfRange(args, 1, args.length));
 				return true;
 			default:
 				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, \"" + args[0] + "\" is not a valid verb.");
@@ -91,12 +105,17 @@ public class RaceCommand implements CommandExecutor {
 	}
 
 	void addUser(CommandSender sender, String[] args) {
-		if(sender.hasPermission("racecs.jplexer")) {
+		if (sender.hasPermission("racecs.jplexer")) {
 			if (args.length != 2) {
 				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name.");
 
 			} else {
 				Entity target = CommandUtils.getTarget(sender, args[1]);
+				if (!(target instanceof Player)) {
+					sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can only add players.");
+					return;
+				}
+
 				String user = target.getName();
 
 				Unirest.post("/addUser/{player}/{uuid}")
@@ -104,29 +123,42 @@ public class RaceCommand implements CommandExecutor {
 						.routeParam("uuid", target.getUniqueId().toString())
 						.asString();
 				sender.sendMessage(CHAT_PREFIX + user + " was added.");
+
+				RaceSession raceSession = Race.getPlugin().getCurrentRace();
+				if (raceSession == null || raceSession.isEnded()) {
+					Race.getPlugin().createNewRace();
+					raceSession = Race.getPlugin().getCurrentRace();
+				}
+				raceSession.addPlayer((Player) target);
 			}
 		} else {
 			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
 		}
-
 	}
+
 	void removeUser(CommandSender sender, String[] args)  {
 		if(sender.hasPermission("racecs.jplexer")) {
 			if (args.length != 2) {
 				sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you'll need to specify Name.");
 
 			} else {
-				String user = CommandUtils.getTarget(sender, args[1]).getName();
+				Entity target = CommandUtils.getTarget(sender, args[1]);
+				if (!(target instanceof Player)) {
+					sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can only remove players.");
+					return;
+				}
+				String user = target.getName();
 
 				Unirest.post("/removeUser/{player}")
 						.routeParam("player", user)
 						.asString();
 				sender.sendMessage(CHAT_PREFIX + user + " was removed.");
+
+				Race.getPlugin().getCurrentRace().removePlayer((Player) target);
 			}
 		} else {
 			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
-			}
-
+		}
 	}
 	void arrive(CommandSender sender, String[] args)  {
 		if (sender.hasPermission("racecs.jplexer")) {
@@ -146,7 +178,6 @@ public class RaceCommand implements CommandExecutor {
 			}
 		} else {
 			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
-
 		}
 
 	}
@@ -169,9 +200,7 @@ public class RaceCommand implements CommandExecutor {
 			}
 		} else {
 			sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
-
 		}
-
 	}
 }
 

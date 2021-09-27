@@ -5,11 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add automatic reversal">
-      <change afterPath="$PROJECT_DIR$/.attach_pid8798" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_j256_ormlite_ormlite_core_5_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_j256_ormlite_ormlite_jdbc_5_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_konghq_unirest_object_mappers_gson_3_11_09.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_xerial_sqlite_jdbc_3_36_0_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/PlayerStationTracker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/RaceSession.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCompleter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RegionManagement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/StationManagement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/models/Region.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/models/Station.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_12_2_R0_1_SNAPSHOT.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_12_2_R0_1_SNAPSHOT.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/raceCS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/raceCS.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CommandUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CommandUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +74,7 @@
       <recent name="C:\Users\Joshua Jun\Documents\airCS Races\raceCS\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Maven.raceCS [install]">
+  <component name="RunManager" selected="Remote JVM Debug.Attach to Spigot">
     <configuration name="C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -103,6 +119,25 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
+    <configuration name="Attach to Spigot" type="Remote">
+      <module name="raceCS" />
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <option name="AUTO_RESTART" value="false" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="5005" />
+        <option name="LOCAL" value="false" />
+      </RunnerSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Gradle.C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" />
+      <item itemvalue="Maven.raceCS [install]" />
+      <item itemvalue="Remote JVM Debug.Attach to Spigot" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Maven.raceCS [install]" />

@@ -19,6 +19,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommandUtils {
@@ -645,6 +646,36 @@ public class CommandUtils {
 
     private static boolean hasTag(SelectorType type, String arg) {
         return arg.toLowerCase().startsWith(type.getName());
+    }
+
+    public static String[] getArgs(String[] originalArgs) {
+        ArrayList<String> newArgs = new ArrayList<>();
+
+        StringBuilder current = new StringBuilder();
+        char currentQuote = 0;
+        for (char c : String.join(" ", originalArgs).toCharArray()) {
+            if (c == '\"' || c == '\'') {
+                if (currentQuote == 0) {
+                    currentQuote = c;
+                } else if (currentQuote == c) {
+                    currentQuote = 0;
+                } else {
+                    current.append(c);
+                }
+            } else if (c == ' ') {
+                if (currentQuote == 0) {
+                    newArgs.add(current.toString());
+                    current = new StringBuilder();
+                } else {
+                    current.append(c);
+                }
+            } else {
+                current.append(c);
+            }
+        }
+
+        if (!current.toString().isEmpty()) newArgs.add(current.toString());
+        return newArgs.toArray(new String[0]);
     }
 
     enum SelectorType {
