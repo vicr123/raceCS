@@ -4,28 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add automatic reversal">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_j256_ormlite_ormlite_core_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_j256_ormlite_ormlite_jdbc_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_konghq_unirest_object_mappers_gson_3_11_09.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_xerial_sqlite_jdbc_3_36_0_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/PlayerStationTracker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/RaceSession.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCompleter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RegionManagement.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/StationManagement.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/models/Region.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/models/Station.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_12_2_R0_1_SNAPSHOT.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_12_2_R0_1_SNAPSHOT.xml" afterDir="false" />
+    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add station tracking">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/raceCS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/raceCS.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CommandUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CommandUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/PlayerStationTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/PlayerStationTracker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/RaceSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/RaceSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RegionManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RegionManagement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/StationManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/StationManagement.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618567477272</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add station tracking">
+      <created>1632746366384</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1632746366384</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -209,6 +200,7 @@
     <MESSAGE value="Add in player selectors" />
     <MESSAGE value="Add collision detection" />
     <MESSAGE value="Add automatic reversal" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add automatic reversal" />
+    <MESSAGE value="Add station tracking" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add station tracking" />
   </component>
 </project>

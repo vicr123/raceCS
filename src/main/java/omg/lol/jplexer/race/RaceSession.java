@@ -156,13 +156,15 @@ public class RaceSession {
     }
 
     public void processStationArrived(Player player, Station station) {
+        long visitedCount = events.stream().filter(event -> event instanceof StationEvent).filter(event -> Objects.equals(((StationEvent) event).player, player.getName())).count();
+
         if (Objects.equals(station, terminalStation)) {
             if (finishedPlayers.contains(player.getName())) return; //This player has already finished
 
             //Count the number of stations this player has visited
-            if (events.stream().filter(event -> event instanceof StationEvent).filter(event -> Objects.equals(((StationEvent) event).player, player.getName())).count() == participatingStations.size()) {
+            if (visitedCount == participatingStations.size()) {
                 //Completion!
-                Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + player.getName() + " has finished as #" + nextPlace + "!");
+                Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + player.getName() + " has finished as #" + nextPlace + "!");
 
                 Unirest.post("/completion/{player}/{place}")
                         .routeParam("player", player.getName())
@@ -193,7 +195,13 @@ public class RaceSession {
             newEvent.station = station;
             events.add(newEvent);
 
-            Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + player.getName() + " has arrived at " + station.getHumanReadableName() + "!");
+            Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GREEN + player.getName() + " has arrived at " + station.getHumanReadableName() + "!");
+            if (visitedCount + 1 == participatingStations.size()) {
+                Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + player.getName() + " has visited all the required stations and is now returning to the terminal station!");
+            } else if (visitedCount + 1 == (participatingStations.size() + 1) / 2) {
+                Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + player.getName() + " has visited half the required stations!");
+            }
+
             updateScoreboards();
         }
     }

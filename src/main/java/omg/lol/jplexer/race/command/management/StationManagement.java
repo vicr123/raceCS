@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static omg.lol.jplexer.race.Race.CHAT_PREFIX;
@@ -32,6 +33,9 @@ public class StationManagement {
             case "remove":
                 RemoveStation(sender, args[1]);
                 break;
+            case "rename":
+                RenameStation(sender, args[1], args[2]);
+                break;
             case "list":
                 ListStations(sender);
                 break;
@@ -40,7 +44,7 @@ public class StationManagement {
 
     public static List<String> TabCompleteCommand(String[] args) {
         if (args.length == 0) {
-            return Arrays.asList("help", "add", "remove", "list");
+            return Arrays.asList("help", "add", "remove", "list", "rename");
         } else {
             Dao<Station, String> stationDao = Race.getPlugin().getStationDao();
 
@@ -54,9 +58,15 @@ public class StationManagement {
                 case "remove":
                     return RaceCompleter.completeList(Arrays.copyOfRange(args, 1, args.length), stations.toArray(new String[0]));
                 case "add":
-                    return Arrays.asList("<stationId> <stationName>");
+                    return Collections.singletonList("<stationId> <stationName>");
+                case "rename":
+                    if (args.length >= 2 && stations.contains(args[1])) {
+                        return Collections.singletonList("<newName>");
+                    } else {
+                        return RaceCompleter.completeList(Arrays.copyOfRange(args, 1, args.length), stations.toArray(new String[0]));
+                    }
                 default:
-                    return Arrays.asList("help", "add", "remove", "list");
+                    return Arrays.asList("help", "add", "remove", "list", "rename");
             }
         }
     }
@@ -76,10 +86,33 @@ public class StationManagement {
         }
     }
 
+    public static void RenameStation(CommandSender sender, String id, String name) {
+        Dao<Station, String> stationDao = Race.getPlugin().getStationDao();
+
+        try {
+            Station station = stationDao.queryForId(id.toUpperCase());
+            if (station == null) {
+                sender.sendMessage("That is not a valid station");
+                return;
+            }
+
+            station.setName(name);
+            stationDao.update(station);
+            sender.sendMessage("Renamed the station " + station.getHumanReadableName());
+        } catch (SQLException e) {
+            sender.sendMessage("Could not rename the station");
+        }
+    }
+
     public static void RemoveStation(CommandSender sender, String id) {
         Dao<Station, String> stationDao = Race.getPlugin().getStationDao();
         try {
             Station station = stationDao.queryForId(id.toUpperCase());
+            if (station == null) {
+                sender.sendMessage("That is not a valid station");
+                return;
+            }
+
             stationDao.delete(station);
             sender.sendMessage("Deleted the station " + station.getHumanReadableName());
         } catch (SQLException e) {
@@ -90,8 +123,6 @@ public class StationManagement {
     public static void ListStations(CommandSender sender) {
         Dao<Station, String> stationDao = Race.getPlugin().getStationDao();
         sender.sendMessage("Available stations:");
-        stationDao.forEach(station -> {
-            sender.sendMessage(station.getHumanReadableName());
-        });
+        stationDao.forEach(station -> sender.sendMessage(station.getHumanReadableName()));
     }
 }

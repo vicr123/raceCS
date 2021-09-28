@@ -20,6 +20,19 @@ public class PlayerStationTracker implements Listener {
 
     HashMap<Player, Station> currentStations = new HashMap<>();
     ArrayList<PlayerStationChangeListener> stationChangeListeners = new ArrayList<>();
+    ArrayList<String> playerTracking = new ArrayList<>();
+
+    PlayerStationTracker() {
+        addStationChangeListener((player, station) -> {
+            if (playerTracking.contains(player.getName())) {
+                if (station == null) {
+                    player.sendMessage("You have left the station");
+                } else {
+                    player.sendMessage("You have moved into " + station.getHumanReadableName());
+                }
+            }
+        });
+    }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -51,6 +64,7 @@ public class PlayerStationTracker implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         currentStations.remove(event.getPlayer());
+        playerTracking.remove(event.getPlayer().getName());
         for (PlayerStationChangeListener listener : stationChangeListeners) listener.onPlayerStationChange(event.getPlayer(), null);
     }
 
@@ -60,5 +74,15 @@ public class PlayerStationTracker implements Listener {
 
     public void removeStationChangeListener(PlayerStationChangeListener listener) {
         stationChangeListeners.remove(listener);
+    }
+
+    public void TogglePlayerTracking(Player player) {
+        if (playerTracking.contains(player.getName())) {
+            playerTracking.remove(player.getName());
+            player.sendMessage("You will no longer be told as you move between stations.");
+        } else {
+            playerTracking.add(player.getName());
+            player.sendMessage("You will be told as you move between stations.");
+        }
     }
 }

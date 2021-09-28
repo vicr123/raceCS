@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.sql.SQLException;
@@ -28,14 +29,18 @@ public class RegionManagement {
 
         PunchHandlerEventHandler handler;
 
-        static void OneShot(PunchHandlerEventHandler eventHandler) {
+        static void OneShot(Player player, PunchHandlerEventHandler eventHandler) {
             PunchHandler handler = new PunchHandler();
             Race.getPlugin().getServer().getPluginManager().registerEvents(handler, Race.getPlugin());
 
             handler.handler = (event) -> {
-                HandlerList.unregisterAll(handler);
+                if (event.getPlayer() == player) {
 
-                eventHandler.onPlayerInteract(event);
+                    if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                        HandlerList.unregisterAll(handler);
+                        eventHandler.onPlayerInteract(event);
+                    }
+                }
             };
         }
 
@@ -67,12 +72,15 @@ public class RegionManagement {
             case "remove":
                 RemoveRegion(sender);
                 break;
+            case "track":
+                TogglePlayerTracking(sender);
+                break;
         }
     }
 
     public static List<String> TabCompleteCommand(String[] args) {
         if (args.length == 0) {
-            return Arrays.asList("help", "add", "query", "remove");
+            return Arrays.asList("help", "add", "query", "remove", "track");
         } else {
             Dao<Station, String> stationDao = Race.getPlugin().getStationDao();
 
@@ -87,22 +95,37 @@ public class RegionManagement {
                 case "add":
                     return RaceCompleter.completeList(Arrays.copyOfRange(args, 1, args.length), stations.toArray(new String[0]));
                 default:
-                    return Arrays.asList("help", "add", "query", "remove");
+                    return Arrays.asList("help", "add", "query", "remove", "track");
             }
         }
     }
 
     public static void AddRegion(CommandSender sender, String station) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("Sorry, only a player can add regions.");
+            return;
+        }
+
         Dao<Station, String> stationDao = Race.getPlugin().getStationDao();
         Dao<Region, Long> regionDao = Race.getPlugin().getRegionDao();
         try {
             Station stationObject = stationDao.queryForId(station.toUpperCase());
             if (stationObject == null) throw new Exception();
 
-            sender.sendMessage("Select the first corner of the region");
-            PunchHandler.OneShot(firstCorner -> {
-                sender.sendMessage("Now select the next corner");
-                PunchHandler.OneShot(secondCorner -> {
+            sender.sendMessage("Left click on a corner of the region. Right click to cancel.");
+            PunchHandler.OneShot((Player) sender, firstCorner -> {
+                if (firstCorner.getAction() == Action.RIGHT_CLICK_AIR || firstCorner.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                    sender.sendMessage("Cancelled adding a region.");
+                    return;
+                }
+
+                sender.sendMessage("Left click on the other corner of the region. Right click to cancel.");
+                PunchHandler.OneShot((Player) sender, secondCorner -> {
+                    if (secondCorner.getAction() == Action.RIGHT_CLICK_AIR || secondCorner.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                        sender.sendMessage("Cancelled adding a region.");
+                        return;
+                    }
+
                     if (firstCorner.getClickedBlock().getWorld() != secondCorner.getClickedBlock().getWorld()) {
                         sender.sendMessage("The corners must be in the same world. Aborting.");
                         return;
@@ -180,5 +203,14 @@ public class RegionManagement {
                 }
             }
         }
+    }
+
+    public static void TogglePlayerTracking(CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("Only a player can use this command.");
+            return;
+        }
+
+        Race.getPlugin().getStationTracker().TogglePlayerTracking((Player) sender);
     }
 }
