@@ -139,7 +139,7 @@ class App extends React.Component {
       case "settings":
         return <Settings onLocaleChange={this.onLocaleChange.bind(this)} />
       case "aircsmap":
-        return <iframe src="https://thepixelpolygon.github.io/aircsnetmap" style={{flexGrow: 1, border: "none"}}/>
+        return <iframe src="https://map.aircs.racing/" style={{flexGrow: 1, border: "none"}}/>
     }
   }
 

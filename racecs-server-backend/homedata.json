@@ -8,6 +8,46 @@
                     "type": "url",
                     "url": "https://youtu.be/21RhiW_hvDs"
                 }
+            },
+            {
+                "title": "The AirCS Race | Spring 2021",
+                "subtitle": "by The Pixel Polygon",
+                "click": {
+                    "type": "url",
+                    "url": "https://youtu.be/pNJUQq_1Nl8"
+                }
+            },
+            {
+                "title": "The AirCS Race of April 2021",
+                "subtitle": "by Victor Tran",
+                "click": {
+                    "type": "url",
+                    "url": "https://youtu.be/Mnh0YiaKWH8"
+                }
+            },
+            {
+                "title": "The AirCS Race of April 2021 | JPlexer's Perspective",
+                "subtitle": "by JPlexer",
+                "click": {
+                    "type": "url",
+                    "url": "https://youtu.be/xnqb2Z5eEcM"
+                }
+            },
+            {
+                "title": "AirCS Race - April 2021 | Alee's POV",
+                "subtitle": "by Andrew Lee",
+                "click": {
+                    "type": "url",
+                    "url": "https://youtu.be/mgZe-FpGpzw"
+                }
+            },
+            {
+                "title": "AirCS Race Timelapse - April 2021 | Alee's POV",
+                "subtitle": "by Andrew Lee",
+                "click": {
+                    "type": "url",
+                    "url": "https://youtu.be/asPw-CN_xcA"
+                }
             }
         ],
         "empty": {

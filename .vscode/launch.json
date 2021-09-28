@@ -25,6 +25,9 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
+            "env": {
+                "PORT": "3000"
+            },
             "cwd": "${workspaceFolder}/racecs-server-backend",
             "program": "${workspaceFolder}/racecs-server-backend/index.js"
         }
