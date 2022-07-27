@@ -40,5 +40,14 @@
     "NOTIFICATION_COLLISION": "beat",
     "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} and {{ player2 }}",
     "NOTIFICATION_FINISH": "done",
-    "NOTIFICATION_FINISH_MESSAGE": "{{ player }} ends with {{ place }}."
+    "NOTIFICATION_FINISH_MESSAGE": "{{ player }} ends with {{ place }}.",
+    "HOME_TITLE": "",
+    "HOME_GETTING_READY_DESCRIPTION": "",
+    "HOME_NEWS": "",
+    "HOME_SELECT_PROMPT": "",
+    "APP_HOME": "",
+    "HOME_EVENTS": "",
+    "HOME_GETTING_READY": "",
+    "HOME_SELECT_PROMPT_DESCRIPTION": "",
+    "HOME_VIDEOS": ""
 }
