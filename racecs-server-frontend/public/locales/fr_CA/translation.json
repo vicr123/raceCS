@@ -40,5 +40,14 @@
     "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} entré en collision avec {{ player2 }}",
     "NOTIFICATION_FINISH": "Fini",
     "NOTIFICATION_FINISH_MESSAGE": "{{ player }} a terminé en {{ place }}",
-    "PAGE_TITLE": "Course AirCS"
+    "PAGE_TITLE": "Course AirCS",
+    "APP_HOME": "",
+    "HOME_GETTING_READY_DESCRIPTION": "",
+    "HOME_TITLE": "",
+    "HOME_NEWS": "",
+    "HOME_GETTING_READY": "",
+    "HOME_VIDEOS": "",
+    "HOME_SELECT_PROMPT_DESCRIPTION": "",
+    "HOME_SELECT_PROMPT": "",
+    "HOME_EVENTS": ""
 }
