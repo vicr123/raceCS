@@ -39,5 +39,15 @@
     "NOTIFICATION_FINISH_MESSAGE": "{{ player }} heeft de race afgemaakt en de {{ place }} plaats behaald",
     "SETTINGS_STATION_LOCALE": "STATION LOKALISATIE",
     "SETTINGS_STATION_LOCALE_DESCRIPTION": "Verander de taal waarin de stations worden weergegeven",
-    "APP_AIRCS_MAP": "AirCS Kaart"
+    "APP_AIRCS_MAP": "AirCS Kaart",
+    "HOME_SELECT_PROMPT": "",
+    "HOME_GETTING_READY": "",
+    "HOME_VIDEOS": "",
+    "HOME_EVENTS": "",
+    "HOME_NEWS": "",
+    "HOME_SELECT_PROMPT_DESCRIPTION": "",
+    "HOME_GETTING_READY_DESCRIPTION": "",
+    "PAGE_TITLE": "",
+    "APP_HOME": "",
+    "HOME_TITLE": ""
 }
