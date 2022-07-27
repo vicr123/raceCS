@@ -41,13 +41,13 @@
     "SETTINGS_STATION_LOCALE_DESCRIPTION": "Thay đổi ngôn ngữ mà các trạm sẽ hiển thị",
     "SETTINGS_STATION_LOCALE": "NGÔN NGỮ TRẠM",
     "APP_AIRCS_MAP": "Bản đồ AirCS",
-    "HOME_GETTING_READY_DESCRIPTION": "",
-    "HOME_SELECT_PROMPT": "",
-    "HOME_GETTING_READY": "",
-    "HOME_VIDEOS": "",
-    "HOME_SELECT_PROMPT_DESCRIPTION": "",
-    "HOME_EVENTS": "",
-    "HOME_TITLE": "",
-    "APP_HOME": "",
-    "HOME_NEWS": ""
+    "HOME_GETTING_READY_DESCRIPTION": "Hãy chờ một chút!",
+    "HOME_SELECT_PROMPT": "Chào mừng bạn với!",
+    "HOME_GETTING_READY": "Đang nhận các cập nhật",
+    "HOME_VIDEOS": "Phim",
+    "HOME_SELECT_PROMPT_DESCRIPTION": "Bạn muốn thấy gì bây giờ?",
+    "HOME_EVENTS": "Sự kiện",
+    "HOME_TITLE": "Chào mừng bạn với!",
+    "APP_HOME": "Trang chính",
+    "HOME_NEWS": "Tin tức"
 }
