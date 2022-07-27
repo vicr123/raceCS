@@ -40,5 +40,14 @@
     "SETTINGS_STATION_LOCALE_DESCRIPTION": "Muda a língua em que o nome das estaçöes",
     "SETTINGS_STATION_LOCALE": "LÍNGUA DAS ESTAÇÕES",
     "APP_AIRCS_MAP": "Mapa AirCS",
-    "PAGE_TITLE": "Corrida AirCS"
+    "PAGE_TITLE": "Corrida AirCS",
+    "HOME_NEWS": "",
+    "HOME_VIDEOS": "",
+    "HOME_SELECT_PROMPT_DESCRIPTION": "",
+    "HOME_GETTING_READY": "",
+    "HOME_GETTING_READY_DESCRIPTION": "",
+    "HOME_SELECT_PROMPT": "",
+    "HOME_TITLE": "",
+    "APP_HOME": "",
+    "HOME_EVENTS": ""
 }
