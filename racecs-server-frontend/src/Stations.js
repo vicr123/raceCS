@@ -20,7 +20,7 @@ class Stations extends React.Component {
         for (let station of stations) {
             els.push(<div className="stationsGridInnerWrapper" key={station.code}>
                 <div className="stationsGrid">
-                    <div className="sectionHeader" style={{gridArea: "header"}}>{station.name}</div>
+                    <div className="sectionHeader" style={{gridArea: "header"}}><div className={"stationHeaderShortcode"}>{station.code}</div>{station.name}</div>
 
                     {this.renderStation(station.code)}
                 </div>

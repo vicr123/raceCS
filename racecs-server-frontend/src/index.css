@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Montserrat&display=swap');
 
 * {
   font-family: 'Montserrat';
@@ -131,7 +130,7 @@ h1 {
 }
 
 .leaderboardGridItem.placeItem {
-  font-family: 'Roboto Mono';
+  font-family: 'JetBrains Mono';
   color: #707070;
   justify-content: center;
 }
@@ -394,4 +393,20 @@ marquee {
   .leaderboardGridWrapper {
     flex-grow: unset;
   }
+}
+
+.playerStationList {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: center;
+}
+
+.playerStationListShortcode {
+  font-family: 'JetBrains Mono';
+  color: #707070;
+}
+
+.stationHeaderShortcode {
+  font-family: 'JetBrains Mono';
+  padding-right: 9px;
 }

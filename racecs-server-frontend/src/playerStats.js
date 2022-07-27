@@ -35,13 +35,18 @@ class Speedo extends React.Component {
     }
 }
 
+class StationItem extends React.Component {
+    render() {
+        return <>
+            <div className={"playerStationListShortcode"}>{this.props.station}</div>
+            <div>{this.props.stationData.name}</div>
+        </>
+    }
+}
+
 class PlayerStats extends React.Component {
     renderVisitedStations() {
-        let els = [];
-
-        for (let station of this.props.playerData[this.props.selectedPlayer.username].visited) {
-            els.push(<div key={station}>{this.props.stationData[station].name}</div>)
-        }
+        let els = this.props.playerData[this.props.selectedPlayer.username].visited.map(station => <StationItem key={station} station={station} stationData={this.props.stationData[station]} />);
 
         if (els.length === 0) {
             els.push(<div>{this.props.t("PLAYERSTATS_NONE_VISITED")}</div>)
@@ -51,8 +56,6 @@ class PlayerStats extends React.Component {
     }
 
     renderUnvisitedStations() {
-        let els = [];
-
         let stations = Object.keys(this.props.stationData);
 
         for (let station of this.props.playerData[this.props.selectedPlayer.username].visited) {
@@ -63,9 +66,7 @@ class PlayerStats extends React.Component {
             return first.name > second.name ? 1 : -1;
         });
 
-        for (let station of stations) {
-            els.push(<div key={station}>{this.props.stationData[station].name}</div>)
-        }
+        let els = stations.map(station => <StationItem key={station} station={station} stationData={this.props.stationData[station]} />);
 
         if (els.length === 0) {
             els.push(<div>{this.props.t("PLAYERSTATS_ALL_VISITED")}</div>)
@@ -85,10 +86,10 @@ class PlayerStats extends React.Component {
                 <Speedo title={this.props.t("PLAYERSTATS_VISITED")} max={Object.keys(this.props.stationData).length} value={this.props.playerData[this.props.selectedPlayer.username].visited.length} />
                 <Speedo title={this.props.t("PLAYERSTATS_REMAINING")} max={Object.keys(this.props.stationData).length} value={Object.keys(this.props.stationData).length - this.props.playerData[this.props.selectedPlayer.username].visited.length} />
             </Section>
-            <Section header={this.props.t("PLAYERSTATS_VISITED")}>
+            <Section className={"playerStationList"} header={this.props.t("PLAYERSTATS_VISITED")}>
                 {this.renderVisitedStations()}
             </Section>
-            <Section header={this.props.t("PLAYERSTATS_REMAINING")}>
+            <Section className={"playerStationList"}  header={this.props.t("PLAYERSTATS_REMAINING")}>
                 {this.renderUnvisitedStations()}
             </Section>
         </div>
