@@ -138,8 +138,6 @@ class App extends React.Component {
         return <Stations stationData={this.state.stationData} playerData={this.state.playerData} onPlayerClicked={this.playerClicked.bind(this)} />
       case "settings":
         return <Settings onLocaleChange={this.onLocaleChange.bind(this)} />
-      case "aircsmap":
-        return <iframe src="https://map.aircs.racing/" style={{flexGrow: 1, border: "none"}}/>
     }
   }
 
@@ -173,9 +171,9 @@ class App extends React.Component {
     if (Object.keys(this.state.playerData).length === 0) return null;
     
     return <>
-      <div className={`headerButton ${this.state.currentView == "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>{this.props.t("APP_LEADERBOARD")}</div>
-      <div className={`headerButton ${this.state.currentView == "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>{this.props.t("APP_STATIONS")}</div>
-      <div className={`headerButton ${this.state.currentView == "players" && "selected"}`} onClick={this.changeView.bind(this, "players")}>{this.props.t("APP_PLAYERS")}</div>
+      <div className={`headerButton ${this.state.currentView === "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>{this.props.t("APP_LEADERBOARD")}</div>
+      <div className={`headerButton ${this.state.currentView === "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>{this.props.t("APP_STATIONS")}</div>
+      <div className={`headerButton ${this.state.currentView === "players" && "selected"}`} onClick={this.changeView.bind(this, "players")}>{this.props.t("APP_PLAYERS")}</div>
     </>
   }
 
@@ -188,17 +186,17 @@ class App extends React.Component {
         </div>
       case "ready":
         return <>
-        <Ticker websocket={this.state.ws} />
-          {this.renderMainView()}
           <div className="header">
             <div className="headerButtons">
-              <div className={`headerButton ${this.state.currentView == "home" && "selected"}`} onClick={this.changeView.bind(this, "home")}>{this.props.t("APP_HOME")}</div>
+              <div className={`headerButton ${this.state.currentView === "home" && "selected"}`} onClick={this.changeView.bind(this, "home")}>{this.props.t("APP_HOME")}</div>
               {this.renderRaceOnlyItems()}
-              <div className={`headerButton ${this.state.currentView == "aircsmap" && "selected"}`} onClick={this.changeView.bind(this, "aircsmap")}>{this.props.t("APP_AIRCS_MAP")}</div>
-              <div className={`headerButton ${this.state.currentView == "settings" && "selected"}`} onClick={this.changeView.bind(this, "settings")}>{this.props.t("APP_SETTINGS")}</div>
+              <div className={`headerButton ${this.state.currentView === "aircsmap" && "selected"}`} onClick={this.changeView.bind(this, "aircsmap")}>{this.props.t("APP_AIRCS_MAP")}</div>
+              <div className={`headerButton ${this.state.currentView === "settings" && "selected"}`} onClick={this.changeView.bind(this, "settings")}>{this.props.t("APP_SETTINGS")}</div>
             </div>
             <img src={aircs} style={{height: "100%", padding: "9px", boxSizing: "border-box"}}></img>
           </div>
+          {this.renderMainView()}
+          <iframe src="https://map.aircs.racing/" style={{flexGrow: 1, border: "none", display: this.state.currentView === "aircsmap" ? "block" : "none"}}/>
           <NotificationDrawer stationData={this.state.stationData} websocket={this.state.ws} onNotification={this.notificationPosted.bind(this)} />
         </>
         case "error":
