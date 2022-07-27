@@ -39,5 +39,15 @@
     "NOTIFICATION_COLLISION": "Kollision",
     "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} is mit {{ player2 }} kollidiert",
     "NOTIFICATION_FINISH": "Fertig",
-    "NOTIFICATION_FINISH_MESSAGE": "{{ player }} is auf Plåtz {{ place }} ånkuma"
+    "NOTIFICATION_FINISH_MESSAGE": "{{ player }} is auf Plåtz {{ place }} ånkuma",
+    "APP_HOME": "",
+    "HOME_SELECT_PROMPT_DESCRIPTION": "",
+    "HOME_NEWS": "",
+    "HOME_SELECT_PROMPT": "",
+    "HOME_EVENTS": "",
+    "HOME_GETTING_READY_DESCRIPTION": "",
+    "HOME_GETTING_READY": "",
+    "HOME_VIDEOS": "",
+    "HOME_TITLE": "",
+    "PAGE_TITLE": ""
 }
