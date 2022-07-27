@@ -40,5 +40,14 @@
     "SETTINGS_STATION_LOCALE_DESCRIPTION": "Änder die Sprache in denen die Stationen angezeigt werden",
     "SETTINGS_STATION_LOCALE": "Sprache der Stationen",
     "APP_AIRCS_MAP": "AirCS Karte",
-    "PAGE_TITLE": "Das AirCS Rennen"
+    "PAGE_TITLE": "Das AirCS Rennen",
+    "HOME_EVENTS": "",
+    "HOME_TITLE": "",
+    "HOME_VIDEOS": "",
+    "APP_HOME": "",
+    "HOME_GETTING_READY": "",
+    "HOME_NEWS": "",
+    "HOME_SELECT_PROMPT": "",
+    "HOME_SELECT_PROMPT_DESCRIPTION": "",
+    "HOME_GETTING_READY_DESCRIPTION": ""
 }
