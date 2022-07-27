@@ -40,5 +40,14 @@
     "SETTINGS_LOCALE": "NGÔN NGỮ",
     "SETTINGS_STATION_LOCALE_DESCRIPTION": "Thay đổi ngôn ngữ mà các trạm sẽ hiển thị",
     "SETTINGS_STATION_LOCALE": "NGÔN NGỮ TRẠM",
-    "APP_AIRCS_MAP": "Bản đồ AirCS"
+    "APP_AIRCS_MAP": "Bản đồ AirCS",
+    "HOME_GETTING_READY_DESCRIPTION": "",
+    "HOME_SELECT_PROMPT": "",
+    "HOME_GETTING_READY": "",
+    "HOME_VIDEOS": "",
+    "HOME_SELECT_PROMPT_DESCRIPTION": "",
+    "HOME_EVENTS": "",
+    "HOME_TITLE": "",
+    "APP_HOME": "",
+    "HOME_NEWS": ""
 }
