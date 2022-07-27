@@ -120,7 +120,7 @@ class Settings extends React.Component {
     renderLocale() {
         return <select value={this.state.locale} onChange={this.localeChanged.bind(this)}>
             <option value="sys">{this.props.t("SETTINGS_LOCALE_SYSTEM")}</option>
-            <option value="ar">عربي</option>
+            <option value="ar_SA">عربي</option>
             <option value="en">English</option>
             <option value="de">Deutsch</option>
             <option value="de_AT">Deutsch (Österreichischer Dialekt)</option>
@@ -144,7 +144,7 @@ class Settings extends React.Component {
     renderStationLocale() {
         return <select value={this.state.stationLocale} onChange={this.stationLocaleChanged.bind(this)}>
             <option value="sys">{this.props.t("SETTINGS_LOCALE_SYSTEM")}</option>
-            <option value="ar">عربي</option>
+            <option value="ar_SA">عربي</option>
             <option value="en">English</option>
             <option value="de">Deutsch</option>
             <option value="de_AT">Deutsch (Österreichischer Dialekt)</option>
