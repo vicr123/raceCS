@@ -3,34 +3,25 @@ package omg.lol.jplexer.race.command;
 import static omg.lol.jplexer.race.Race.CHAT_PREFIX;
 import static omg.lol.jplexer.race.Race.getPlugin;
 
-import kong.unirest.HttpRequestWithBody;
-import kong.unirest.HttpResponse;
 import kong.unirest.json.JSONObject;
 import omg.lol.jplexer.race.CommandUtils;
 import omg.lol.jplexer.race.Race;
-import omg.lol.jplexer.race.RaceSession;
+import omg.lol.jplexer.race.session.RaceSession;
 import omg.lol.jplexer.race.command.management.RaceManagement;
 import omg.lol.jplexer.race.command.management.RegionManagement;
 import omg.lol.jplexer.race.command.management.StationManagement;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import net.md_5.bungee.api.ChatColor;
 import kong.unirest.Unirest;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
 
 // All command classes need to implement the CommandExecutor interface to be a proper command!
 public class RaceCommand implements CommandExecutor {

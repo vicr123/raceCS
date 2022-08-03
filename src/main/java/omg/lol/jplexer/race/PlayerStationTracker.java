@@ -9,12 +9,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlayerStationTracker implements Listener {
-    interface PlayerStationChangeListener {
+    public interface PlayerStationChangeListener {
         void onPlayerStationChange(Player player, Station station);
     }
 
@@ -35,14 +36,33 @@ public class PlayerStationTracker implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Dao<Region, Long> regionDao = Race.getPlugin().getRegionDao();
-        if (!currentStations.containsKey(event.getPlayer())) currentStations.put(event.getPlayer(), null);
+    public void onVehicleMove(VehicleMoveEvent event) {
+        event.getVehicle().getPassengers().stream()
+                .filter(passenger -> passenger instanceof Player)
+                .map(passenger -> (Player) passenger)
+                .forEach(this::handlePlayerMove);
+    }
 
-        Station currentStation = currentStations.get(event.getPlayer());
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        handlePlayerMove(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        currentStations.remove(event.getPlayer());
+        playerTracking.remove(event.getPlayer().getName());
+        for (PlayerStationChangeListener listener : stationChangeListeners) listener.onPlayerStationChange(event.getPlayer(), null);
+    }
+
+    private void handlePlayerMove(Player player) {
+        Dao<Region, Long> regionDao = Race.getPlugin().getRegionDao();
+        if (!currentStations.containsKey(player)) currentStations.put(player, null);
+
+        Station currentStation = currentStations.get(player);
         ArrayList<Station> inStations = new ArrayList<>();
         regionDao.forEach(region -> {
-            if (region.inRegion(event.getPlayer().getLocation())) inStations.add(region.getStation());
+            if (region.inRegion(player.getLocation())) inStations.add(region.getStation());
         });
 
         Station newStation = null;
@@ -55,17 +75,13 @@ public class PlayerStationTracker implements Listener {
         }
 
         if (!Objects.equal(newStation, currentStation)) {
-            currentStations.put(event.getPlayer(), newStation);
-            for (PlayerStationChangeListener listener : stationChangeListeners) listener.onPlayerStationChange(event.getPlayer(), newStation);
-//            event.getPlayer().sendMessage("You have moved to " + (newStation == null ? "the wilderness" : newStation.getHumanReadableName()));
+            currentStations.put(player, newStation);
+            for (PlayerStationChangeListener listener : stationChangeListeners) listener.onPlayerStationChange(player, newStation);
         }
     }
 
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        currentStations.remove(event.getPlayer());
-        playerTracking.remove(event.getPlayer().getName());
-        for (PlayerStationChangeListener listener : stationChangeListeners) listener.onPlayerStationChange(event.getPlayer(), null);
+    public boolean isInStation(Player player) {
+        return currentStations.getOrDefault(player, null) != null;
     }
 
     public void addStationChangeListener(PlayerStationChangeListener listener) {

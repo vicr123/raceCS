@@ -4,12 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add station tracking">
+    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Usability Improvements">
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionLogger.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/CollisionEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/PlayerFinishedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/RecordStartEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/SessionEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationArriveEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationLeaveEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/SyncEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/raceCS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/raceCS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/PlayerStationTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/PlayerStationTracker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/RaceSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/RaceSession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RegionManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RegionManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/StationManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/StationManagement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/RaceSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCompleter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCompleter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +47,17 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="1qiutUhalTt0ef9w8aRQlHhOI3H" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -40,25 +66,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+  <component name="ReaderModeSettings">
+    <option name="showLigatures" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Joshua Jun\Documents\airCS Races\raceCS\src\main\resources" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="omg.lol.jplexer.race.session" />
+    </key>
   </component>
-  <component name="RunManager" selected="Remote JVM Debug.Attach to Spigot">
+  <component name="RunManager" selected="Maven.raceCS [install]">
     <configuration name="C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -78,7 +107,21 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="raceCS [install]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+    <configuration name="Paper" type="JarApplication">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/../../PaperServers/DebugServer/paper-1.18.2-386.jar" />
+      <option name="PROGRAM_PARAMETERS" value="nogui" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../PaperServers/DebugServer/" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <envs>
+        <env name="RACECS_AUTH_TOKEN" value="kJYhqvDRnWLUHpMVfXmkUiRqrrEmhCgz" />
+        <env name="RACECS_BASE_URL" value="http://localhost:4000/api" />
+      </envs>
+      <method v="2">
+        <option name="RunConfigurationTask" enabled="true" run_configuration_name="raceCS [install]" run_configuration_type="MavenRunConfiguration" />
+      </method>
+    </configuration>
+    <configuration name="raceCS [install]" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
         <option name="myRunnerSettings" />
@@ -119,12 +162,12 @@
     </configuration>
     <list>
       <item itemvalue="Gradle.C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" />
+      <item itemvalue="JAR Application.Paper" />
       <item itemvalue="Maven.raceCS [install]" />
       <item itemvalue="Remote JVM Debug.Attach to Spigot" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Maven.raceCS [install]" />
         <item itemvalue="Gradle.C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" />
       </list>
     </recent_temporary>
@@ -148,6 +191,17 @@
       <workItem from="1618328831452" duration="1536000" />
       <workItem from="1618330398414" duration="1507000" />
       <workItem from="1618331941027" duration="2000" />
+      <workItem from="1633320779776" duration="1406000" />
+      <workItem from="1643754502213" duration="1618000" />
+      <workItem from="1645954042970" duration="7000" />
+      <workItem from="1658719402999" duration="11832000" />
+      <workItem from="1658931805138" duration="1000000" />
+      <workItem from="1658991988811" duration="12000" />
+      <workItem from="1659004861255" duration="1058000" />
+      <workItem from="1659061960321" duration="9624000" />
+      <workItem from="1659224951256" duration="2163000" />
+      <workItem from="1659360007111" duration="83000" />
+      <workItem from="1659360124982" duration="7371000" />
     </task>
     <task id="LOCAL-00001" summary="Add in player selectors">
       <created>1618407461284</created>
@@ -177,7 +231,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632746366384</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Usability Improvements">
+      <created>1632794443400</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1632794443400</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,7 +254,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -201,6 +261,7 @@
     <MESSAGE value="Add collision detection" />
     <MESSAGE value="Add automatic reversal" />
     <MESSAGE value="Add station tracking" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add station tracking" />
+    <MESSAGE value="Usability Improvements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Usability Improvements" />
   </component>
 </project>

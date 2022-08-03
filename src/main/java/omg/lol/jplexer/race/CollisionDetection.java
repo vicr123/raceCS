@@ -5,14 +5,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Server;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Minecart;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class CollisionDetection {
     static class Collsion {
@@ -53,17 +51,33 @@ public class CollisionDetection {
         int secondSecondaryCoordinate = secondPrimaryIsX ? secondLocation.getBlockZ() : secondLocation.getBlockX();
 
         if (firstSecondaryCoordinate != secondSecondaryCoordinate) return false;
-        if (firstPrimaryCoordinate - 3 < secondPrimaryCoordinate && firstPrimaryCoordinate + 3 > secondPrimaryCoordinate) return true;
+        if (firstPrimaryCoordinate - 3 >= secondPrimaryCoordinate || firstPrimaryCoordinate + 3 <= secondPrimaryCoordinate)  return false;
 
-        return false;
+        if (Math.abs(firstLocation.getBlockY() - secondLocation.getBlockY()) > 1) return false;
+
+        return true;
+    }
+
+    void clearPath(Player player) {
+        var nearby = player.getNearbyEntities(2, 2, 2);
+        for (var entity : nearby) {
+            if (!entity.getPassengers().isEmpty()) continue;
+            if (entity instanceof Animals || entity instanceof Vehicle) {
+                entity.remove();
+            }
+        }
     }
 
     void detectCollisions() {
-        ArrayList<Player> playersInVehicles = new ArrayList<>();
+        var playersInVehicles = Bukkit.getOnlinePlayers().stream()
+                .filter(p -> p.getVehicle() != null && p.getVehicle().getType() == EntityType.MINECART)
+                .collect(Collectors.toList());
 
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            Entity vehicle = p.getVehicle();
-            if (vehicle != null && vehicle.getType() == EntityType.MINECART) playersInVehicles.add(p);
+        var tracker = Race.getPlugin().getStationTracker();
+
+        for (var player : playersInVehicles) {
+            //Clear the path for all players
+            clearPath(player);
         }
 
         while (!playersInVehicles.isEmpty()) {
@@ -82,23 +96,35 @@ public class CollisionDetection {
 
                 if (isInCollision && collisionIndex == -1) {
                     //The players have entered a collision state.
-                    collisions.add(new CollisionDetection.Collsion(p, otherPlayer));
-                    server.broadcastMessage(Race.CHAT_PREFIX + "A collision has occurred between " + ChatColor.RED + p.getDisplayName() + ChatColor.WHITE + " and " + ChatColor.RED + otherPlayer.getDisplayName() + ChatColor.WHITE + " has occurred! Turn back now!");
+                    //Ensure that the players are not inside a valid station
 
-                    Unirest.post(Race.API_BASE + "/collision/{player1}/{player2}")
-                            .routeParam("player1", p.getName())
-                            .routeParam("player2", otherPlayer.getName())
-                            .asString();
+                    if (tracker.isInStation(p) || tracker.isInStation(otherPlayer)) {
+                        //One of the players are in valid stations, so dismount them from the minecarts immediately
+                        p.getVehicle().remove();
+                        otherPlayer.getVehicle().remove();
+                    } else {
+                        //The players are not in a valid station so this is a valid collision
+                        collisions.add(new CollisionDetection.Collsion(p, otherPlayer));
+                        if (Race.getPlugin().hasCurrentRace()) {
+                            Race.getPlugin().getCurrentRace().playersCollided(p, otherPlayer);
+                        }
+                        server.broadcastMessage(Race.CHAT_PREFIX + "A collision has occurred between " + ChatColor.RED + p.getDisplayName() + ChatColor.WHITE + " and " + ChatColor.RED + otherPlayer.getDisplayName() + ChatColor.WHITE + " has occurred! Turn back now!");
 
-                    //Reverse the direction of each minecart
-                    for (Player player : new Player[]{p, otherPlayer}) {
-                        Minecart minecart = (Minecart) player.getVehicle();
+                        Unirest.post(Race.API_BASE + "/collision/{player1}/{player2}")
+                                .routeParam("player1", p.getName())
+                                .routeParam("player2", otherPlayer.getName())
+                                .asString();
 
-                        Vector initialVelocity = minecart.getVelocity();
-                        initialVelocity.setX(-initialVelocity.getX());
-                        initialVelocity.setY(-initialVelocity.getY());
-                        initialVelocity.setZ(-initialVelocity.getZ());
-                        minecart.setVelocity(initialVelocity);
+                        //Reverse the direction of each minecart
+                        for (Player player : new Player[]{p, otherPlayer}) {
+                            Minecart minecart = (Minecart) player.getVehicle();
+
+                            Vector initialVelocity = minecart.getVelocity();
+                            initialVelocity.setX(-initialVelocity.getX());
+                            initialVelocity.setY(-initialVelocity.getY());
+                            initialVelocity.setZ(-initialVelocity.getZ());
+                            minecart.setVelocity(initialVelocity);
+                        }
                     }
                 } else if (!isInCollision && collisionIndex >= 0) {
                     //The players are no longer in a collision state.

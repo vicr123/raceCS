@@ -5,15 +5,13 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import kong.unirest.Unirest;
+import net.md_5.bungee.api.ChatColor;
 import omg.lol.jplexer.race.command.RaceCommand;
 import omg.lol.jplexer.race.command.RaceCompleter;
 import omg.lol.jplexer.race.models.Region;
 import omg.lol.jplexer.race.models.Station;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
+import omg.lol.jplexer.race.session.RaceSession;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import net.md_5.bungee.api.ChatColor;
 
 import java.sql.SQLException;
 
@@ -27,10 +25,6 @@ public class Race extends JavaPlugin {
 
 	private static Race plugin; // This is a static plugin instance that is private. Use getPlugin() as seen
 									// further below.
-
-	private CollisionDetection collisionDetection;
-
-	PluginDescriptionFile pdfFile; // plugin.yml
 
 	private Dao<Station, String> stationDao;
 	private Dao<Region, Long> regionDao;
@@ -52,7 +46,6 @@ public class Race extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		plugin = getPlugin(Race.class);
-		PluginManager pm = getServer().getPluginManager();
 
 		try {
 			JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource("jdbc:sqlite:racecs.db");
@@ -66,10 +59,16 @@ public class Race extends JavaPlugin {
 			e.printStackTrace();
 		}
 
+		String baseUrl = API_BASE;
+		if (System.getenv("RACECS_BASE_URL") != null) baseUrl = System.getenv("RACECS_BASE_URL");
+
+		String authToken = AUTH_TOKEN;
+		if (System.getenv("RACECS_AUTH_TOKEN") != null) authToken = System.getenv("RACECS_AUTH_TOKEN");
+
 		//Set Unirest default settings
 		Unirest.config()
-				.defaultBaseUrl(API_BASE)
-				.setDefaultHeader("Authorization", "Bearer " + AUTH_TOKEN);
+				.defaultBaseUrl(baseUrl)
+				.setDefaultHeader("Authorization", "Bearer " + authToken);
 
 		/*
 		 * Register a command to the list of usable commands. If you don't register the
@@ -79,20 +78,14 @@ public class Race extends JavaPlugin {
 		this.getCommand("raceCS").setExecutor(new RaceCommand());
 		this.getCommand("raceCS").setTabCompleter(new RaceCompleter());
 
+		// Set up a timer for collision detection
+		new CollisionDetection(getServer(), plugin);
 
-		/*
-		 * This line lets you send out information to the console. In this case it would
-		 * say: Yay, Template-Plugin is now enabled!
-		 */
-		this.getLogger().info("raceCS is now enabled! May the races begin!");
-
-		/*
-		 * Set up a timer for collision detection
-		 */
-		this.collisionDetection = new CollisionDetection(getServer(), plugin);
-
+		// Start tracking players
 		stationTracker = new PlayerStationTracker();
 		getServer().getPluginManager().registerEvents(stationTracker, this);
+
+		this.getLogger().info("raceCS is now enabled! May the races begin!");
 	}
 
 	public Dao<Station, String> getStationDao() {
@@ -101,6 +94,12 @@ public class Race extends JavaPlugin {
 
 	public Dao<Region, Long> getRegionDao() {
 		return regionDao;
+	}
+
+	public boolean hasCurrentRace() {
+		if (this.currentRace == null) return false;
+		if (this.currentRace.isEnded()) return false;
+		return true;
 	}
 
 	public void createNewRace() {

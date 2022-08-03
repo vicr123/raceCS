@@ -1,6 +1,5 @@
 package omg.lol.jplexer.race.command;
 
-import net.md_5.bungee.api.ChatColor;
 import omg.lol.jplexer.race.CommandUtils;
 import omg.lol.jplexer.race.command.management.RaceManagement;
 import omg.lol.jplexer.race.command.management.RegionManagement;
@@ -9,11 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static omg.lol.jplexer.race.Race.CHAT_PREFIX;
 
 public class RaceCompleter implements TabCompleter {
     @Override
