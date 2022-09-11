@@ -96,6 +96,17 @@
             "text": "Join the bits & Bytes Discord Server",
             "href": "https://discord.gg/QjyRUpP",
             "image": "/Discord-Logo-Black.svg"
+        },
+        {
+            "text": "Countries"
+        },
+        {
+            "text": "Kemonomimi Republic",
+            "href": "https://kr.aircs.racing"
+        },
+        {
+            "text": "Open Republic",
+            "href": "https://openrepublic.aircs.racing"
         }
     ]
 }

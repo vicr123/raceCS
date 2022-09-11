@@ -142,11 +142,11 @@ class Home extends React.Component {
 
         for (let link of this.state.data.links) {
             let clickHandler = () => {
-                window.open(link.href, "_blank");
+                if (link.href) window.open(link.href, "_blank");
             }
 
             els.push(<div className={`playersListItem`} onClick={clickHandler}><img width="24" src={link.image}></img></div>)
-            els.push(<div className={`playersListItem`} onClick={clickHandler}>{link.text}</div>)
+            els.push(<div className={["playersListItem", ...(link.href ? [] : ["itemTitle"])].join(" ")} onClick={clickHandler}>{link.text}</div>)
         }
 
         return els;

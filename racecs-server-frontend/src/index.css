@@ -242,6 +242,14 @@ h1 {
   color: white;
 }
 
+.playersListItem.itemTitle {
+  font-size: 10pt;
+  text-transform: uppercase;
+  padding-bottom: 3px;
+  padding-top: 18px;
+  cursor: unset;
+}
+
 .playerStatsWrapper {
   display: flex;
   flex-direction: column;
