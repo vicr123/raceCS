@@ -1,5 +1,5 @@
 {
-  "PAGE_TITLE": "Cursă AirCS",
+  "PAGE_TITLE": "Curse AirCS",
   "APP_HOME": "Acasă",
   "APP_LEADERBOARD": "Clasament",
   "APP_STATIONS": "Stații",
@@ -42,13 +42,13 @@
   "SETTINGS_NOTIFICAITONS_DECLINED": "Verifică setările pentru notificări pentru acest site în browser și reîncarcă pentru a încerca din nou.",
   "SETTINGS_LOCALE": "LIMBĂ",
   "SETTINGS_LOCALE_DESCRIPTION": "Schimbă limba în care este afișată interfața cu",
-  "SETTINGS_LOCALE_SYSTEM": "",
-  "NOTIFICATION_ARRIVAL": "",
-  "SETTINGS_STATION_LOCALE": "",
-  "SETTINGS_STATION_LOCALE_DESCRIPTION": "",
-  "NOTIFICATION_ARRIVAL_MESSAGE": "",
-  "NOTIFICATION_COLLISION": "",
-  "NOTIFICATION_COLLISION_MESSAGE": "",
-  "NOTIFICATION_FINISH": "",
-  "NOTIFICATION_FINISH_MESSAGE": ""
+  "SETTINGS_LOCALE_SYSTEM": "Sistem",
+  "NOTIFICATION_ARRIVAL": "Sosire",
+  "SETTINGS_STATION_LOCALE": "LIMBĂ STAȚIE",
+  "SETTINGS_STATION_LOCALE_DESCRIPTION": "Schimbă limba în care sunt afișate stațiile",
+  "NOTIFICATION_ARRIVAL_MESSAGE": "{{ user }} a ajuns la {{ stationName }}",
+  "NOTIFICATION_COLLISION": "Coliziune",
+  "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} s-a ciocnit cu {{ player2 }}",
+  "NOTIFICATION_FINISH": "Finalizat",
+  "NOTIFICATION_FINISH_MESSAGE": "{{ player }} a terminat cursa pe {{ place }}"
 }
