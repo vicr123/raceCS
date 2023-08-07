@@ -120,13 +120,15 @@ class Settings extends React.Component {
     renderLocale() {
         return <select value={this.state.locale} onChange={this.localeChanged.bind(this)}>
             <option value="sys">{this.props.t("SETTINGS_LOCALE_SYSTEM")}</option>
-            <option value="ar_SA">عربي</option>
-            <option value="en">English</option>
+            <option value="ar-SA">عربي</option>
             <option value="de">Deutsch</option>
-            <option value="de_AT">Deutsch (Österreichischer Dialekt)</option>
-            <option value="fr_CA">Français (Canadien)</option>
+            <option value="de-AT">Deutsch (Österreichischer Dialekt)</option>
+            <option value="en">English</option>
+            <option value="fr-CA">Français (Canadien)</option>
+            <option value="he">עברית</option>
             <option value="nl">Nederlands</option>
-            <option value="pt_BR">português</option>
+            <option value="pt-BR">português</option>
+            <option value="ro">Română</option>
             <option value="vi">Tiếng Việt</option>
             <option value="gt">Translation (Google)</option>
         </select>
