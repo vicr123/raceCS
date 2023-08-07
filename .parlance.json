@@ -1,0 +1,17 @@
+{
+  "name": "raceCS",
+  "subprojects": [
+    {
+      "name": "UI",
+      "type": "i18next",
+      "path": "/racecs-server-frontend/public/locales/{{lang}}/translation.json",
+      "baseLang": "en"
+    },
+    {
+      "name": "Stations",
+      "type": "i18next",
+      "path": "/racecs-server-backend/stations/{{lang}}.json",
+      "baseLang": "en"
+    }
+  ]
+}
