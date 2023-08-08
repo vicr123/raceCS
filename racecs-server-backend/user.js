@@ -5,6 +5,7 @@ class User {
     username = null;
     id = null;
     place = -1;
+    team = null;
 
     constructor(username, id) {
         this.username = username;
@@ -13,14 +14,27 @@ class User {
 
     markVisited(station, stationName) {
         this.visited.push(station);
+
+        let isTeamVisitation = false;
+        let body = `${this.username} has arrived at ${stationName}!`;
+        if (this.team) {
+            if (!this.team.visited) this.team.visited = [];
+            if (!this.team.visited.includes(station)) {
+                this.team.visited.push(station);
+                body = `${this.username} has arrived at ${stationName} and has claimed it for ${this.team.name}!`;
+                isTeamVisitation = true;
+            }
+        }
+
         WebSocket.broadcast({
             "type": "visitation",
             "user": this.username,
             "uuid": this.id,
-            "station": station
+            "station": station,
+            "team": isTeamVisitation ? this.team?.id : null
         });
         WebSocket.broadcastNotification({
-            body: `${this.username} has arrived at ${stationName}!`,
+            body: body ,
             icon: "login_notification.png"
         });
         WebSocket.broadcastDiscord({
@@ -28,7 +42,7 @@ class User {
                 name: "Arrival!",
                 icon_url: "https://aircs.racing/login_notification.png"
             },
-            description: `${this.username} has arrived at ${stationName}!`,
+            description: body,
             color: 32768
         });
     }
@@ -52,6 +66,10 @@ class User {
             description: `${this.username} has finished as #${place}!`,
             color: 16753920
         });
+    }
+
+    setTeam(team) {
+        this.team = team;
     }
 
     clear() {

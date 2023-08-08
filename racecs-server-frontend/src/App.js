@@ -12,6 +12,7 @@ import Wsh from './wsh';
 import Ticker from './ticker';
 import Settings from './Settings';
 import Home from './home';
+import Teams from "./Teams";
 
 class App extends React.Component {
   constructor(props) {
@@ -49,20 +50,37 @@ class App extends React.Component {
         case "removePlayer":
           this.setState(state => {
             let pdata = JSON.parse(JSON.stringify(state.playerData));
+            let teams = JSON.parse(JSON.stringify(state.teamData));
             delete pdata[data.user];
-            
+
+            if (Object.keys(pdata).length === 0) {
+              teams = [];
+            }
+
             return {
-              playerData: pdata
+              playerData: pdata,
+              teamData: teams
             }
           })
           break;
         case "visitation":
           this.setState(state => {
             let pdata = JSON.parse(JSON.stringify(state.playerData));
+            let teams = JSON.parse(JSON.stringify(state.teamData));
             pdata[data.user].visited.push(data.station);
+
+            if (data.team) {
+              for (let team of teams) {
+                if (team.id === data.team) {
+                  if (!team.visited) team.visited = [];
+                  team.visited.push(data.station);
+                }
+              }
+            }
             
             return {
-              playerData: pdata
+              playerData: pdata,
+              teamData: teams
             }
           });
           break;
@@ -76,6 +94,26 @@ class App extends React.Component {
             }
           });
           break;
+        case "teaming":
+          this.setState({
+            teamData: data.teams
+          })
+          break;
+        case "teamRename":
+          this.setState(state => {
+            let teams = JSON.parse(JSON.stringify(state.teamData));
+
+            for (let team of teams) {
+              if (team.id === data.team) {
+                team.name = data.name;
+              }
+            }
+
+            return {
+              teamData: teams
+            }
+          })
+              break;
         case "stationChange":
           await Promise.all([
             await this.updatePlayers(),
@@ -100,8 +138,9 @@ class App extends React.Component {
 
     (async () => {
       await Promise.all([
-        await this.updatePlayers(),
-        await this.updateStations()
+        this.updatePlayers(),
+        this.updateStations(),
+        this.updateTeams()
       ])
     })();
   }
@@ -118,6 +157,12 @@ class App extends React.Component {
     })
   }
 
+  async updateTeams() {
+    this.setState({
+      teamData: await Fetch.get("/teams")
+    })
+  }
+
   componentWillUnmount() {
     try {
       if (this.state.ws) this.state.ws.close();
@@ -131,11 +176,13 @@ class App extends React.Component {
       case "home":
         return <Home />
       case "leaderboard":
-        return <Leaderboard stationData={this.state.stationData} playerData={this.state.playerData} recentEvents={this.state.recentEvents} onPlayerClicked={this.playerClicked.bind(this)}/>
+        return <Leaderboard stationData={this.state.stationData} playerData={this.state.playerData} recentEvents={this.state.recentEvents} onPlayerClicked={this.playerClicked.bind(this)} teamData={this.state.teamData} />
       case "players":
         return <Players stationData={this.state.stationData} playerData={this.state.playerData} selectPlayer={this.state.selectPlayer} />
       case "stations":
         return <Stations stationData={this.state.stationData} playerData={this.state.playerData} onPlayerClicked={this.playerClicked.bind(this)} />
+      case "teams":
+        return <Teams stationData={this.state.stationData} playerData={this.state.playerData} teamData={this.state.teamData} />
       case "settings":
         return <Settings onLocaleChange={this.onLocaleChange.bind(this)} />
     }
@@ -173,6 +220,7 @@ class App extends React.Component {
     return <>
       <div className={`headerButton ${this.state.currentView === "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>{this.props.t("APP_LEADERBOARD")}</div>
       <div className={`headerButton ${this.state.currentView === "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>{this.props.t("APP_STATIONS")}</div>
+      {this.state.teamData?.length && <div className={`headerButton ${this.state.currentView === "teams" && "selected"}`} onClick={this.changeView.bind(this, "teams")}>{this.props.t("APP_TEAMS")}</div>}
       <div className={`headerButton ${this.state.currentView === "players" && "selected"}`} onClick={this.changeView.bind(this, "players")}>{this.props.t("APP_PLAYERS")}</div>
     </>
   }

@@ -23,6 +23,7 @@ let usedStations = settings.get("stations", []);
 let events = [];
 
 let users = {};
+let teams = [];
 
 router.use(express.json({
 
@@ -37,6 +38,46 @@ router.use((req, res, next) => {
 
     next();
 });
+
+router.post("/teams", async (req, res) => {
+    if (!req.authorised) {
+        res.sendStatus(401);
+        return;
+    }
+
+    teams = req.body;
+    for (let team of req.body) {
+        for (let player of team.players) {
+            users[player].setTeam(team);
+        }
+    }
+
+    WebSocket.broadcast({
+        "type": "teaming",
+        "teams": teams
+    });
+    res.sendStatus(200);
+})
+
+router.post("/teams/:id/name", async (req, res) => {
+    if (!req.authorised) {
+        res.sendStatus(401);
+        return;
+    }
+
+    for (let team of teams) {
+        if (team.id === req.params.id) {
+            team.name = req.body.name;
+        }
+    }
+
+    WebSocket.broadcast({
+        "type": "teamRename",
+        "team": req.params.id,
+        "name": req.body.name
+    });
+    res.sendStatus(200);
+})
 
 router.post("/addUser/:username/:uuid", async (req, res) => {
     if (!req.authorised) {
@@ -209,6 +250,9 @@ router.post("/removeUser/:username", async (req, res) => {
     });
 
     delete users[req.params.username];
+
+    // Also reset the teams
+    if (Object.keys(users).length === 0) teams = [];
     res.sendStatus(200);
 });
 router.get("/userStatus/:username", async (req, res) => {
@@ -226,6 +270,9 @@ router.get("/users", async (req, res) => {
     }
     res.send(retval);
 });
+router.get("/teams", async (req, res) => {
+    res.send(teams);
+})
 router.get("/stations", async (req, res) => {
     //Return a list of all the stations
     // res.send(Stations);
