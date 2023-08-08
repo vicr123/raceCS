@@ -3,6 +3,7 @@ package omg.lol.jplexer.race.session;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import omg.lol.jplexer.race.Race;
+import omg.lol.jplexer.race.command.management.StationManagement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,5 +56,43 @@ class RaceSessionTest {
         session.removePlayer(server.getPlayer(0));
 
         assertLinesMatch(session.getJoinedPlayers(), List.of(server.getPlayer(1).getName()));
+    }
+
+    @Test
+    void raceSession_TracksStations() {
+        StationManagement.AddStation(server.getPlayer(0), "acsr", "AirCS Race Lobby");
+        StationManagement.AddStation(server.getPlayer(0), "acs", "AirCS Cental");
+        StationManagement.AddStation(server.getPlayer(0), "li", "Long Island");
+        StationManagement.AddStation(server.getPlayer(0), "vic", "theStation");
+
+        var session = new RaceSession();
+        session.addPlayer(server.getPlayer(0));
+        session.addPlayer(server.getPlayer(1));
+
+        var li = session.getParticipatingStations().stream().filter(station -> station.getId().equals("LI")).findFirst().orElseThrow();
+        session.processStationArrived(server.getPlayer(0), li);
+
+        assertEquals(((RaceSession.StationEvent) session.getEvents().get(session.getEvents().size() - 1)).station, li);
+    }
+
+    @Test
+    void raceSession_TracksCompletion() {
+        StationManagement.AddStation(server.getPlayer(0), "acsr", "AirCS Race Lobby");
+        StationManagement.AddStation(server.getPlayer(0), "acs", "AirCS Cental");
+        StationManagement.AddStation(server.getPlayer(0), "li", "Long Island");
+        StationManagement.AddStation(server.getPlayer(0), "vic", "theStation");
+
+        var session = new RaceSession();
+        session.addPlayer(server.getPlayer(0));
+        session.addPlayer(server.getPlayer(1));
+
+        var li = session.getParticipatingStations().stream().filter(station -> station.getId().equals("LI")).findFirst().orElseThrow();
+        var vic = session.getParticipatingStations().stream().filter(station -> station.getId().equals("VIC")).findFirst().orElseThrow();
+        var acsr = session.getTerminalStation();
+        session.processStationArrived(server.getPlayer(0), li);
+        session.processStationArrived(server.getPlayer(0), vic);
+        session.processStationArrived(server.getPlayer(0), acsr);
+
+        assertLinesMatch(session.getFinishedPlayers(), List.of(server.getPlayer(0).getName()));
     }
 }

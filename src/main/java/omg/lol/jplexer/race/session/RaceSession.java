@@ -46,11 +46,11 @@ public class RaceSession implements Listener {
         return teams;
     }
 
-    static class RaceEvent {
+    public static class RaceEvent {
 
     }
 
-    static class StationEvent extends RaceEvent {
+    public static class StationEvent extends RaceEvent {
         String player;
         Station station;
     }
@@ -131,6 +131,14 @@ public class RaceSession implements Listener {
 
     public ArrayList<Station> getParticipatingStations() {
         return this.participatingStations;
+    }
+
+    public ArrayList<String> getFinishedPlayers() {
+        return finishedPlayers;
+    }
+
+    public ArrayList<RaceEvent> getEvents() {
+        return this.events;
     }
 
     void updateParticipatingStations() {

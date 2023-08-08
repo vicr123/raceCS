@@ -20,7 +20,7 @@ import java.sql.SQLException;
 
 
 public class Race extends JavaPlugin {
-
+	private boolean testing = false;
 	// Feel free to change this to your own plugin's name and color of your choice.
 	public static final String CHAT_PREFIX = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Air" + ChatColor.WHITE + "" + ChatColor.BOLD + "CS" + ChatColor.GOLD + "" + ChatColor.BOLD + " Race Update: " + ChatColor.WHITE;
 	public static final String API_BASE = "http://localhost:3000/api";
@@ -42,6 +42,7 @@ public class Race extends JavaPlugin {
 
 	protected Race(JavaPluginLoader loader, PluginDescriptionFile descriptionFile, File dataFolder, File file) {
 		super(loader, descriptionFile, dataFolder, file);
+		testing = true;
 	}
 
 	// Called when the plugin is disabled, such as when you reload the server.
@@ -59,7 +60,7 @@ public class Race extends JavaPlugin {
 		plugin = this;
 
 		try {
-			JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource("jdbc:sqlite:racecs.db");
+			JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource(testing ? "jdbc:sqlite::memory:" : "jdbc:sqlite:racecs.db");
 
 			TableUtils.createTableIfNotExists(connectionSource, Station.class);
 			stationDao = DaoManager.createDao(connectionSource, Station.class);
