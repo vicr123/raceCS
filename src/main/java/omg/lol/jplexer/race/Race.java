@@ -11,8 +11,11 @@ import omg.lol.jplexer.race.command.RaceCompleter;
 import omg.lol.jplexer.race.models.Region;
 import omg.lol.jplexer.race.models.Station;
 import omg.lol.jplexer.race.session.RaceSession;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
+import java.io.File;
 import java.sql.SQLException;
 
 
@@ -33,6 +36,14 @@ public class Race extends JavaPlugin {
 
 	private RaceSession currentRace = null;
 
+	public Race() {
+		super();
+	}
+
+	protected Race(JavaPluginLoader loader, PluginDescriptionFile descriptionFile, File dataFolder, File file) {
+		super(loader, descriptionFile, dataFolder, file);
+	}
+
 	// Called when the plugin is disabled, such as when you reload the server.
 	public void onDisable() {
 		if (currentRace != null) currentRace.endSession();
@@ -45,7 +56,7 @@ public class Race extends JavaPlugin {
 	// Called when the plugin is enabled. It is used to set up variables and to register things such as commands.
 	@Override
 	public void onEnable() {
-		plugin = getPlugin(Race.class);
+		plugin = this;
 
 		try {
 			JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource("jdbc:sqlite:racecs.db");

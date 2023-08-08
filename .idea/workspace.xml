@@ -5,26 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Usability Improvements">
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionLogger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/CollisionEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/PlayerFinishedEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/RecordStartEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/SessionEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationArriveEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationLeaveEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/SyncEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionTeams.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/Team.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/TeamOrganizationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/command/management/RaceManagementTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/session/RaceSessionTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_MilkBowl_VaultAPI_1_7.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_21_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_json_simple_json_simple_1_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_j256_ormlite_ormlite_core_5_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_j256_ormlite_ormlite_jdbc_5_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_konghq_unirest_java_3_11_09.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_konghq_unirest_object_mappers_gson_3_11_09.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_md_5_bungeecord_chat_1_12_SNAPSHOT.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpasyncclient_4_1_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_13.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_13.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_nio_4_4_13.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_5_13.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_bukkit_bukkit_1_13_1_R0_1_SNAPSHOT.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spigotmc_spigot_api_1_12_2_R0_1_SNAPSHOT.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_xerial_sqlite_jdbc_3_36_0_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_19.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/raceCS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/raceCS.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/PlayerStationTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/PlayerStationTracker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/RaceSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCompleter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/RaceCompleter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +51,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -58,22 +75,34 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": -1
+}]]></component>
   <component name="ProjectId" id="1qiutUhalTt0ef9w8aRQlHhOI3H" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "plugin",
+    "last_opened_file_path": "/home/victor/Documents/spigot/1.18.2/paper-1.18.2-388.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="ReaderModeSettings">
@@ -83,11 +112,18 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Joshua Jun\Documents\airCS Races\raceCS\src\main\resources" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="omg.lol.jplexer.race.session" />
     </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="omg.lol.jplexer.race.session" />
+      <recent name="omg.lol.jplexer.race.command.management" />
+    </key>
   </component>
-  <component name="RunManager" selected="Maven.raceCS [install]">
+  <component name="RunManager" selected="JUnit.RaceSessionTest">
     <configuration name="C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -105,12 +141,28 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="RaceSessionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="raceCS" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="omg.lol.jplexer.race.session.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.session" />
+      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.session.RaceSessionTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Paper" type="JarApplication">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/../../PaperServers/DebugServer/paper-1.18.2-386.jar" />
+      <option name="JAR_PATH" value="$PROJECT_DIR$/../../spigot/1.18.2/paper-1.18.2-388.jar" />
       <option name="PROGRAM_PARAMETERS" value="nogui" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../PaperServers/DebugServer/" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../spigot/1.18.2/" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="ALTERNATIVE_JRE_PATH" value="17" />
       <envs>
@@ -127,6 +179,7 @@
         <option name="myRunnerSettings" />
         <option name="myRunnerParameters">
           <MavenRunnerParameters>
+            <option name="cmdOptions" />
             <option name="profiles">
               <set />
             </option>
@@ -138,6 +191,9 @@
             <option name="pomFileName" value="pom.xml" />
             <option name="profilesMap">
               <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
             </option>
             <option name="resolveToWorkspace" value="false" />
             <option name="workingDirPath" value="$PROJECT_DIR$" />
@@ -163,11 +219,13 @@
     <list>
       <item itemvalue="Gradle.C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" />
       <item itemvalue="JAR Application.Paper" />
+      <item itemvalue="JUnit.RaceSessionTest" />
       <item itemvalue="Maven.raceCS [install]" />
       <item itemvalue="Remote JVM Debug.Attach to Spigot" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RaceSessionTest" />
         <item itemvalue="Gradle.C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" />
       </list>
     </recent_temporary>
@@ -202,6 +260,12 @@
       <workItem from="1659224951256" duration="2163000" />
       <workItem from="1659360007111" duration="83000" />
       <workItem from="1659360124982" duration="7371000" />
+      <workItem from="1690632770985" duration="3121000" />
+      <workItem from="1691448301991" duration="79000" />
+      <workItem from="1691448388439" duration="38000" />
+      <workItem from="1691448433831" duration="2822000" />
+      <workItem from="1691456038828" duration="2021000" />
+      <workItem from="1691458062521" duration="1305000" />
     </task>
     <task id="LOCAL-00001" summary="Add in player selectors">
       <created>1618407461284</created>

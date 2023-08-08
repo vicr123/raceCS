@@ -36,6 +36,15 @@ public class RaceSession implements Listener {
     private int nextPlace = 1;
     private final Scoreboard scoreboard;
     private final RaceSessionLogger logger;
+    private RaceSessionTeams teams = null;
+
+    public void teamUp() throws TeamOrganizationException {
+        teams = new RaceSessionTeams(this, joinedPlayers);
+    }
+
+    public RaceSessionTeams getTeams() {
+        return teams;
+    }
 
     static class RaceEvent {
 
@@ -151,9 +160,7 @@ public class RaceSession implements Listener {
     }
 
     private void setupPlayer(Player player) {
-        player.setScoreboard(scoreboard);
         scoreboard.getTeam("aircs-race").addEntry(player.getName());
-        updateScoreboards();
     }
 
     public void addPlayer(Player player) {
@@ -173,16 +180,17 @@ public class RaceSession implements Listener {
         removePlayer(player.getName());
     }
 
+    public ArrayList<String> getJoinedPlayers() {
+        return joinedPlayers;
+    }
 
     public void removePlayer(String playerName) {
         Player player = Race.getPlugin().getServer().getPlayer(playerName);
         if (player != null && player.isOnline()) {
-            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             player.setAllowFlight(true);
         }
         scoreboard.getTeam("aircs-race").removeEntry(playerName);
         joinedPlayers.remove(playerName);
-        updateScoreboards();
 
         Unirest.post("/removeUser/{player}")
                 .routeParam("player", playerName)
@@ -236,8 +244,6 @@ public class RaceSession implements Listener {
             } else if (visitedCount + 1 == (participatingStations.size() + 1) / 2) {
                 Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + player.getName() + " has visited half the required stations!");
             }
-
-            updateScoreboards();
         }
     }
 
@@ -256,28 +262,6 @@ public class RaceSession implements Listener {
         finishedPlayers.add(player.getName());
 
         nextPlace++;
-    }
-
-    void updateScoreboards() {
-        Player[] scoreboardPlayers = joinedPlayers.stream().map(player -> Race.getPlugin().getServer().getPlayer(player)).filter(Objects::nonNull).toArray(Player[]::new);
-        ArrayList<String> zeroPlayers = new ArrayList<>(joinedPlayers);
-        events.stream().filter(event -> event instanceof StationEvent)
-                .collect(Collectors.groupingBy(event -> ((StationEvent) event).player, Collectors.counting()))
-                .forEach((player, score) -> {
-                    for (Player scoreboardPlayer : scoreboardPlayers) {
-                        Objective objective = scoreboardPlayer.getScoreboard().getObjective("racecs");
-                        objective.getScore(player).setScore(Math.toIntExact(score));
-                    }
-
-                    zeroPlayers.remove(player);
-                });
-
-        for (String player : zeroPlayers) {
-            for (Player scoreboardPlayer : scoreboardPlayers) {
-                Objective objective = scoreboardPlayer.getScoreboard().getObjective("racecs");
-                objective.getScore(player).setScore(0);
-            }
-        }
     }
 
     public void syncPulse() {

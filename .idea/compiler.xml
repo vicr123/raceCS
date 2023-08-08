@@ -9,8 +9,5 @@
         <module name="raceCS" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="raceCS" target="10" />
-    </bytecodeTargetLevel>
   </component>
 </project>

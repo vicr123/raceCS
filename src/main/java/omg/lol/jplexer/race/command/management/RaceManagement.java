@@ -7,6 +7,7 @@ import omg.lol.jplexer.race.Race;
 import omg.lol.jplexer.race.session.RaceSession;
 import omg.lol.jplexer.race.command.RaceCompleter;
 import omg.lol.jplexer.race.models.Station;
+import omg.lol.jplexer.race.session.TeamOrganizationException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -57,6 +58,8 @@ public class RaceManagement {
             case "sync":
                 syncPulse(sender);
                 break;
+            case "teamup":
+                teamUp(sender);
             case "credit":
                 if (args.length == 3) {
                     creditStation(sender, args[1], args[2]);
@@ -70,11 +73,35 @@ public class RaceManagement {
         }
     }
 
+    private static void teamUp(CommandSender sender) {
+        if (!sender.hasPermission("racecs.manage")) {
+            sender.sendMessage(CHAT_PREFIX + ChatColor.RED + "Sorry, you can't use this.");
+            return;
+        }
+
+        RaceSession currentRace = Race.getPlugin().getCurrentRace();
+        if (currentRace == null || currentRace.isEnded()) {
+            sender.sendMessage("There is no ongoing race.");
+            return;
+        }
+
+        if (currentRace.getTeams() != null) {
+            sender.sendMessage("The teams have already been chosen.");
+            return;
+        }
+
+        try {
+            currentRace.teamUp();
+        } catch (TeamOrganizationException ex) {
+            sender.sendMessage("With the current players, an optimal teaming configuration cannot be created. The reason is: " + ex.getMessage());
+        }
+    }
+
     public static List<String> TabCompleteCommand(String[] args) {
         final RaceSession raceSession = Race.getPlugin().getCurrentRace();
         if (args.length == 0) {
             if (raceSession == null || raceSession.isEnded()) return Arrays.asList("help", "register");
-            return Arrays.asList("help", "register", "deregister", "stations", "addstation", "removestation", "close", "setterminalstation", "credit");
+            return Arrays.asList("help", "register", "deregister", "stations", "addstation", "removestation", "close", "setterminalstation", "credit", "teamup");
         } else {
             Dao<Station, String> stationDao = Race.getPlugin().getStationDao();
 
@@ -87,6 +114,7 @@ public class RaceManagement {
                 case "deregister":
                 case "stations":
                 case "clearstations":
+                case "teamup":
                     return null;
                 case "addstation":
                 case "setterminalstation":
@@ -116,6 +144,14 @@ public class RaceManagement {
     }
 
     static void registerPlayer(CommandSender sender, String player) {
+        RaceSession currentRace = Race.getPlugin().getCurrentRace();
+        if (currentRace != null && !currentRace.isEnded()) {
+            if (currentRace.getTeams() != null) {
+                sender.sendMessage("The current race is closed to new players.");
+                return;
+            }
+        }
+
         Entity[] targets = CommandUtils.getTargets(sender, player);
         int failCount = 0;
         for (Entity target : targets) {
