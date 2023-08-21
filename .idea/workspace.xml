@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add more unit tests">
-      <change afterPath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/session/RaceSessionTeamsTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/session/TeamTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Implement addstations command">
       <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionTeams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionTeams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/Team.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/session/RaceSessionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/session/RaceSessionTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -282,7 +275,7 @@
       <workItem from="1691458062521" duration="19165000" />
       <workItem from="1691497354886" duration="3787000" />
       <workItem from="1692437094313" duration="154000" />
-      <workItem from="1692608116045" duration="4083000" />
+      <workItem from="1692608116045" duration="4532000" />
     </task>
     <task id="LOCAL-00001" summary="Add in player selectors">
       <created>1618407461284</created>
@@ -343,7 +336,23 @@
       <option name="project" value="LOCAL" />
       <updated>1691461115201</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Add notifications for team race end">
+      <option name="closed" value="true" />
+      <created>1692613419490</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1692613419490</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Implement addstations command">
+      <option name="closed" value="true" />
+      <created>1692613643957</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1692613643957</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -370,6 +379,8 @@
     <MESSAGE value="Add tests and teams" />
     <MESSAGE value="Add gitignore" />
     <MESSAGE value="Add more unit tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add more unit tests" />
+    <MESSAGE value="Add notifications for team race end" />
+    <MESSAGE value="Implement addstations command" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement addstations command" />
   </component>
 </project>

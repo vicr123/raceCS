@@ -253,6 +253,7 @@ public class RaceSession implements Listener {
             } else {
                 var team = teams.teamFor(player);
                 if (team.memberReturned(player)) return; // This player has already finished
+                if (team.membersWaitingToReturn() == 0) return; // This team has already finished
 
                 if (team.getVisitedStations().size() >= participatingStations.size()) {
                     team.setMemberReturned(player);
