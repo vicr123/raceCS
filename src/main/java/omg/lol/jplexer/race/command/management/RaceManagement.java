@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static omg.lol.jplexer.race.Race.CHAT_PREFIX;
 
@@ -60,6 +61,10 @@ public class RaceManagement {
                 break;
             case "teamup":
                 teamUp(sender);
+                break;
+            case "setteamname":
+                setTeamName(sender, args[1]);
+                break;
             case "credit":
                 if (args.length == 3) {
                     creditStation(sender, args[1], args[2]);
@@ -70,6 +75,31 @@ public class RaceManagement {
             case "close":
                 closeRace(sender);
                 break;
+        }
+    }
+
+    private static void setTeamName(CommandSender sender, String name) {
+        RaceSession currentRace = Race.getPlugin().getCurrentRace();
+        if (currentRace == null || currentRace.isEnded()) {
+            sender.sendMessage("There is no ongoing race.");
+            return;
+        }
+
+        if (currentRace.getTeams() == null) {
+            sender.sendMessage("Teams have not yet been created.");
+            return;
+        }
+
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("Can't run this from the console.");
+            return;
+        }
+
+        try {
+            currentRace.getTeams().teamFor((Player) sender).setName(name);
+            sender.sendMessage("Your team has been renamed.");
+        } catch (NoSuchElementException ex) {
+            sender.sendMessage("You are not in the race");
         }
     }
 
@@ -101,7 +131,7 @@ public class RaceManagement {
         final RaceSession raceSession = Race.getPlugin().getCurrentRace();
         if (args.length == 0) {
             if (raceSession == null || raceSession.isEnded()) return Arrays.asList("help", "register");
-            return Arrays.asList("help", "register", "deregister", "stations", "addstation", "removestation", "close", "setterminalstation", "credit", "teamup");
+            return Arrays.asList("help", "register", "deregister", "stations", "addstation", "removestation", "close", "setterminalstation", "credit", "teamup", "setteamname");
         } else {
             Dao<Station, String> stationDao = Race.getPlugin().getStationDao();
 
@@ -115,6 +145,7 @@ public class RaceManagement {
                 case "stations":
                 case "clearstations":
                 case "teamup":
+                case "setteamname":
                     return null;
                 case "addstation":
                 case "setterminalstation":
@@ -129,7 +160,7 @@ public class RaceManagement {
                     return null;
                 default:
                     if (raceSession == null || raceSession.isEnded()) return Arrays.asList("help", "register");
-                    return Arrays.asList("help", "register", "deregister", "stations", "addstation", "removestation", "clearstations", "close", "setterminalstation", "credit");
+                    return Arrays.asList("help", "register", "deregister", "stations", "addstation", "removestation", "clearstations", "close", "setterminalstation", "credit", "teamup", "setteamname");
             }
         }
     }

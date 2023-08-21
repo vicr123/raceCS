@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add gitignore">
-      <change afterPath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/command/management/StationManagementTest.java" afterDir="false" />
+    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add more unit tests">
+      <change afterPath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/session/RaceSessionTeamsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/session/TeamTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/Race.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionTeams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionTeams.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/Team.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/session/RaceSessionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/session/RaceSessionTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,9 +47,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": -1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: -1
+}</component>
   <component name="ProjectId" id="1qiutUhalTt0ef9w8aRQlHhOI3H" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -57,24 +60,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "plugin-features/teams",
-    "last_opened_file_path": "/home/victor/Documents/spigot/1.18.2/paper-1.18.2-388.jar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;plugin-features/teams&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/victor/Documents/spigot/1.18.2/paper-1.18.2-388.jar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReaderModeSettings">
     <option name="showLigatures" value="true" />
   </component>
@@ -89,32 +92,12 @@
       <recent name="omg.lol.jplexer.race.session" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
-      <recent name="omg.lol.jplexer.race.command.management" />
       <recent name="omg.lol.jplexer.race.session" />
+      <recent name="omg.lol.jplexer.race.command.management" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.RaceSessionTest">
-    <configuration name="C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list />
-        </option>
-        <option name="vmOptions" value="" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="RaceSessionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.RaceSessionTeamTest.raceSession_TeamVictory">
+    <configuration name="RaceSessionTeamTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="raceCS" />
       <extension name="coverage">
         <pattern>
@@ -123,39 +106,63 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.session" />
-      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.session.RaceSessionTest" />
+      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.session.RaceSessionTeamTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StationManagementTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RaceSessionTeamTest.raceSession_TeamVictory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="raceCS" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="omg.lol.jplexer.race.command.management.*" />
+          <option name="PATTERN" value="omg.lol.jplexer.race.session.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.command.management" />
-      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.command.management.StationManagementTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="StationManagementTest.addStation" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="raceCS" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="omg.lol.jplexer.race.command.management.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.command.management" />
-      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.command.management.StationManagementTest" />
-      <option name="METHOD_NAME" value="addStation" />
+      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.session" />
+      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.session.RaceSessionTeamTest" />
+      <option name="METHOD_NAME" value="raceSession_TeamVictory" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RaceSessionTeamsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="raceCS" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="omg.lol.jplexer.race.session.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.session" />
+      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.session.RaceSessionTeamsTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TeamTest.setName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="raceCS" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="omg.lol.jplexer.race.session.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.session" />
+      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.session.TeamTest" />
+      <option name="METHOD_NAME" value="setName" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="java in raceCS" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="raceCS" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -218,20 +225,22 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Gradle.C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" />
       <item itemvalue="JAR Application.Paper" />
-      <item itemvalue="JUnit.RaceSessionTest" />
-      <item itemvalue="JUnit.StationManagementTest" />
-      <item itemvalue="JUnit.StationManagementTest.addStation" />
+      <item itemvalue="JUnit.RaceSessionTeamTest" />
+      <item itemvalue="JUnit.RaceSessionTeamTest.raceSession_TeamVictory" />
+      <item itemvalue="JUnit.RaceSessionTeamsTest" />
+      <item itemvalue="JUnit.TeamTest.setName" />
+      <item itemvalue="JUnit.java in raceCS" />
       <item itemvalue="Maven.raceCS [install]" />
       <item itemvalue="Remote JVM Debug.Attach to Spigot" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RaceSessionTest" />
-        <item itemvalue="JUnit.StationManagementTest" />
-        <item itemvalue="JUnit.StationManagementTest.addStation" />
-        <item itemvalue="Gradle.C:/Users/Joshua Jun/Documents/airCS Races/raceCSDummy" />
+        <item itemvalue="JUnit.RaceSessionTeamTest.raceSession_TeamVictory" />
+        <item itemvalue="JUnit.RaceSessionTeamTest" />
+        <item itemvalue="JUnit.TeamTest.setName" />
+        <item itemvalue="JUnit.java in raceCS" />
+        <item itemvalue="JUnit.RaceSessionTeamsTest" />
       </list>
     </recent_temporary>
   </component>
@@ -270,7 +279,10 @@
       <workItem from="1691448388439" duration="38000" />
       <workItem from="1691448433831" duration="2822000" />
       <workItem from="1691456038828" duration="2021000" />
-      <workItem from="1691458062521" duration="2819000" />
+      <workItem from="1691458062521" duration="19165000" />
+      <workItem from="1691497354886" duration="3787000" />
+      <workItem from="1692437094313" duration="154000" />
+      <workItem from="1692608116045" duration="4083000" />
     </task>
     <task id="LOCAL-00001" summary="Add in player selectors">
       <created>1618407461284</created>
@@ -323,7 +335,15 @@
       <option name="project" value="LOCAL" />
       <updated>1691459810778</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Add more unit tests">
+      <option name="closed" value="true" />
+      <created>1691461115201</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1691461115201</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -349,6 +369,7 @@
     <MESSAGE value="Usability Improvements" />
     <MESSAGE value="Add tests and teams" />
     <MESSAGE value="Add gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add gitignore" />
+    <MESSAGE value="Add more unit tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add more unit tests" />
   </component>
 </project>

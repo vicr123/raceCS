@@ -2,6 +2,7 @@ package omg.lol.jplexer.race.session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.j256.ormlite.dao.Dao;
 import kong.unirest.Unirest;
 import omg.lol.jplexer.race.PlayerStationTracker;
@@ -40,6 +41,27 @@ public class RaceSession implements Listener {
 
     public void teamUp() throws TeamOrganizationException {
         teams = new RaceSessionTeams(this, joinedPlayers);
+
+        var gson = new Gson();
+        var array = new JsonArray();
+        for (var team : teams.getTeams()) {
+            JsonObject jsonObj = new JsonObject();
+
+            jsonObj.addProperty("name", team.getName());
+            jsonObj.addProperty("id", team.getId());
+
+            JsonArray playersArray = new JsonArray();
+            for (String player : team.getMembers()) {
+                playersArray.add(player);
+            }
+            jsonObj.add("players", playersArray);
+            array.add(jsonObj);
+        }
+
+        Unirest.post("/teams")
+                .contentType("application/json")
+                .body(gson.toJson(array))
+                .asString();
     }
 
     public RaceSessionTeams getTeams() {
@@ -172,6 +194,8 @@ public class RaceSession implements Listener {
     }
 
     public void addPlayer(Player player) {
+        if (teams != null) return;
+
         joinedPlayers.add(player.getName());
         player.setAllowFlight(false);
         setupPlayer(player);
@@ -220,11 +244,31 @@ public class RaceSession implements Listener {
 
         logger.appendStationArrive(player, station);
         if (Objects.equals(station, terminalStation)) {
+            if (teams == null) {
+                //Count the number of stations this player has visited
+                if (visitedCount >= participatingStations.size()) {
+                    //Completion!
+                    processPlayerCompletion(player);
+                }
+            } else {
+                var team = teams.teamFor(player);
+                if (team.memberReturned(player)) return; // This player has already finished
 
-            //Count the number of stations this player has visited
-            if (visitedCount >= participatingStations.size()) {
-                //Completion!
-                processPlayerCompletion(player);
+                if (team.getVisitedStations().size() >= participatingStations.size()) {
+                    team.setMemberReturned(player);
+                    player.setAllowFlight(true);
+
+                    Unirest.post("/arrive/{player}/completion")
+                            .routeParam("player", player.getName())
+                            .asString();
+
+                    if (team.membersWaitingToReturn() == 0) {
+                        // Team completion!
+                        processTeamCompletion(team);
+                    } else {
+                        Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GREEN + player.getName() + " has returned to the terminal station. " + team.membersWaitingToReturn() + " more team members from " + team.getName() + " still need to return!");
+                    }
+                }
             }
         } else {
             if (!participatingStations.contains(station)) return;
@@ -246,11 +290,25 @@ public class RaceSession implements Listener {
             newEvent.station = station;
             events.add(newEvent);
 
-            Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GREEN + player.getName() + " has arrived at " + station.getHumanReadableName() + "!");
-            if (visitedCount + 1 == participatingStations.size()) {
-                Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + player.getName() + " has visited all the required stations and is now returning to the terminal station!");
-            } else if (visitedCount + 1 == (participatingStations.size() + 1) / 2) {
-                Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + player.getName() + " has visited half the required stations!");
+            if (teams == null) {
+                Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GREEN + player.getName() + " has arrived at " + station.getHumanReadableName() + "!");
+                if (visitedCount + 1 == participatingStations.size()) {
+                    Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + player.getName() + " has visited all the required stations and is now returning to the terminal station!");
+                } else if (visitedCount + 1 == (participatingStations.size() + 1) / 2) {
+                    Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + player.getName() + " has visited half the required stations!");
+                }
+            } else {
+                var team = teams.teamFor(player);
+                if (team.pushStation(station)) {
+                        Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GREEN + player.getName() + " has arrived at " + station.getHumanReadableName() + " and claimed it for " + team.getName() + "!");
+                    if (team.getVisitedStations().size() == participatingStations.size()) {
+                        Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GREEN + team.getName() + " has visited all the required stations and is now returning to the terminal station!");
+                    } else if (team.getVisitedStations().size() == (participatingStations.size() + 1) / 2) {
+                        Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + team.getName() + " has visited half the required stations!");
+                    }
+                } else {
+                    Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GREEN + player.getName() + " has arrived at " + station.getHumanReadableName() + "!");
+                }
             }
         }
     }
@@ -268,6 +326,20 @@ public class RaceSession implements Listener {
         //Play the SFX
         joinedPlayers.stream().map(player1 -> Race.getPlugin().getServer().getPlayer(player1)).filter(Objects::nonNull).forEach(player1 -> player1.playSound(player1.getLocation(), finishedPlayers.isEmpty() ? Sound.UI_TOAST_CHALLENGE_COMPLETE : Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 1));
         finishedPlayers.add(player.getName());
+
+        nextPlace++;
+    }
+
+    void processTeamCompletion(omg.lol.jplexer.race.session.Team team) {
+        Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + team.getName() + " has finished as #" + nextPlace + "!");
+
+        Unirest.post("/completion/team/{team}/{place}")
+                .routeParam("team", team.getId())
+                .routeParam("place", String.valueOf(nextPlace))
+                .asString();
+
+        //Play the SFX
+        joinedPlayers.stream().map(player1 -> Race.getPlugin().getServer().getPlayer(player1)).filter(Objects::nonNull).forEach(player1 -> player1.playSound(player1.getLocation(), finishedPlayers.isEmpty() ? Sound.UI_TOAST_CHALLENGE_COMPLETE : Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 1));
 
         nextPlace++;
     }
