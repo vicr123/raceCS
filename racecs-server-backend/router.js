@@ -143,7 +143,7 @@ router.post("/addUser/:username", async (req, res) => {
         res.sendStatus(400);
     });
 });
-router.post("/arrive/:username/completion", async (req, res) => {
+router.post("/arrive/:player/completion", async (req, res) => {
     if (!req.authorised) {
         res.sendStatus(401);
         return;
@@ -155,8 +155,10 @@ router.post("/arrive/:username/completion", async (req, res) => {
         time: (new Date()).getTime()
     })
 
-    const teamIndex = teams.findIndex(team => team.players.includes(req.params.username));
+    const teamIndex = teams.findIndex(team => team.players.includes(req.params.player));
     if (teamIndex === -1) {
+        console.log(`Could not process partial completion: player ${req.params.player} not found in teams`);
+        console.log(`Teams: ${JSON.stringify(teams, null, 4)}`);
         res.sendStatus(400);
         return;
     }
