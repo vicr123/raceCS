@@ -151,7 +151,7 @@ router.post("/arrive/:player/completion", async (req, res) => {
 
     events.push({
         type: "completion-partial",
-        player: req.params.username,
+        player: req.params.player,
         time: (new Date()).getTime()
     })
 
@@ -165,7 +165,7 @@ router.post("/arrive/:player/completion", async (req, res) => {
 
     const team = teams[teamIndex];
     if (!team.returned) team.returned = [];
-    team.returned.push(req.params.username);
+    team.returned.push(req.params.player);
 
     const remaining = team.players.length - team.returned.length;
     if (remaining === 0) {
@@ -178,12 +178,12 @@ router.post("/arrive/:player/completion", async (req, res) => {
                 name: "Finished!",
                 icon_url: "https://aircs.racing/finish_notification.png"
             },
-            description: `${req.params.username} has returned to the terminal station! Team ${team.name} has finished as #${place}!`,
+            description: `${req.params.player} has returned to the terminal station! Team "${team.name}" has finished as #${place}!`,
             color: 16753920
         });
         WebSocket.broadcast({
             "type": "completion-team",
-            "player": req.params.username,
+            "player": req.params.player,
             "team": team.name,
             "place": place
         });
@@ -193,12 +193,12 @@ router.post("/arrive/:player/completion", async (req, res) => {
                 name: "Player Returned!",
                 icon_url: "https://aircs.racing/collision_notification.png"
             },
-            description: `${req.params.username} from team ${team.name} has returned to the terminal station! ${remaining} more from the team required to return!`,
+            description: `${req.params.player} from team "${team.name}" has returned to the terminal station! ${remaining} more from the team required to return!`,
             color: 4360181
         });
         WebSocket.broadcast({
             "type": "completion-partial",
-            "player": req.params.username,
+            "player": req.params.player,
             "team": team.name,
             "remaining": remaining
         });
