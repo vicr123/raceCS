@@ -67,6 +67,40 @@ class NotificationDrawer extends React.Component {
                     });
                     break;
                 }
+                case "completion-partial": {
+                    this.pushNotification({
+                        "title": this.props.t("NOTIFICATION_PARTIAL_COMPLETION"),
+                        "message": this.props.t("NOTIFICATION_PARTIAL_COMPLETION_MESSAGE", {
+                            player: data.player,
+                            team: data.team,
+                            remaining: data.remaining
+                        }),
+                        "color": "white",
+                        "backgroundColor": "#4287f5",
+                        "key": `completion-partial-${data.player}`,
+                        "image": FlagIcon,
+                        "whiteIcon": WhiteFlagIcon,
+                        "type": "completionPartial"
+                    });
+                    break;
+                }
+                case "completion-team": {
+                    this.pushNotification({
+                        "title": this.props.t("NOTIFICATION_FINISH"),
+                        "message": this.props.t("NOTIFICATION_FINISH_TEAM_MESSAGE", {
+                            player: data.player,
+                            team: data.team,
+                            place: Common.getOrdinal(data.place)
+                        }),
+                        "color": "white",
+                        "backgroundColor": "orange",
+                        "key": `completion-team-${data.player}`,
+                        "image": FlagIcon,
+                        "whiteIcon": WhiteFlagIcon,
+                        "type": "completion"
+                    });
+                    break;
+                }
                 case "newPlayer":
                 case "removePlayer":
                     break;

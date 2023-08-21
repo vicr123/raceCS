@@ -143,6 +143,67 @@ router.post("/addUser/:username", async (req, res) => {
         res.sendStatus(400);
     });
 });
+router.post("/arrive/:username/completion", async (req, res) => {
+    if (!req.authorised) {
+        res.sendStatus(401);
+        return;
+    }
+
+    events.push({
+        type: "completion-partial",
+        player: req.params.username,
+        time: (new Date()).getTime()
+    })
+
+    const teamIndex = teams.findIndex(team => team.players.includes(req.params.username));
+    if (teamIndex === -1) {
+        res.sendStatus(400);
+        return;
+    }
+
+    const team = teams[teamIndex];
+    if (!team.returned) team.returned = [];
+    team.returned.push(req.params.username);
+
+    const remaining = team.players.length - team.returned.length;
+    if (remaining === 0) {
+        // Team wins!
+        const place = teams.length - teams.filter(team => !team.place).length + 1;
+        teams[teamIndex].place = place;
+
+        WebSocket.broadcastDiscord({
+            author: {
+                name: "Finished!",
+                icon_url: "https://aircs.racing/finish_notification.png"
+            },
+            description: `${req.params.username} has returned to the terminal station! Team ${team.name} has finished as #${place}!`,
+            color: 16753920
+        });
+        WebSocket.broadcast({
+            "type": "completion-team",
+            "player": req.params.username,
+            "team": team.name,
+            "place": place
+        });
+    } else {
+        WebSocket.broadcastDiscord({
+            author: {
+                name: "Player Returned!",
+                icon_url: "https://aircs.racing/collision_notification.png"
+            },
+            description: `${req.params.username} from team ${team.name} has returned to the terminal station! ${remaining} more from the team required to return!`,
+            color: 4360181
+        });
+        WebSocket.broadcast({
+            "type": "completion-partial",
+            "player": req.params.username,
+            "team": team.name,
+            "remaining": remaining
+        });
+    }
+
+    res.sendStatus(200);
+});
 router.post("/arrive/:username/:location", async (req, res) => {
     try {
         if (!req.authorised) {
@@ -224,6 +285,32 @@ router.post("/completion/:username/:place", async (req, res) => {
     events.push({
         type: "completion",
         player: req.params.username,
+        place: req.params.place,
+        time: (new Date()).getTime()
+    })
+
+    res.sendStatus(200);
+});
+router.post("/completion/team/:team/:place", async (req, res) => {
+    if (!req.authorised) {
+        res.sendStatus(401);
+        return;
+    }
+
+    if (!users[req.params.username]) {
+        res.sendStatus(400);
+        return;
+    }
+
+    for (let team of teams) {
+        if (team.id === req.params.team) {
+            team.place = parseInt(req.params.place);
+        }
+    }
+
+    events.push({
+        type: "completion",
+        player: req.params.team,
         place: req.params.place,
         time: (new Date()).getTime()
     })
