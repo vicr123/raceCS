@@ -1,5 +1,8 @@
 package omg.lol.jplexer.race.command.management;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.j256.ormlite.dao.Dao;
 import net.md_5.bungee.api.ChatColor;
 import omg.lol.jplexer.race.CommandUtils;
@@ -47,6 +50,9 @@ public class RaceManagement {
             case "addstation":
                 addStation(sender, args[1]);
                 break;
+            case "addstations":
+                addStations(sender, args[1]);
+                break;
             case "removestation":
                 removeStation(sender, args[1]);
                 break;
@@ -75,6 +81,14 @@ public class RaceManagement {
             case "close":
                 closeRace(sender);
                 break;
+        }
+    }
+
+    private static void addStations(CommandSender sender, String stations) {
+        var gson = new Gson();
+        var json = gson.fromJson(stations, JsonArray.class);
+        for (var station : json) {
+            addStation(sender, station.getAsString());
         }
     }
 
@@ -131,7 +145,7 @@ public class RaceManagement {
         final RaceSession raceSession = Race.getPlugin().getCurrentRace();
         if (args.length == 0) {
             if (raceSession == null || raceSession.isEnded()) return Arrays.asList("help", "register");
-            return Arrays.asList("help", "register", "deregister", "stations", "addstation", "removestation", "close", "setterminalstation", "credit", "teamup", "setteamname");
+            return Arrays.asList("help", "register", "deregister", "stations", "addstation", "addstations", "removestation", "close", "setterminalstation", "credit", "teamup", "setteamname");
         } else {
             Dao<Station, String> stationDao = Race.getPlugin().getStationDao();
 
@@ -158,9 +172,11 @@ public class RaceManagement {
                     if (raceSession == null || raceSession.isEnded()) return null;
                     if (args.length == 1) return RaceCompleter.completeList(Arrays.copyOfRange(args, 1, args.length), stations.stream().filter(station -> raceSession.getParticipatingStations().contains(station)).map(Station::getId).toArray(String[]::new));
                     return null;
+                case "addstations":
+                    return List.of("<json stations>");
                 default:
                     if (raceSession == null || raceSession.isEnded()) return Arrays.asList("help", "register");
-                    return Arrays.asList("help", "register", "deregister", "stations", "addstation", "removestation", "clearstations", "close", "setterminalstation", "credit", "teamup", "setteamname");
+                    return Arrays.asList("help", "register", "deregister", "stations", "addstation", "addstations", "removestation", "clearstations", "close", "setterminalstation", "credit", "teamup", "setteamname");
             }
         }
     }
