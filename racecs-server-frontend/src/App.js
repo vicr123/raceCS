@@ -220,7 +220,7 @@ class App extends React.Component {
     return <>
       <div className={`headerButton ${this.state.currentView === "leaderboard" && "selected"}`} onClick={this.changeView.bind(this, "leaderboard")}>{this.props.t("APP_LEADERBOARD")}</div>
       <div className={`headerButton ${this.state.currentView === "stations" && "selected"}`} onClick={this.changeView.bind(this, "stations")}>{this.props.t("APP_STATIONS")}</div>
-      {this.state.teamData?.length && <div className={`headerButton ${this.state.currentView === "teams" && "selected"}`} onClick={this.changeView.bind(this, "teams")}>{this.props.t("APP_TEAMS")}</div>}
+      {this.state.teamData?.length !== 0 && <div className={`headerButton ${this.state.currentView === "teams" && "selected"}`} onClick={this.changeView.bind(this, "teams")}>{this.props.t("APP_TEAMS")}</div>}
       <div className={`headerButton ${this.state.currentView === "players" && "selected"}`} onClick={this.changeView.bind(this, "players")}>{this.props.t("APP_PLAYERS")}</div>
     </>
   }
