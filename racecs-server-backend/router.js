@@ -173,13 +173,18 @@ router.post("/arrive/:player/completion", async (req, res) => {
         const place = teams.length - teams.filter(team => !team.place).length + 1;
         teams[teamIndex].place = place;
 
+        const body = `${req.params.player} has returned to the terminal station! Team "${team.name}" has finished as #${place}!`;
         WebSocket.broadcastDiscord({
             author: {
                 name: "Finished!",
                 icon_url: "https://aircs.racing/finish_notification.png"
             },
-            description: `${req.params.player} has returned to the terminal station! Team "${team.name}" has finished as #${place}!`,
+            description: body,
             color: 16753920
+        });
+        WebSocket.broadcastNotification({
+            body: body,
+            icon: "finish_notification.png"
         });
         WebSocket.broadcast({
             "type": "completion-team",
@@ -188,13 +193,18 @@ router.post("/arrive/:player/completion", async (req, res) => {
             "place": place
         });
     } else {
+        const body = `${req.params.player} from team "${team.name}" has returned to the terminal station! ${remaining} more from the team required to return!`;
         WebSocket.broadcastDiscord({
             author: {
                 name: "Player Returned!",
-                icon_url: "https://aircs.racing/collision_notification.png"
+                icon_url: "https://aircs.racing/returned_notification.png"
             },
-            description: `${req.params.player} from team "${team.name}" has returned to the terminal station! ${remaining} more from the team required to return!`,
+            description: body,
             color: 4360181
+        });
+        WebSocket.broadcastNotification({
+            body: body,
+            icon: "returned_notification.png"
         });
         WebSocket.broadcast({
             "type": "completion-partial",

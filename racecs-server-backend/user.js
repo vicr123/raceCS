@@ -17,12 +17,18 @@ class User {
 
         let isTeamVisitation = false;
         let body = `${this.username} has arrived at ${stationName}!`;
+        let icon = "login_notification.png";
+        let color = 0x008000;
         if (this.team) {
             if (!this.team.visited) this.team.visited = [];
             if (!this.team.visited.includes(station)) {
                 this.team.visited.push(station);
                 body = `${this.username} has arrived at ${stationName} and has claimed it for ${this.team.name}!`;
+                // icon = "login_notification.png";
                 isTeamVisitation = true;
+            } else {
+                icon = "arrive_no_claim_notification.png";
+                color = 0x808080;
             }
         }
 
@@ -34,16 +40,16 @@ class User {
             "team": isTeamVisitation ? this.team?.id : null
         });
         WebSocket.broadcastNotification({
-            body: body ,
-            icon: "login_notification.png"
+            body: body,
+            icon: icon
         });
         WebSocket.broadcastDiscord({
             author: {
                 name: "Arrival!",
-                icon_url: "https://aircs.racing/login_notification.png"
+                icon_url: `https://aircs.racing/${icon}`
             },
             description: body,
-            color: 32768
+            color: color
         });
     }
 
