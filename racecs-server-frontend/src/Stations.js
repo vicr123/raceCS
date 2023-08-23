@@ -1,6 +1,8 @@
 import React from 'react';
 import heads from './heads';
+import teamHeads from "./teamHeads"
 import { withTranslation } from 'react-i18next';
+import "core-js/features/object/group-by"
 
 class Stations extends React.Component {
     renderStations() {
@@ -34,17 +36,57 @@ class Stations extends React.Component {
     renderStation(station) {
         let els = [];
 
-        for (let username of Object.keys(this.props.playerData)) {
-            let user = this.props.playerData[username];
-            if (user.visited.includes(station)) {
-                let clickHandler = () => {
-                    this.props.onPlayerClicked({
-                        username: username,
-                        uuid: user.uuid
-                    });
-                };
-                els.push(<div className="leaderboardGridItem" key={`${username}-image`} onClick={clickHandler}><img height="30" src={heads(user.uuid)}></img></div>);
-                els.push(<div className="leaderboardGridItem" key={`${username}-username`} onClick={clickHandler}>{username}</div>)
+        if (this.props.teamData) {
+            const teams = Object.groupBy(Object.keys(this.props.playerData), username => {
+                return this.props.teamData.find(team => team.players.includes(username)).id;
+            })
+
+            for (const teamId of Object.keys(teams)) {
+                const teamClickHandler = () => {
+
+                }
+
+                const team = this.props.teamData.find(team => team.id === teamId);
+                if (team.visited.includes(station)) {
+                    els.push(<div className="leaderboardGridItem" key={`${teamId}-team-image`} onClick={teamClickHandler}><img height="30" src={teamHeads(teamId)}></img></div>);
+                    els.push(<div className="leaderboardGridItem" key={`${teamId}-team-name`} onClick={teamClickHandler}>{team.name}</div>)
+                }
+
+                const players = teams[teamId];
+                for (const username of players) {
+                    let playerClickHandler = () => {
+                        this.props.onPlayerClicked({
+                            username: username,
+                            uuid: user.uuid
+                        });
+                    };
+
+                    let user = this.props.playerData[username];
+                    if (user.visited.includes(station)) {
+                        els.push(<div className="leaderboardGridItem teamPlayerPadding" key={`${username}-image`}
+                                      onClick={playerClickHandler}><img height="30" src={heads(user.uuid)}></img>
+                        </div>);
+                        els.push(<div className="leaderboardGridItem" key={`${username}-username`}
+                                      onClick={playerClickHandler}>{username}</div>)
+                    }
+                }
+            }
+
+            // els.push(JSON.stringify(teams));
+        } else {
+            for (let username of Object.keys(this.props.playerData)) {
+                let user = this.props.playerData[username];
+                if (user.visited.includes(station)) {
+
+                    let playerClickHandler = () => {
+                        this.props.onPlayerClicked({
+                            username: username,
+                            uuid: user.uuid
+                        });
+                    };
+                    els.push(<div className="leaderboardGridItem" key={`${username}-image`} onClick={playerClickHandler}><img height="30" src={heads(user.uuid)}></img></div>);
+                    els.push(<div className="leaderboardGridItem" key={`${username}-username`} onClick={playerClickHandler}>{username}</div>)
+                }
             }
         }
 

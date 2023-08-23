@@ -21,7 +21,7 @@ class NotificationDrawer extends React.Component {
     componentDidMount() {
         this.props.websocket.on("message", data => {
             switch (data.type) {
-                case "visitation":
+                case "visitation": {
                     this.pushNotification({
                         "title": this.props.t("NOTIFICATION_ARRIVAL"),
                         "message": this.props.t("NOTIFICATION_ARRIVAL_MESSAGE", {
@@ -36,6 +36,7 @@ class NotificationDrawer extends React.Component {
                         "type": "visitation"
                     });
                     break;
+                }
                 case "collision":
                     this.pushNotification({
                         "title": this.props.t("NOTIFICATION_COLLISION"),

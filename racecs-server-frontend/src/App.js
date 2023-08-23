@@ -180,7 +180,7 @@ class App extends React.Component {
       case "players":
         return <Players stationData={this.state.stationData} playerData={this.state.playerData} selectPlayer={this.state.selectPlayer} />
       case "stations":
-        return <Stations stationData={this.state.stationData} playerData={this.state.playerData} onPlayerClicked={this.playerClicked.bind(this)} />
+        return <Stations stationData={this.state.stationData} playerData={this.state.playerData} teamData={this.state.teamData} onPlayerClicked={this.playerClicked.bind(this)} />
       case "teams":
         return <Teams stationData={this.state.stationData} playerData={this.state.playerData} teamData={this.state.teamData} />
       case "settings":
