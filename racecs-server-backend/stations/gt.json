@@ -5,6 +5,7 @@
     "AKL": "Auckland City",
     "ALI": "Ellis Island",
     "ANK": "Anaki",
+    "ASA": "Asia",
     "ATI": "Anatolia",
     "ATIA": "Anatolia International Airport",
     "BAP": "I'm in a bridge dress",
@@ -19,6 +20,7 @@
     "DT": "Download Melanie City",
     "DYI": "Dewey's way",
     "EGL": "be careful",
+    "FVW": "correct point of view",
     "IVC": "All cities",
     "LD": "Her field",
     "LI": "Wonderful day",
@@ -129,5 +131,7 @@
     "WTL": "The earth is full of water",
     "WVL": "Appropriate place",
     "YAV": "Japanese village",
-    "YLL": "yellow city"
+    "YLL": "yellow city",
+    "VDN": "veddon",
+    "SPA": "Sunpei Sebegan did it"
 }
