@@ -239,12 +239,14 @@ class App extends React.Component {
               <div className={`headerButton ${this.state.currentView === "home" && "selected"}`} onClick={this.changeView.bind(this, "home")}>{this.props.t("APP_HOME")}</div>
               {this.renderRaceOnlyItems()}
               <div className={`headerButton ${this.state.currentView === "aircsmap" && "selected"}`} onClick={this.changeView.bind(this, "aircsmap")}>{this.props.t("APP_AIRCS_MAP")}</div>
+              <div className={`headerButton ${this.state.currentView === "sqtrmap" && "selected"}`} onClick={this.changeView.bind(this, "sqtrmap")}>{this.props.t("APP_SQTR_MAP")}</div>
               <div className={`headerButton ${this.state.currentView === "settings" && "selected"}`} onClick={this.changeView.bind(this, "settings")}>{this.props.t("APP_SETTINGS")}</div>
             </div>
             <img src={aircs} style={{height: "100%", padding: "9px", boxSizing: "border-box"}}></img>
           </div>
           {this.renderMainView()}
           <iframe src="https://map.aircs.racing/" style={{flexGrow: 1, border: "none", display: this.state.currentView === "aircsmap" ? "block" : "none"}}/>
+          <div style={{flexGrow: 1, border: "none", display: this.state.currentView === "sqtrmap" ? "block" : "none", background: "url(https://sqtr.aircs.racing/assets/images/sqtrmap2023.png) center center/contain no-repeat"}} />
           <NotificationDrawer stationData={this.state.stationData} websocket={this.state.ws} onNotification={this.notificationPosted.bind(this)} />
         </>
         case "error":
