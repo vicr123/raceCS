@@ -7,6 +7,8 @@
     "APP_SETTINGS": "Settings",
     "APP_TEAMS": "Teams",
     "APP_AIRCS_MAP": "AirCS Map",
+    "APP_CLYRAIL_MAP": "Clyrail Map",
+    "APP_SQTR_MAP": "SQTR Map",
     "APP_LOADING": "Loading...",
     "APP_PLEASE_WAIT": "Please wait a second.",
     "APP_DISCONNECTED": "Disconnected",
