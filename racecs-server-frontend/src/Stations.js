@@ -36,7 +36,7 @@ class Stations extends React.Component {
     renderStation(station) {
         let els = [];
 
-        if (this.props.teamData) {
+        if (this.props.teamData?.length) {
             const teams = Object.groupBy(Object.keys(this.props.playerData), username => {
                 return this.props.teamData.find(team => team.players.includes(username)).id;
             })
