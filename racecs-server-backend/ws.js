@@ -7,12 +7,12 @@ const fetch = require('node-fetch');
 let websockets = [];
 
 const vapidDetails = {
-    // publicKey: fs.readFileSync("vapid-pubkey", {
-    //     encoding: "utf-8"
-    // }),
-    // privateKey: fs.readFileSync("vapid-privkey", {
-    //     encoding: "utf-8"
-    // }),
+    publicKey: fs.readFileSync("vapid-pubkey", {
+        encoding: "utf-8"
+    }),
+    privateKey: fs.readFileSync("vapid-privkey", {
+        encoding: "utf-8"
+    }),
     subject: "mailto:vicr12345@gmail.com"
 }
 
@@ -66,7 +66,8 @@ class WebSocket extends EventEmitter {
         }
 
         try {
-            await Promise.all(promises);
+            const result = await Promise.allSettled(promises);
+            console.log(result);
         } catch {
             
         }

@@ -6,6 +6,6 @@
     "mojang-api": "^0.0.2",
     "node-fetch": "^2.6.1",
     "react-arc-progress": "^1.0.2",
-    "web-push": "^3.4.4"
+    "web-push": "^3.6.4"
   }
 }
