@@ -53,8 +53,8 @@
     "NOTIFICATION_COLLISION": "Collision",
     "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} has collided with {{ player2 }}",
     "NOTIFICATION_FINISH": "Finished",
-    "NOTIFICATION_FINISH_MESSAGE": "{{ player }} has finished in {{ place }}",
+    "NOTIFICATION_FINISH_MESSAGE": "{{ player }} has finished as {{ place }}",
     "NOTIFICATION_PARTIAL_COMPLETION": "Returned",
     "NOTIFICATION_PARTIAL_COMPLETION_MESSAGE": "{{ player }} from team {{ team }} returned. {{ remaining }} to go!",
-    "NOTIFICATION_FINISH_TEAM_MESSAGE": "{{ player }} has returned. {{ team }} finished in {{ place }}"
+    "NOTIFICATION_FINISH_TEAM_MESSAGE": "{{ player }} has returned. {{ team }} finished as {{ place }}"
 }
