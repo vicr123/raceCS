@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.j256.ormlite.dao.Dao;
 import omg.lol.jplexer.race.models.Region;
 import omg.lol.jplexer.race.models.Station;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,6 +23,7 @@ public class PlayerStationTracker implements Listener {
     HashMap<Player, Station> currentStations = new HashMap<>();
     ArrayList<PlayerStationChangeListener> stationChangeListeners = new ArrayList<>();
     ArrayList<String> playerTracking = new ArrayList<>();
+    private final HashMap<Player, Location> playerLastLocations = new HashMap<>();
 
     PlayerStationTracker() {
         addStationChangeListener((player, station) -> {
@@ -56,6 +58,17 @@ public class PlayerStationTracker implements Listener {
     }
 
     private void handlePlayerMove(Player player) {
+        // Check for position change
+        var previousLocation = playerLastLocations.getOrDefault(player, null);
+        var currentLocation = player.getLocation().getBlock().getLocation();  // Ignore sub-block movements
+
+        if (previousLocation != null && previousLocation.equals(currentLocation)) {
+            return; // The player's integer position has not changed, do not proceed further
+        }
+
+        // Save current position as last known position
+        playerLastLocations.put(player, currentLocation);
+
         Dao<Region, Long> regionDao = Race.getPlugin().getRegionDao();
         if (!currentStations.containsKey(player)) currentStations.put(player, null);
 

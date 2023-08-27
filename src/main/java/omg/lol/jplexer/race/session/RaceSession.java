@@ -261,7 +261,7 @@ public class RaceSession implements Listener {
 
                     Unirest.post("/arrive/{player}/completion")
                             .routeParam("player", player.getName())
-                            .asString();
+                            .asStringAsync();
 
                     if (team.membersWaitingToReturn() == 0) {
                         // Team completion!
@@ -284,7 +284,7 @@ public class RaceSession implements Listener {
             Unirest.post("/arrive/{player}/{location}")
                     .routeParam("player", player.getName())
                     .routeParam("location", station.getId())
-                    .asString();
+                    .asStringAsync();
 
             StationEvent newEvent = new StationEvent();
             newEvent.player = player.getName();
@@ -322,7 +322,7 @@ public class RaceSession implements Listener {
         Unirest.post("/completion/{player}/{place}")
                 .routeParam("player", player.getName())
                 .routeParam("place", String.valueOf(nextPlace))
-                .asString();
+                .asStringAsync();
 
         //Play the SFX
         joinedPlayers.stream().map(player1 -> Race.getPlugin().getServer().getPlayer(player1)).filter(Objects::nonNull).forEach(player1 -> player1.playSound(player1.getLocation(), finishedPlayers.isEmpty() ? Sound.UI_TOAST_CHALLENGE_COMPLETE : Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 1));
@@ -337,7 +337,7 @@ public class RaceSession implements Listener {
         Unirest.post("/completion/team/{team}/{place}")
                 .routeParam("team", team.getId())
                 .routeParam("place", String.valueOf(nextPlace))
-                .asString();
+                .asStringAsync();
 
         //Play the SFX
         joinedPlayers.stream().map(player1 -> Race.getPlugin().getServer().getPlayer(player1)).filter(Objects::nonNull).forEach(player1 -> player1.playSound(player1.getLocation(), finishedPlayers.isEmpty() ? Sound.UI_TOAST_CHALLENGE_COMPLETE : Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 1));
