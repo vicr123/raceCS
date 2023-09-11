@@ -23,9 +23,21 @@ function TeamItem({team, onSetCurrentTeam, currentTeam}) {
     </div>
 }
 
-function TeamProgress({team}) {
-    return <div>
-        Team Progress thing
+function TeamProgress({team, claimed, total}) {
+    const {t} = useTranslation();
+
+    return <div className={Styles.teamProgress}>
+        <div className={Styles.teamProgressBar}>
+            <div className={Styles.teamProgressBarFill} style={{width: `${claimed / total * 100}%`}} />
+        </div>
+        <div className={Styles.teamProgressClaimed}>
+            <span className={Styles.teamProgressBigNum}>{claimed}</span>
+            <span>{t("STATIONS_CLAIMED")}</span>
+        </div>
+        <div className={Styles.teamProgressRemaining}>
+            <span className={Styles.teamProgressBigNum}>{total - claimed}</span>
+            <span>{t("STATIONS_REMAINING")}</span>
+        </div>
     </div>
 }
 
@@ -51,7 +63,7 @@ function TeamData({team, playerData, stationData}) {
 
     return <div className={Styles.teamData}>
         <span className={Styles.teamDataHeader}>{t("STATION_PROGRESS")}</span>
-        <TeamProgress team={team} />
+        <TeamProgress team={team} claimed={claimed.length} total={claimed.length + unclaimed.length} />
         <div className={Styles.teamDataGrid}>
             <Headed className={Styles.teamDataClaimed} title={t("CLAIMED_STATIONS")}>
                 {claimed.length ? <div className={"playerStatsSectionContents playerStationList"}>

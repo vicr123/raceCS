@@ -100,3 +100,42 @@
     align-items: center;
     gap: 9px;
 }
+
+.teamProgress {
+    display: grid;
+
+    grid-template-areas: "progress progress"
+        "claimed remain";
+}
+
+.teamProgressBar {
+    grid-area: progress;
+
+    display: flex;
+
+    background: rgb(204, 0, 0);
+    height: 10px;
+}
+
+.teamProgressBarFill {
+    background: rgb(0, 200, 0);
+}
+
+.teamProgressClaimed {
+    grid-area: claimed;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.teamProgressRemaining {
+    grid-area: remain;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.teamProgressBigNum {
+    font-size: 15pt;
+}

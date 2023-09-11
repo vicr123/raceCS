@@ -39,6 +39,8 @@
     "PLAYERSTATS_ALL_VISITED": "All stations visited!",
     "PLAYERSTATS_NONE_VISITED": "No stations visited yet!",
     "STATION_PROGRESS": "Station Progress",
+    "STATIONS_CLAIMED": "stations claimed",
+    "STATIONS_REMAINING": "stations remaining",
     "STATIONS_NO_ARRIVALS": "No one has arrived at this station!",
     "SETTINGS_NOTIFICATIONS": "NOTIFICATIONS",
     "SETTINGS_NOTIFICATIONS_DESCRIPTION": "Enable notifications to get AirCS Race updates in the background.",
