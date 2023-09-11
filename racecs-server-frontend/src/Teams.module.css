@@ -1,0 +1,102 @@
+.root {
+    padding: 9px;
+    flex-grow: 1;
+
+    display: grid;
+    grid-template-areas: "list details";
+    grid-template-columns: 500px 1fr;
+    gap: 15px;
+}
+
+.headed {
+    background: white;
+    color: black;
+
+    display: grid;
+    grid-template-areas: "title"
+        "content";
+    grid-template-rows: max-content 1fr;
+}
+
+.headedTitle {
+    grid-area: title;
+    padding: 9px;
+    color: white;
+    background: #707070;
+}
+
+.headedChildren {
+    grid-area: content;
+}
+
+.teamList {
+    grid-area: list;
+}
+
+.teamListItem {
+    padding: 9px;
+    cursor: pointer;
+}
+
+.teamListItemSelected {
+    background-color: rgb(204, 0, 0);
+    color: white;
+}
+
+.teamData {
+    height: 100%;
+    padding: 9px;
+    box-sizing: border-box;
+
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.teamDataHeader {
+    font-size: 18pt;
+}
+
+.teamDataGrid {
+    flex-grow: 1;
+    display: grid;
+
+    grid-template-areas: "claimed remain"
+        "members members";
+    grid-template-rows: 1fr 1fr;
+    gap: 15px;
+}
+
+.teamDataClaimed {
+    grid-area: claimed;
+    border: 1px solid #707070;
+}
+
+.teamDataRemain {
+    grid-area: remain;
+    border: 1px solid #707070;
+}
+
+.teamDataMembers {
+    grid-area: members;
+    border: 1px solid #707070;
+}
+
+.teamDataMembersContent {
+    display: grid;
+    grid-template-columns: max-content max-content 1fr;
+    align-items: center;
+}
+
+.teamDataMembersContentItem {
+    padding: 9px;
+}
+
+.interstitial {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+}

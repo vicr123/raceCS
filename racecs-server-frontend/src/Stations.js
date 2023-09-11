@@ -47,7 +47,7 @@ class Stations extends React.Component {
                 }
 
                 const team = this.props.teamData.find(team => team.id === teamId);
-                if (team.visited.includes(station)) {
+                if (team.visited?.includes(station)) {
                     els.push(<div className="leaderboardGridItem" key={`${teamId}-team-image`} onClick={teamClickHandler}><img height="30" src={teamHeads(teamId)}></img></div>);
                     els.push(<div className="leaderboardGridItem" key={`${teamId}-team-name`} onClick={teamClickHandler}>{team.name}</div>)
                 }

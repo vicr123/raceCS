@@ -35,7 +35,7 @@ class Speedo extends React.Component {
     }
 }
 
-class StationItem extends React.Component {
+export class StationItem extends React.Component {
     render() {
         return <>
             <div className={"playerStationListShortcode"}>{this.props.station}</div>
