@@ -113,7 +113,27 @@ class App extends React.Component {
               teamData: teams
             }
           })
-              break;
+          break;
+        case "completion-partial":
+        case "completion-team":
+          this.setState(state => {
+            let teams = JSON.parse(JSON.stringify(state.teamData));
+
+            for (let team of teams) {
+              if (team.id === data.teamId) {
+                if (!team.returned) team.returned = [];
+                team.returned.push(data.player)
+
+                if (data.place) {
+                  team.place = data.place;
+                }
+              }
+            }
+
+            return {
+              teamData: teams
+            }
+          })
         case "stationChange":
           await Promise.all([
             await this.updatePlayers(),

@@ -190,6 +190,7 @@ router.post("/arrive/:player/completion", async (req, res) => {
             "type": "completion-team",
             "player": req.params.player,
             "team": team.name,
+            "teamId": team.id,
             "place": place
         });
     } else {
@@ -210,6 +211,7 @@ router.post("/arrive/:player/completion", async (req, res) => {
             "type": "completion-partial",
             "player": req.params.player,
             "team": team.name,
+            "teamId": team.id,
             "remaining": remaining
         });
     }
