@@ -53,17 +53,17 @@
   "SETTINGS_LOCALE_DESCRIPTION": "Change the language of the universe",
   "SETTINGS_LOCALE_SYSTEM": "System Stardust",
   "TEAM_DATA_MEMBERS": "Galaxy Gathering Members",
-  "TEAM_DATA_TITLE": "Team {{ Martian Martians }}",
+  "TEAM_DATA_TITLE": "Team {{ teamName }}",
   "TEAMS_LIST": "Galaxy Gatherings Guide",
   "NOTIFICATION_ARRIVAL": "Cosmic Check-in",
   "SETTINGS_STATION_LOCALE": "ROCKET RESTAURANT LANGUAGE",
   "SETTINGS_STATION_LOCALE_DESCRIPTION": "Alter the Galactic Gossip",
-  "NOTIFICATION_ARRIVAL_MESSAGE": "{{ Alien }} just landed on {{ Pluto }}",
+  "NOTIFICATION_ARRIVAL_MESSAGE": "{{ user }} just landed on {{ stationName }}",
   "NOTIFICATION_COLLISION": "Cosmic Clash",
-  "NOTIFICATION_COLLISION_MESSAGE": "{{ Martian1 }} just high-fived {{ Martian2 }}",
+  "NOTIFICATION_COLLISION_MESSAGE": "{{ player1 }} just high-fived {{ player2 }}",
   "NOTIFICATION_FINISH": "Final Frontier",
-  "NOTIFICATION_FINISH_MESSAGE": "{{ Alien }} just lapped the Milky Way as {{ rank }}",
+  "NOTIFICATION_FINISH_MESSAGE": "{{ user }} just lapped the Milky Way as {{ place }}",
   "NOTIFICATION_PARTIAL_COMPLETION": "Partial Parsec Progress",
-  "NOTIFICATION_PARTIAL_COMPLETION_MESSAGE": "{{ Martian }} from the {{ Milky Way Wanderers }} returned. {{ remaining }} more laps!",
-  "NOTIFICATION_FINISH_TEAM_MESSAGE": "{{ Martian }} fetched the flag. {{ Milky Way Wanderers }} won the universe as {{ rank }}"
+  "NOTIFICATION_PARTIAL_COMPLETION_MESSAGE": "{{ player }} from the {{ team }} returned. {{ remaining }} more laps!",
+  "NOTIFICATION_FINISH_TEAM_MESSAGE": "{{ player }} fetched the flag. {{ team }} won the universe as {{ place }}"
 }
