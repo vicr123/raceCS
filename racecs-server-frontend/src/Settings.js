@@ -131,6 +131,7 @@ class Settings extends React.Component {
             <option value="ro">Română</option>
             <option value="vi">Tiếng Việt</option>
             <option value="gt">Translation (Google)</option>
+            <option value="ai">AI Generated Absurdities</option>
         </select>
     }
 
@@ -155,6 +156,7 @@ class Settings extends React.Component {
             <option value="pt_BR">português</option>
             <option value="vi">Tiếng Việt</option>
             <option value="gt">Translation (Google)</option>
+            <option value="ai">AI Generated Absurdities</option>
         </select>
     }
 
