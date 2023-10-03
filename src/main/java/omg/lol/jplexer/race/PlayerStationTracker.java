@@ -97,6 +97,14 @@ public class PlayerStationTracker implements Listener {
         return currentStations.getOrDefault(player, null) != null;
     }
 
+    public boolean isInStation(Player player, String station) {
+        try {
+            return currentStations.getOrDefault(player, null).getId().equals(station);
+        } catch (NullPointerException ex) {
+            return false;
+        }
+    }
+
     public void addStationChangeListener(PlayerStationChangeListener listener) {
         stationChangeListeners.add(listener);
     }

@@ -8,15 +8,26 @@ import kong.unirest.Unirest;
 import omg.lol.jplexer.race.PlayerStationTracker;
 import omg.lol.jplexer.race.Race;
 import omg.lol.jplexer.race.models.Station;
+import org.apache.commons.text.similarity.FuzzyScore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -24,14 +35,17 @@ import org.bukkit.scoreboard.Team;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RaceSession implements Listener {
     private final ArrayList<String> joinedPlayers = new ArrayList<>();
     private ArrayList<Station> participatingStations = new ArrayList<>();
     private final ArrayList<String> finishedPlayers = new ArrayList<>();
+    public final Map<String, LocalDateTime> lastPotionGiven = new HashMap<>();
     private Station terminalStation;
     private boolean isActive = true;
     private int nextPlace = 1;
@@ -101,7 +115,7 @@ public class RaceSession implements Listener {
 
         ArrayList<Station> participatingStations = new ArrayList<>();
         stationDao.forEach(station -> {
-            if (!Objects.equals(station, terminalStation) && !station.getId().equals("ACS")) participatingStations.add(station);
+            if (!Objects.equals(station, terminalStation) && !station.getId().equals("ACS") && !station.getId().equals("FCO")) participatingStations.add(station);
         });
 
         try {
@@ -358,6 +372,67 @@ public class RaceSession implements Listener {
         this.terminalStation = terminalStation;
     }
 
+    private boolean pushIntoInventory(Player player, ItemStack item) {
+        PlayerInventory inventory = player.getInventory();
+
+        boolean addedSuccessfully = false;
+//        for(int i = 0; i < 9; i++) { // Hotbar is slots 0 to 8 in the PlayerInventory
+//            var current = inventory.getItem(i);
+//
+//            if (current != null && current.getType() != Material.AIR) {
+//                continue;
+//            }
+//
+//            inventory.setItem(i, item);
+//            addedSuccessfully = true;
+//            break;
+//        }
+
+        // If not added to hotbar, add it to the main inventory
+        if (!addedSuccessfully) {
+            var remaining = inventory.addItem(item);
+             addedSuccessfully = remaining.isEmpty();
+        }
+        return addedSuccessfully;
+    }
+
+    public void issuePotion(Player player) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime lastRun = lastPotionGiven.getOrDefault(player.getName(), now.minusMinutes(5));
+        long minutesSinceLastRun = ChronoUnit.MINUTES.between(lastRun, now);
+
+        if (minutesSinceLastRun >= 5) {
+            lastPotionGiven.put(player.getName(), now);
+
+            var itemStack = new ItemStack(Material.POTION);
+            var meta = (PotionMeta) itemStack.getItemMeta();
+
+            // Dice roll!
+            if (Math.random() < 0.3) {
+                meta.setBasePotionData(new PotionData(PotionType.WATER, false, false));
+            } else {
+                if (Math.random() < 0.05) {
+                    // Super potion!!!
+                    meta.setBasePotionData(new PotionData(PotionType.SPEED, false, true));
+                } else {
+                    // Standard potion
+                    meta.setBasePotionData(new PotionData(PotionType.SPEED, false, false));
+                }
+            }
+            itemStack.setItemMeta(meta);
+
+            if (pushIntoInventory(player, itemStack)) {
+                player.sendMessage(ChatColor.GREEN + "Thank you for choosing FrivoloCo Chocolates! Enjoy your treat and have a fantastic day. We look forward to serving you again soon!");
+            } else {
+                player.sendMessage(ChatColor.RED + "Sorry, your inventory is full.");
+            }
+        } else {
+            long minutesToWait = 5 - minutesSinceLastRun;
+            player.sendMessage(ChatColor.RED + "You can only receive a potion every 5 minutes. You can receive another one in %d minutes.".formatted(minutesToWait));
+        }
+
+    }
+
     public void playersCollided(Player p1, Player p2) {
         logger.appendCollision(p1, p2);
     }
@@ -365,8 +440,7 @@ public class RaceSession implements Listener {
     @EventHandler
     public void onEntityDismount(EntityDismountEvent event) {
         if (!isActive) return;
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             if (joinedPlayers.contains(player.getName())) {
                 if (event.getDismounted() instanceof Minecart || event.getDismounted() instanceof Boat) {
                     Bukkit.getScheduler().runTaskLater(Race.getPlugin(), () -> event.getDismounted().remove(), 1);
@@ -380,4 +454,57 @@ public class RaceSession implements Listener {
         if (!isActive) return;
         setupPlayer(event.getPlayer());
     }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        // The player who sent the message
+        Player player = event.getPlayer();
+        if (!joinedPlayers.contains(player.getName())) return; //This player is not in the race
+
+        // The chat message
+        String message = event.getMessage();
+
+        FuzzyScore fs = new FuzzyScore(Locale.getDefault());
+        String desired = "i want 2 order";
+        int score = fs.fuzzyScore(desired, message.toLowerCase());
+
+        // Do something with these...
+        if (score > 10)
+            Race.getPlugin().getServer().getScheduler().runTaskLater(Race.getPlugin(), () -> {
+                if (Race.getPlugin().getStationTracker().isInStation(player, "FCO")) {
+                    issuePotion(player);
+                } else {
+                    player.sendMessage(ChatColor.RED + "*crickets chirp* - no one could hear your order. Please visit a FrivoloCo Chocolates location in order to receive your free coffee!");
+                }
+            }, 5);
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        // The player who dropped the item
+        var player = event.getPlayer();
+        if (!joinedPlayers.contains(player.getName())) return; //This player is not in the race
+
+        // The item that was dropped
+        var item = event.getItemDrop().getItemStack();
+
+        // Do something with these...
+        if (item.getItemMeta() instanceof PotionMeta) {
+            event.getPlayer().sendMessage("Sorry, you can't drop potions during an AirCS race.");
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDrinkPotion(PlayerItemConsumeEvent event) {
+        var player = event.getPlayer();
+        if (!joinedPlayers.contains(player.getName())) return; //This player is not in the race
+
+        var item = event.getItem();
+
+        if (item.getType() == Material.POTION) {
+            player.getInventory().removeItem(item);
+        }
+    }
+
 }
