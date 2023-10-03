@@ -11,6 +11,8 @@ import omg.lol.jplexer.race.session.RaceSession;
 import omg.lol.jplexer.race.command.RaceCompleter;
 import omg.lol.jplexer.race.models.Station;
 import omg.lol.jplexer.race.session.TeamOrganizationException;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -409,19 +411,26 @@ public class RaceManagement {
                 return;
             }
 
-            Entity[] targets = CommandUtils.getTargets(sender, player);
+//            Entity[] targets = CommandUtils.getTargets(sender, player);
+            var offlinePlayer = Bukkit.getOfflinePlayer(player);
             int failCount = 0;
-            for (Entity target : targets) {
-                if (!(target instanceof Player)) {
+//            for (Entity target : targets) {
+//                if (!(target instanceof Player)) {
+//                    failCount++;
+//                    continue;
+//                }
+
+                var penalty = currentRace.isPlayerPenalised(offlinePlayer);
+                if (penalty > 0) {
+                    sender.sendMessage("Unable to credit %s with the station %s because they have a remaining penalty of %d seconds.".formatted(offlinePlayer.getName(), stationObject.getHumanReadableName(), penalty));
                     failCount++;
-                    continue;
+                } else {
+                    currentRace.processStationArrived(offlinePlayer, stationObject);
+                    sender.sendMessage(offlinePlayer.getName() + " has been credited for arriving at " + stationObject.getHumanReadableName() + ".");
                 }
 
-                currentRace.processStationArrived((Player) target, stationObject);
-
-                sender.sendMessage(sender.getName() + " has been credited for arriving at " + stationObject.getHumanReadableName() + ".");
-            }
-            if (failCount > 0) sender.sendMessage(failCount + " targets could not be credited.");
+//            }
+//            if (failCount > 0) sender.sendMessage(failCount + " targets could not be credited.");
         } catch (SQLException e) {
             sender.sendMessage("Couldn't add that station");
         }

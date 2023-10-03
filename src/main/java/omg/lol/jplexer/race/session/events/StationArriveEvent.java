@@ -2,6 +2,7 @@ package omg.lol.jplexer.race.session.events;
 
 import com.google.gson.JsonObject;
 import omg.lol.jplexer.race.models.Station;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ public class StationArriveEvent implements SessionEvent {
     private final UUID playerUuid;
     private final Station station;
     
-    public StationArriveEvent(Player player, Station station) {
+    public StationArriveEvent(OfflinePlayer player, Station station) {
         playerUuid = player.getUniqueId();
         this.station = station;
         date = new Date(System.currentTimeMillis());

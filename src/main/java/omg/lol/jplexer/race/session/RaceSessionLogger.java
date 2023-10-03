@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import omg.lol.jplexer.race.models.Station;
 import omg.lol.jplexer.race.session.events.*;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -53,7 +54,7 @@ public class RaceSessionLogger {
         this.write();
     }
 
-    public void appendStationArrive(Player player, Station station) {
+    public void appendStationArrive(OfflinePlayer player, Station station) {
         lastStation.put(player.getUniqueId(), station);
         events.add(new StationArriveEvent(player, station));
         for (var event : leaveEvents) event.playerArrivedAtStation(player, station);
@@ -67,7 +68,7 @@ public class RaceSessionLogger {
         this.write();
     }
 
-    public void appendPlayerFinished(Player player, int place) {
+    public void appendPlayerFinished(OfflinePlayer player, int place) {
         events.add(new PlayerFinishedEvent(player, place));
         this.write();
     }

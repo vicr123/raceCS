@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import kong.unirest.Unirest;
 import omg.lol.jplexer.race.models.Station;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class Team {
         return this.members;
     }
 
-    public boolean hasPlayer(Player player) {
+    public boolean hasPlayer(OfflinePlayer player) {
         return members.contains(player.getName());
     }
 
@@ -66,11 +67,11 @@ public class Team {
                 .asString();
     }
 
-    public void setMemberReturned(Player player) {
+    public void setMemberReturned(OfflinePlayer player) {
         membersReturning.remove(player.getName());
     }
 
-    public boolean memberReturned(Player player) {
+    public boolean memberReturned(OfflinePlayer player) {
         return !membersReturning.contains(player.getName());
     }
 

@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Optimize REST API calls and player movement tracking&#10;&#10;Made REST API calls asynchronous using 'asStringAsync()' method. This was done to eliminate potential bottlenecks in the game flow due to synchronous execution of REST API calls. Also optimized player movement tracking in 'PlayerStationTracker.java'. Now, the tracking mechanism checks the player's integer position changes, ignoring sub-block movements for more efficient tracking. This adjustment was needed to reduce unnecessary processing caused by sub-block player movements.">
+    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add FCo integration">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/PlayerStationTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/PlayerStationTracker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionTeams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionTeams.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/PlayerFinishedEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/PlayerFinishedEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationArriveEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationArriveEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationLeaveEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationLeaveEvent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -283,7 +288,7 @@
       <workItem from="1693007584249" duration="6768000" />
       <workItem from="1694418898823" duration="4687000" />
       <workItem from="1695700332366" duration="8510000" />
-      <workItem from="1696303819978" duration="883000" />
+      <workItem from="1696303819978" duration="6169000" />
     </task>
     <task id="LOCAL-00001" summary="Add in player selectors">
       <created>1618407461284</created>
@@ -376,7 +381,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693122283705</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Add FCo integration">
+      <option name="closed" value="true" />
+      <created>1696312502127</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1696312502127</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -407,6 +420,7 @@
     <MESSAGE value="Implement addstations command" />
     <MESSAGE value="Don't allow team to continually win" />
     <MESSAGE value="Optimize REST API calls and player movement tracking&#10;&#10;Made REST API calls asynchronous using 'asStringAsync()' method. This was done to eliminate potential bottlenecks in the game flow due to synchronous execution of REST API calls. Also optimized player movement tracking in 'PlayerStationTracker.java'. Now, the tracking mechanism checks the player's integer position changes, ignoring sub-block movements for more efficient tracking. This adjustment was needed to reduce unnecessary processing caused by sub-block player movements." />
-    <option name="LAST_COMMIT_MESSAGE" value="Optimize REST API calls and player movement tracking&#10;&#10;Made REST API calls asynchronous using 'asStringAsync()' method. This was done to eliminate potential bottlenecks in the game flow due to synchronous execution of REST API calls. Also optimized player movement tracking in 'PlayerStationTracker.java'. Now, the tracking mechanism checks the player's integer position changes, ignoring sub-block movements for more efficient tracking. This adjustment was needed to reduce unnecessary processing caused by sub-block player movements." />
+    <MESSAGE value="Add FCo integration" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>

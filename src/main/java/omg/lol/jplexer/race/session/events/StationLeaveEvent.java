@@ -7,6 +7,7 @@ import com.google.gson.JsonPrimitive;
 import omg.lol.jplexer.race.Race;
 import omg.lol.jplexer.race.models.Station;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Date;
@@ -31,7 +32,7 @@ public class StationLeaveEvent implements SessionEvent {
         date = new Date(System.currentTimeMillis());
     }
 
-    public void playerArrivedAtStation(Player player, Station station) {
+    public void playerArrivedAtStation(OfflinePlayer player, Station station) {
         if (this.possibleTarget == null && player.getUniqueId() == playerUuid && (this.station == null || !station.getId().equals(this.station.getId()))) this.possibleTarget = station;
     }
 

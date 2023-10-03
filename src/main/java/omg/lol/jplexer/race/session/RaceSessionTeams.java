@@ -1,5 +1,6 @@
 package omg.lol.jplexer.race.session;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class RaceSessionTeams {
         teams = teamUpPlayers(joinedPlayers);
     }
 
-    public Team teamFor(Player player) {
+    public Team teamFor(OfflinePlayer player) {
         return teams.stream().filter(x -> x.hasPlayer(player)).findFirst().orElseThrow();
     }
 

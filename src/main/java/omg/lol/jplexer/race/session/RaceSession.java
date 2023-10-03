@@ -9,25 +9,22 @@ import omg.lol.jplexer.race.PlayerStationTracker;
 import omg.lol.jplexer.race.Race;
 import omg.lol.jplexer.race.models.Station;
 import org.apache.commons.text.similarity.FuzzyScore;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryCreativeEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -35,23 +32,40 @@ import org.bukkit.scoreboard.Team;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class RaceSession implements Listener {
     private final ArrayList<String> joinedPlayers = new ArrayList<>();
     private ArrayList<Station> participatingStations = new ArrayList<>();
     private final ArrayList<String> finishedPlayers = new ArrayList<>();
     public final Map<String, LocalDateTime> lastPotionGiven = new HashMap<>();
+    public final Map<String, LocalDateTime> penalties = new HashMap<>();
     private Station terminalStation;
     private boolean isActive = true;
     private int nextPlace = 1;
     private final Scoreboard scoreboard;
     private final RaceSessionLogger logger;
     private RaceSessionTeams teams = null;
+
+    static Set<Material> INVENTORY_WHITELIST = new HashSet<>();
+
+    static {
+        // Add your approved materials to the whitelist
+        INVENTORY_WHITELIST.add(Material.MINECART);
+        INVENTORY_WHITELIST.add(Material.BIRCH_BOAT);
+        INVENTORY_WHITELIST.add(Material.OAK_BOAT);
+        INVENTORY_WHITELIST.add(Material.ACACIA_BOAT);
+        INVENTORY_WHITELIST.add(Material.JUNGLE_BOAT);
+        INVENTORY_WHITELIST.add(Material.SPRUCE_BOAT);
+        INVENTORY_WHITELIST.add(Material.DARK_OAK_BOAT);
+        INVENTORY_WHITELIST.add(Material.DIAMOND_SWORD);
+        INVENTORY_WHITELIST.add(Material.STONE_SWORD);
+        INVENTORY_WHITELIST.add(Material.GOLDEN_SWORD);
+        INVENTORY_WHITELIST.add(Material.IRON_SWORD);
+        INVENTORY_WHITELIST.add(Material.NETHERITE_BOOTS);
+    }
 
     public void teamUp() throws TeamOrganizationException {
         teams = new RaceSessionTeams(this, joinedPlayers);
@@ -205,6 +219,7 @@ public class RaceSession implements Listener {
 
     private void setupPlayer(Player player) {
         scoreboard.getTeam("aircs-race").addEntry(player.getName());
+        penalties.remove(player.getName());
     }
 
     public void addPlayer(Player player) {
@@ -251,9 +266,23 @@ public class RaceSession implements Listener {
         logger.appendStationLeave(player);
     }
 
-    public void processStationArrived(Player player, Station station) {
+    public long isPlayerPenalised(OfflinePlayer player) {
+        if (!penalties.containsKey(player.getName())) {
+            return 0;
+        }
+
+        var penalty = penalties.get(player.getName());
+        if (!LocalDateTime.now().isBefore(penalty)) {
+            return 0;
+        }
+
+        return ChronoUnit.SECONDS.between(LocalDateTime.now(), penalty);
+    }
+
+    public void processStationArrived(OfflinePlayer player, Station station) {
         if (!joinedPlayers.contains(player.getName())) return; //This player is not in the race
         if (finishedPlayers.contains(player.getName())) return; //This player has already finished
+
         long visitedCount = events.stream().filter(event -> event instanceof StationEvent).filter(event -> Objects.equals(((StationEvent) event).player, player.getName())).count();
 
         logger.appendStationArrive(player, station);
@@ -271,7 +300,9 @@ public class RaceSession implements Listener {
 
                 if (team.getVisitedStations().size() >= participatingStations.size()) {
                     team.setMemberReturned(player);
-                    player.setAllowFlight(true);
+                    if (player instanceof Player onlinePlayer) {
+                        onlinePlayer.setAllowFlight(true);
+                    }
 
                     Unirest.post("/arrive/{player}/completion")
                             .routeParam("player", player.getName())
@@ -328,10 +359,13 @@ public class RaceSession implements Listener {
         }
     }
 
-    void processPlayerCompletion(Player player) {
+    void processPlayerCompletion(OfflinePlayer player) {
         Race.getPlugin().getServer().broadcastMessage(Race.CHAT_PREFIX + ChatColor.GOLD + player.getName() + " has finished as #" + nextPlace + "!");
         logger.appendPlayerFinished(player, nextPlace);
-        player.setAllowFlight(true);
+
+        if (player instanceof Player onlinePlayer) {
+            onlinePlayer.setAllowFlight(true);
+        }
 
         Unirest.post("/completion/{player}/{place}")
                 .routeParam("player", player.getName())
@@ -457,6 +491,7 @@ public class RaceSession implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
+        if (!isActive) return;
         // The player who sent the message
         Player player = event.getPlayer();
         if (!joinedPlayers.contains(player.getName())) return; //This player is not in the race
@@ -507,4 +542,58 @@ public class RaceSession implements Listener {
         }
     }
 
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        if (!isActive) return;
+        var player = event.getPlayer();
+        if (!joinedPlayers.contains(player.getName())) return; //This player is not in the race
+
+        // Find the distance between the player and Central station
+        var loc = player.getLocation().clone();
+        if (loc.getWorld().getEnvironment() == World.Environment.NETHER) {
+            loc.setX(loc.getX() * 8);
+            loc.setZ(loc.getZ() * 8);
+        }
+
+        var distance = loc.distance(new Location(loc.getWorld(), 0, loc.getY(), 0));
+        var penalty = 25 * Math.pow(distance, 1.0/3.0);
+        if (penalty < 0) penalty = 0;
+
+        this.penalties.put(player.getName(), LocalDateTime.now().plusSeconds((long) penalty));
+    }
+
+    @EventHandler
+    public void OnEntityDamage(EntityDamageEvent event) {
+        if (!isActive) return;
+        if (event.getEntity() instanceof Villager vil && vil.getCustomName() != null) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (!isActive) return;
+        if (event.getEntity() instanceof Villager vil && vil.getCustomName() != null && event.getDamager() instanceof Player player) {
+            player.playEffect(EntityEffect.HURT);
+        }
+    }
+
+//    @EventHandler
+//    public void onInventoryCreative(InventoryCreativeEvent event) {
+//        if (!isActive) return;
+//
+//        if (event.getWhoClicked() instanceof Player player) {
+//            if (!joinedPlayers.contains(player.getName())) return; //This player is not in the race
+//            if (player.getGameMode() == GameMode.CREATIVE) {
+//                var currentItem = event.getCurrentItem();
+//
+//                if (currentItem == null) return;
+//
+//                if (!INVENTORY_WHITELIST.contains(currentItem.getType())) {
+//                    event.setCancelled(true);
+//                    player.sendMessage("Sorry, you can't pick up that item during an AirCS race.");
+//                }
+//            }
+//        }
+//    }
 }

@@ -1,6 +1,7 @@
 package omg.lol.jplexer.race.session.events;
 
 import com.google.gson.JsonObject;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ public class PlayerFinishedEvent implements SessionEvent {
     private final int place;
     private final UUID playerUuid;
 
-    public PlayerFinishedEvent(Player player, int place) {
+    public PlayerFinishedEvent(OfflinePlayer player, int place) {
         this.playerUuid = player.getUniqueId();
         this.place = place;
         date = new Date(System.currentTimeMillis());
