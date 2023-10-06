@@ -6,6 +6,8 @@
     grid-template-areas: "list details";
     grid-template-columns: 500px 1fr;
     gap: 15px;
+
+    overflow-y: auto;
 }
 
 .headed {
@@ -27,6 +29,7 @@
 
 .headedChildren {
     grid-area: content;
+    overflow-y: auto;
 }
 
 .teamList {
@@ -63,18 +66,28 @@
 
     grid-template-areas: "claimed remain"
         "members members";
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr max-content;
     gap: 15px;
+
+    overflow-y: auto;
+}
+
+.teamDataContainer {
+    overflow-y: auto;
 }
 
 .teamDataClaimed {
     grid-area: claimed;
     border: 1px solid #707070;
+
+    overflow-y: auto;
 }
 
 .teamDataRemain {
     grid-area: remain;
     border: 1px solid #707070;
+
+    overflow-y: auto;
 }
 
 .teamDataMembers {
@@ -138,4 +151,22 @@
 
 .teamProgressBigNum {
     font-size: 15pt;
+}
+
+
+@media (max-width: 900px) {
+    .root {
+        grid-template-areas: "list"
+            "details";
+        grid-template-rows: max-content 1fr;
+        grid-template-columns: 1fr;
+    }
+
+    .teamDataGrid {
+        grid-template-areas: "claimed"
+            "remain"
+            "members";
+        grid-template-rows: max-content max-content max-content;
+        overflow-y: initial;
+    }
 }

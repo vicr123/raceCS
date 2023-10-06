@@ -109,7 +109,7 @@ export default function Teams({stationData, playerData, teamData}) {
             {/*{JSON.stringify(playerData)}*/}
             {teamData.map(team => <TeamItem team={team} onSetCurrentTeam={setCurrentTeam} currentTeam={currentTeam} />)}
         </Headed>
-        {currentTeamData && <Headed title={t(`TEAM_DATA_TITLE`, {
+        {currentTeamData && <Headed className={Styles.teamDataContainer} title={t(`TEAM_DATA_TITLE`, {
                 teamName: currentTeamData.name
             })}>
             <TeamData team={currentTeamData} playerData={playerData} stationData={stationData} />
