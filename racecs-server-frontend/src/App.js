@@ -196,9 +196,9 @@ class App extends React.Component {
       case "home":
         return <Home />
       case "leaderboard":
-        return <Leaderboard stationData={this.state.stationData} playerData={this.state.playerData} recentEvents={this.state.recentEvents} onPlayerClicked={this.playerClicked.bind(this)} teamData={this.state.teamData} />
+        return <Leaderboard stationData={this.state.stationData} playerData={this.state.playerData} teamData={this.state.teamData} recentEvents={this.state.recentEvents} onPlayerClicked={this.playerClicked.bind(this)} teamData={this.state.teamData} />
       case "players":
-        return <Players stationData={this.state.stationData} playerData={this.state.playerData} selectPlayer={this.state.selectPlayer} />
+        return <Players stationData={this.state.stationData} playerData={this.state.playerData} teamData={this.state.teamData} selectPlayer={this.state.selectPlayer} />
       case "stations":
         return <Stations stationData={this.state.stationData} playerData={this.state.playerData} teamData={this.state.teamData} onPlayerClicked={this.playerClicked.bind(this)} />
       case "teams":

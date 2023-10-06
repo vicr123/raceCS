@@ -73,12 +73,45 @@ class Leaderboard extends React.Component {
         return els;
     }
 
+    renderTeams() {
+        return this.props.teamData.sort((teamA, teamB) => (teamA.place * 1000 + (teamA.visited?.length ?? 0)) - (teamB.place * 1000 + (teamB.visited?.length ?? 0))).map(team => <div className="leaderboardGrid">
+            <div className="sectionHeader">{(team.place === -1 || !team.place) ? "" : Common.getOrdinal(team.place)}</div>
+            <div className="sectionHeader"></div>
+            <div className="sectionHeader">{team.name}</div>
+            <div className="sectionHeader">{team.visited?.length || 0}/<span className="leaderboardTotalStations">{Object.keys(this.props.stationData).length}</span></div>
+
+            {team.players.map(playerName => {
+                const player = this.props.playerData[playerName];
+                return <>
+                    <div className="leaderboardGridItem" key={`${playerName}-image`}><img height="30"
+                                                                                               src={heads(player.uuid)}></img>
+                    </div>
+                    <div className="leaderboardGridItem placeItem" key={`${playerName}-place`}>{team.returned?.includes(playerName) ? <img height="30" src={"/login_notification.png"}></img> : <div style={{width: "30px", height: "30px"}} />}</div>
+                    <div className="leaderboardGridItem" key={`${playerName}-username`}>{playerName}</div>
+                    <div className="leaderboardGridItem" key={`${playerName}-visited`}>{}</div>
+                </>;
+            })}
+        </div>);
+    }
+
     renderMainView() {
         if (Object.keys(this.props.playerData).length === 0) {
             return <div className="errorContainer">
                 <h1>{this.props.t("NO_RACE")}</h1>
                 <p>{this.props.t("JOIN_RACE_PROMPT")}</p>
             </div>
+        } else if (this.props.teamData?.length) {
+            return <>
+                <div className="leaderboardGridWrapper">
+                    {this.renderTeams()}
+                    <div className="hspacer"></div>
+                </div>
+                <div style={{width: "20px", height: "20px"}}></div>
+                <div className="recentEventsWrapper">
+                    <div className="sectionHeader">{this.props.t("LEADERBOARD_RECENT_EVENTS")}</div>
+                    {this.renderRecentEvents()}
+                </div>
+            </>
         } else {
             return <>
                 <div className="leaderboardGridWrapper">

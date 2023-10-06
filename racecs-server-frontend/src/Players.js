@@ -45,7 +45,7 @@ class Players extends React.Component {
         if (this.state.selectedPlayer) {
             return <div className="playerStats">
                 <div className="sectionHeader" style={{zIndex: "1000"}}><img height="30" src={heads(this.state.selectedPlayer.uuid)} style={{paddingRight: "9px"}}></img>{this.state.selectedPlayer.username}</div>
-                <PlayerStats stationData={this.props.stationData} playerData={this.props.playerData} selectedPlayer={this.state.selectedPlayer} />
+                <PlayerStats stationData={this.props.stationData} playerData={this.props.playerData} teamData={this.props.teamData} selectedPlayer={this.state.selectedPlayer} />
             </div>
         } else {
             return <div className="playerStatsNotSelected">

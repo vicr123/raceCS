@@ -120,6 +120,7 @@ h1 {
   flex-direction: column;
 
   overflow-y: auto;
+  gap: 10px;
 
   flex-grow: 4;
 }
@@ -133,6 +134,10 @@ h1 {
   font-family: 'JetBrains Mono';
   color: #707070;
   justify-content: center;
+}
+
+.leaderboardTotalStations {
+  font-size: 10pt;
 }
 
 .sectionHeader {

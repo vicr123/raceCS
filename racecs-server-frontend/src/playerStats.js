@@ -77,15 +77,11 @@ class PlayerStats extends React.Component {
 
     render() {
         return <div className="playerStatsContents">
-            {/* <h1>Visited Stations:</h1>
-            {this.renderVisitedStations()}
-            <h1>Stats:</h1>
-            <p>Visited stations: {this.props.playerData[this.props.selectedPlayer.username].visited.length}</p>
-            <p>Stations remaining: {Object.keys(this.props.stationData).length - this.props.playerData[this.props.selectedPlayer.username].visited.length}</p> */}
+            {!this.props.teamData?.length &&
             <Section className={"playerStatsOverview"} header={this.props.t("PLAYERSTATS_OVERVIEW")}>
                 <Speedo title={this.props.t("PLAYERSTATS_VISITED")} max={Object.keys(this.props.stationData).length} value={this.props.playerData[this.props.selectedPlayer.username].visited.length} />
                 <Speedo title={this.props.t("PLAYERSTATS_REMAINING")} max={Object.keys(this.props.stationData).length} value={Object.keys(this.props.stationData).length - this.props.playerData[this.props.selectedPlayer.username].visited.length} />
-            </Section>
+            </Section>}
             <Section className={"playerStationList"} header={this.props.t("PLAYERSTATS_VISITED")}>
                 {this.renderVisitedStations()}
             </Section>
