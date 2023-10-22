@@ -411,26 +411,16 @@ public class RaceManagement {
                 return;
             }
 
-//            Entity[] targets = CommandUtils.getTargets(sender, player);
             var offlinePlayer = Bukkit.getOfflinePlayer(player);
-            int failCount = 0;
-//            for (Entity target : targets) {
-//                if (!(target instanceof Player)) {
-//                    failCount++;
-//                    continue;
-//                }
 
-                var penalty = currentRace.isPlayerPenalised(offlinePlayer);
-                if (penalty > 0) {
-                    sender.sendMessage("Unable to credit %s with the station %s because they have a remaining penalty of %d seconds.".formatted(offlinePlayer.getName(), stationObject.getHumanReadableName(), penalty));
-                    failCount++;
-                } else {
-                    currentRace.processStationArrived(offlinePlayer, stationObject);
-                    sender.sendMessage(offlinePlayer.getName() + " has been credited for arriving at " + stationObject.getHumanReadableName() + ".");
-                }
+            var penalty = currentRace.isPlayerPenalised(offlinePlayer);
+            if (penalty > 0) {
+                sender.sendMessage("Unable to credit %s with the station %s because they have a remaining penalty of %d seconds.".formatted(offlinePlayer.getName(), stationObject.getHumanReadableName(), penalty));
+            } else {
+                currentRace.processStationArrived(offlinePlayer, stationObject);
+                sender.sendMessage(offlinePlayer.getName() + " has been credited for arriving at " + stationObject.getHumanReadableName() + ".");
+            }
 
-//            }
-//            if (failCount > 0) sender.sendMessage(failCount + " targets could not be credited.");
         } catch (SQLException e) {
             sender.sendMessage("Couldn't add that station");
         }

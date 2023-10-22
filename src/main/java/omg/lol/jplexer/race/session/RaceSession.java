@@ -219,6 +219,7 @@ public class RaceSession implements Listener {
 
     private void setupPlayer(Player player) {
         scoreboard.getTeam("aircs-race").addEntry(player.getName());
+        player.setAllowFlight(false);
         penalties.remove(player.getName());
     }
 
