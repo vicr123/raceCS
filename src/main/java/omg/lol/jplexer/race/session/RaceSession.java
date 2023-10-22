@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
@@ -42,6 +43,7 @@ public class RaceSession implements Listener {
     private final ArrayList<String> finishedPlayers = new ArrayList<>();
     public final Map<String, LocalDateTime> lastPotionGiven = new HashMap<>();
     public final Map<String, LocalDateTime> penalties = new HashMap<>();
+    public final Map<String, Location> respawnPoints = new HashMap<>();
     private Station terminalStation;
     private boolean isActive = true;
     private int nextPlace = 1;
@@ -113,6 +115,8 @@ public class RaceSession implements Listener {
         } else {
             processStationArrived(player, station);
         }
+
+        setRespawnPoint(player);
     };
 
     public static class TerminalStationConflictException extends Exception {}
@@ -472,6 +476,10 @@ public class RaceSession implements Listener {
         logger.appendCollision(p1, p2);
     }
 
+    private void setRespawnPoint(Player player) {
+        respawnPoints.put(player.getName(), player.getLocation());
+    }
+
     @EventHandler
     public void onEntityDismount(EntityDismountEvent event) {
         if (!isActive) return;
@@ -579,22 +587,24 @@ public class RaceSession implements Listener {
         }
     }
 
-//    @EventHandler
-//    public void onInventoryCreative(InventoryCreativeEvent event) {
-//        if (!isActive) return;
-//
-//        if (event.getWhoClicked() instanceof Player player) {
-//            if (!joinedPlayers.contains(player.getName())) return; //This player is not in the race
-//            if (player.getGameMode() == GameMode.CREATIVE) {
-//                var currentItem = event.getCurrentItem();
-//
-//                if (currentItem == null) return;
-//
-//                if (!INVENTORY_WHITELIST.contains(currentItem.getType())) {
-//                    event.setCancelled(true);
-//                    player.sendMessage("Sorry, you can't pick up that item during an AirCS race.");
-//                }
-//            }
-//        }
-//    }
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+
+        if (!respawnPoints.containsKey(player.getName())) {
+            return;
+        }
+
+        Location respawnLocation = respawnPoints.get(player.getName());
+
+        // Schedule a task to run on the next tick after the death.
+        // This is necessary because calling player.spigot().respawn()
+        // inside the death event doesn't work.
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Race.getPlugin(), () -> {
+            player.spigot().respawn();
+            player.teleport(respawnLocation);
+
+            player.sendMessage(ChatColor.RED + "You died!" + ChatColor.RESET + " Respawning you at the last station you entered.");
+        });
+    }
 }
