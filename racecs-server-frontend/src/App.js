@@ -268,7 +268,7 @@ class App extends React.Component {
           {this.renderMainView()}
           <iframe src="https://map.aircs.racing/" style={{flexGrow: 1, border: "none", display: this.state.currentView === "aircsmap" ? "block" : "none"}}/>
           <div style={{flexGrow: 1, border: "none", display: this.state.currentView === "sqtrmap" ? "block" : "none", background: "url(https://sqtr.aircs.racing/assets/images/sqtrmap2023.png) center center/contain no-repeat"}} />
-          <div style={{flexGrow: 1, border: "none", display: this.state.currentView === "clyrailmap" ? "block" : "none", background: "url(/clyrailmap.svg) center center/contain no-repeat"}} />
+          <div style={{flexGrow: 1, border: "none", display: this.state.currentView === "clyrailmap" ? "block" : "none", background: "url(/clyrailmap.svg) center center/contain no-repeat, white"}} />
           <NotificationDrawer stationData={this.state.stationData} websocket={this.state.ws} onNotification={this.notificationPosted.bind(this)} />
         </>
         case "error":
