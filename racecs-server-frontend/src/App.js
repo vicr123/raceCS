@@ -17,9 +17,11 @@ import Teams from "./Teams";
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    const params = new URLSearchParams(window.location.search);
     
     this.state = {
-      currentView: "home",
+      currentView: params.get("view") ?? "home",
       state: "load",
       selectPlayer: null,
       playerData: {},
@@ -196,15 +198,20 @@ class App extends React.Component {
       case "home":
         return <Home />
       case "leaderboard":
+      case "streamer-leaderboard":
         return <Leaderboard stationData={this.state.stationData} playerData={this.state.playerData} teamData={this.state.teamData} recentEvents={this.state.recentEvents} onPlayerClicked={this.playerClicked.bind(this)} teamData={this.state.teamData} />
       case "players":
         return <Players stationData={this.state.stationData} playerData={this.state.playerData} teamData={this.state.teamData} selectPlayer={this.state.selectPlayer} />
       case "stations":
+      case "streamer-stations":
         return <Stations stationData={this.state.stationData} playerData={this.state.playerData} teamData={this.state.teamData} onPlayerClicked={this.playerClicked.bind(this)} />
       case "teams":
+      case "streamer-teams":
         return <Teams stationData={this.state.stationData} playerData={this.state.playerData} teamData={this.state.teamData} />
       case "settings":
         return <Settings onLocaleChange={this.onLocaleChange.bind(this)} />
+      case "notifications":
+        return <NotificationDrawer stationData={this.state.stationData} websocket={this.state.ws} onNotification={this.notificationPosted.bind(this)} />
     }
   }
 
@@ -253,6 +260,14 @@ class App extends React.Component {
           <p>{this.props.t("APP_PLEASE_WAIT")}</p>
         </div>
       case "ready":
+        if (this.state.currentView.includes("streamer") || this.state.currentView === "notifications") {
+          return <>
+            {this.renderMainView()}
+            <iframe src="https://map.aircs.racing/" style={{flexGrow: 1, border: "none", display: this.state.currentView === "aircsmap" ? "block" : "none"}}/>
+            <div style={{flexGrow: 1, border: "none", display: this.state.currentView === "sqtrmap" ? "block" : "none", background: "url(https://sqtr.aircs.racing/assets/images/sqtrmap2023.png) center center/contain no-repeat"}} />
+            <div style={{flexGrow: 1, border: "none", display: this.state.currentView === "clyrailmap" ? "block" : "none", background: "url(/clyrailmap.svg) center center/contain no-repeat, white"}} />
+          </>
+        }
         return <>
           <div className="header">
             <div className="headerButtons">
