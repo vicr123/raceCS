@@ -2,8 +2,11 @@ package omg.lol.jplexer.race;
 
 import com.google.common.base.Objects;
 import com.j256.ormlite.dao.Dao;
+import omg.lol.jplexer.race.jobQueue.JobQueuePlayer;
+import omg.lol.jplexer.race.jobQueue.PlayerJobQueue;
 import omg.lol.jplexer.race.models.Region;
 import omg.lol.jplexer.race.models.Station;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,16 +19,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlayerStationTracker implements Listener {
+    private final PlayerJobQueue playerJobQueue;
+
+
     public interface PlayerStationChangeListener {
         void onPlayerStationChange(Player player, Station station);
     }
 
-    HashMap<Player, Station> currentStations = new HashMap<>();
+    final HashMap<Player, Station> currentStations = new HashMap<>();
     ArrayList<PlayerStationChangeListener> stationChangeListeners = new ArrayList<>();
     ArrayList<String> playerTracking = new ArrayList<>();
-    private final HashMap<Player, Location> playerLastLocations = new HashMap<>();
 
     PlayerStationTracker() {
+        playerJobQueue = new PlayerJobQueue(this, 1);
+
         addStationChangeListener((player, station) -> {
             if (playerTracking.contains(player.getName())) {
                 if (station == null) {
@@ -52,59 +59,47 @@ public class PlayerStationTracker implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        currentStations.remove(event.getPlayer());
+        synchronized (currentStations) {
+            currentStations.remove(event.getPlayer());
+        }
         playerTracking.remove(event.getPlayer().getName());
-        for (PlayerStationChangeListener listener : stationChangeListeners) listener.onPlayerStationChange(event.getPlayer(), null);
+        for (PlayerStationChangeListener listener : stationChangeListeners)
+            listener.onPlayerStationChange(event.getPlayer(), null);
     }
 
     private void handlePlayerMove(Player player) {
-        // Check for position change
-        var previousLocation = playerLastLocations.getOrDefault(player, null);
-        var currentLocation = player.getLocation().getBlock().getLocation();  // Ignore sub-block movements
-        if (player.getVehicle() != null) {
-            currentLocation = player.getVehicle().getLocation().getBlock().getLocation().add(0, 1, 0);
-        }
-
-        if (previousLocation != null && previousLocation.equals(currentLocation)) {
-            return; // The player's integer position has not changed, do not proceed further
-        }
-
-        // Save current position as last known position
-        playerLastLocations.put(player, currentLocation);
-
-        Dao<Region, Long> regionDao = Race.getPlugin().getRegionDao();
-        if (!currentStations.containsKey(player)) currentStations.put(player, null);
-
-        Station currentStation = currentStations.get(player);
-        ArrayList<Station> inStations = new ArrayList<>();
-        regionDao.forEach(region -> {
-            if (region.inRegion(player.getLocation())) inStations.add(region.getStation());
-        });
-
-        Station newStation = null;
-        if (!inStations.isEmpty()) {
-            if (inStations.contains(currentStation)) {
-                newStation = currentStation;
-            } else {
-                newStation = inStations.get(0);
+        playerJobQueue.enqueuePlayer(new JobQueuePlayer(player, () -> {
+            synchronized (currentStations) {
+                if (!currentStations.containsKey(player)) currentStations.put(player, null);
+                return currentStations.get(player);
             }
-        }
+        }));
+    }
 
-        if (!Objects.equal(newStation, currentStation)) {
+    public void triggerPlayerStationChange(String playerName, Station newStation) {
+        var player = Bukkit.getPlayer(playerName);
+        if (player == null) return;
+
+        synchronized (currentStations) {
             currentStations.put(player, newStation);
-            for (PlayerStationChangeListener listener : stationChangeListeners) listener.onPlayerStationChange(player, newStation);
         }
+        for (PlayerStationTracker.PlayerStationChangeListener listener : stationChangeListeners)
+            listener.onPlayerStationChange(player, newStation);
     }
 
     public boolean isInStation(Player player) {
-        return currentStations.getOrDefault(player, null) != null;
+        synchronized (currentStations) {
+            return currentStations.getOrDefault(player, null) != null;
+        }
     }
 
     public boolean isInStation(Player player, String station) {
-        try {
-            return currentStations.getOrDefault(player, null).getId().equals(station);
-        } catch (NullPointerException ex) {
-            return false;
+        synchronized (currentStations) {
+            try {
+                return currentStations.getOrDefault(player, null).getId().equals(station);
+            } catch (NullPointerException ex) {
+                return false;
+            }
         }
     }
 
