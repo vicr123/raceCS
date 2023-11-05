@@ -31,7 +31,7 @@ public class PlayerStationTracker implements Listener {
     ArrayList<String> playerTracking = new ArrayList<>();
 
     PlayerStationTracker() {
-        playerJobQueue = new PlayerJobQueue(this, 1);
+        playerJobQueue = new PlayerJobQueue(this, Runtime.getRuntime().availableProcessors() / 2);
 
         addStationChangeListener((player, station) -> {
             if (playerTracking.contains(player.getName())) {
