@@ -36,7 +36,7 @@ public class RaceSessionTeams {
         int optimalTeamSize = 0;
 
         // Determining the optimal team size
-        if(totalPlayers % 2 == 0 && totalPlayers / 2 >= 2 && totalPlayers / 2 <= 4) {
+        if((totalPlayers % 2 == 0 && totalPlayers / 2 >= 2 && totalPlayers / 2 <= 4) || totalPlayers == 10) {
             optimalTeamSize = totalPlayers / 2;
         }
         else if (totalPlayers % 3 == 0 && totalPlayers / 3 >= 2) {
@@ -45,8 +45,11 @@ public class RaceSessionTeams {
         else if (totalPlayers % 4 == 0 && totalPlayers / 4 >= 2) {
             optimalTeamSize = totalPlayers / 4;
         }
+        else if (totalPlayers % 5 == 0 && totalPlayers / 5 >= 2) {
+            optimalTeamSize = totalPlayers / 5;
+        }
         else {
-            throw new TeamOrganizationException("Cannot divide players equally into 2, 3, or 4 teams with at least 2 players in each team.");
+            throw new TeamOrganizationException("Cannot divide players equally into 2, 3, or 4 teams with at least 2 players in each team. (%d total players)".formatted(totalPlayers));
         }
 
         // Shuffle the list of players

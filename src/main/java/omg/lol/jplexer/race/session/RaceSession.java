@@ -305,9 +305,6 @@ public class RaceSession implements Listener {
 
                 if (team.getVisitedStations().size() >= participatingStations.size()) {
                     team.setMemberReturned(player);
-                    if (player instanceof Player onlinePlayer) {
-                        onlinePlayer.setAllowFlight(true);
-                    }
 
                     Unirest.post("/arrive/{player}/completion")
                             .routeParam("player", player.getName())
@@ -391,6 +388,13 @@ public class RaceSession implements Listener {
                 .routeParam("team", team.getId())
                 .routeParam("place", String.valueOf(nextPlace))
                 .asStringAsync();
+
+        for (var player : team.getMembers()) {
+            var onlinePlayer = Race.getPlugin().getServer().getPlayer(player);
+            if (onlinePlayer != null) {
+                onlinePlayer.setAllowFlight(true);
+            }
+        }
 
         //Play the SFX
         joinedPlayers.stream().map(player1 -> Race.getPlugin().getServer().getPlayer(player1)).filter(Objects::nonNull).forEach(player1 -> player1.playSound(player1.getLocation(), finishedPlayers.isEmpty() ? Sound.UI_TOAST_CHALLENGE_COMPLETE : Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 1));
@@ -495,6 +499,7 @@ public class RaceSession implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (!isActive) return;
+        if (!joinedPlayers.contains(event.getPlayer().getName())) return; //This player is not in the race
         setupPlayer(event.getPlayer());
     }
 
@@ -589,6 +594,7 @@ public class RaceSession implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
+        if (!isActive) return;
         Player player = event.getEntity();
 
         if (!respawnPoints.containsKey(player.getName())) {
@@ -605,6 +611,7 @@ public class RaceSession implements Listener {
             player.teleport(respawnLocation);
 
             player.sendMessage(ChatColor.RED + "You died!" + ChatColor.RESET + " Respawning you at the last station you entered.");
+            player.setAllowFlight(false);
         });
     }
 }

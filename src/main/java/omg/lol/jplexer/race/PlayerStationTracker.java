@@ -61,6 +61,9 @@ public class PlayerStationTracker implements Listener {
         // Check for position change
         var previousLocation = playerLastLocations.getOrDefault(player, null);
         var currentLocation = player.getLocation().getBlock().getLocation();  // Ignore sub-block movements
+        if (player.getVehicle() != null) {
+            currentLocation = player.getVehicle().getLocation().getBlock().getLocation().add(0, 1, 0);
+        }
 
         if (previousLocation != null && previousLocation.equals(currentLocation)) {
             return; // The player's integer position has not changed, do not proceed further
