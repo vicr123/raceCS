@@ -65,7 +65,7 @@ public class CollisionDetection {
 
 //        Bukkit.getServer().broadcastMessage(String.format("xy, h, xz: %f %f %f pj: %f, %f, %f", xy, hyp, xz, rotatedVector.getX(), rotatedVector.getY(), rotatedVector.getZ()));
 
-        return 0 <= rotatedVector.getX() && rotatedVector.getX() <= firstSpeed * 0.125 * 20 &&
+        return 0 <= rotatedVector.getX() && rotatedVector.getX() <= firstSpeed * 0.25 * 20 &&
                 Math.hypot(rotatedVector.getY(), rotatedVector.getZ()) <= 0.9;
     }
 
