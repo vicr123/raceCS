@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Add FCo integration">
+    <list default="true" id="bd9acb93-385c-4058-94fa-5cb3473859ec" name="Default Changelist" comment="Refactor PlayerJobQueue for concurrent processing&#10;&#10;Removed synchronous handling of player position tracking in PlayerJobQueue and PlayerStationTracker. Now using multithreaded ExecutorService to allow parallel processing of players, improving performance and scalability on larger servers. Also refactored station change detection for less redundant comparisons, resulting in lag reduction. &#10;&#10;The refactor is designed to resolve the previous performance issue where PlayerStationTracker managed all players synchronously within a server thread. This could cause performance degradation in servers with high player count. By introducing the use of ExecutorService and a concurrent job queue, player position tracking tasks are now managed concurrently across multiple threads. This significantly optimizes the performance and scalability of the Race plugin while reducing server lag.">
+      <change afterPath="$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/CollisionDetectionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/command/management/RaceManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionLogger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionTeams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/RaceSessionTeams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/Team.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/PlayerFinishedEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/PlayerFinishedEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationArriveEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationArriveEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationLeaveEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/session/events/StationLeaveEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java" afterDir="false" />
     </list>
+    <list id="23ea90c5-e4fe-4f7a-94c4-ae28aa39da51" name="Changes by stupid alien" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -37,6 +33,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;vicr123&quot;
+  }
+}</component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -45,8 +47,19 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="a3d7aec5-0624-428f-a2e4-57452597f090" />
+        <option name="url" value="git@github.com:vicr123/raceCS.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -60,24 +73,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;plugin-features/teams&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/victor/Documents/Git/racecs-mod&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JAR Application.Paper.executor": "Debug",
+    "Maven.raceCS [install].executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "plugin-features/teams",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/victor/Documents/Git/racecs-mod",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReaderModeSettings">
     <option name="showLigatures" value="true" />
   </component>
@@ -96,73 +113,82 @@
       <recent name="omg.lol.jplexer.race.command.management" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.RaceSessionTeamTest.raceSession_TeamVictory">
-    <configuration name="RaceSessionTeamTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JAR Application.Paper">
+    <configuration name="CollisionDetectionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="raceCS" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="omg.lol.jplexer.race.session.*" />
+          <option name="PATTERN" value="omg.lol.jplexer.race.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.session" />
-      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.session.RaceSessionTeamTest" />
+      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race" />
+      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.CollisionDetectionTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RaceSessionTeamTest.raceSession_TeamVictory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CollisionDetectionTest.TestX1Swapped" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="raceCS" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="omg.lol.jplexer.race.session.*" />
+          <option name="PATTERN" value="omg.lol.jplexer.race.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.session" />
-      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.session.RaceSessionTeamTest" />
-      <option name="METHOD_NAME" value="raceSession_TeamVictory" />
+      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race" />
+      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.CollisionDetectionTest" />
+      <option name="METHOD_NAME" value="TestX1Swapped" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RaceSessionTeamsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CollisionDetectionTest.TestXWithY1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="raceCS" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="omg.lol.jplexer.race.session.*" />
+          <option name="PATTERN" value="omg.lol.jplexer.race.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.session" />
-      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.session.RaceSessionTeamsTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TeamTest.setName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="raceCS" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="omg.lol.jplexer.race.session.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race.session" />
-      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.session.TeamTest" />
-      <option name="METHOD_NAME" value="setName" />
+      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race" />
+      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.CollisionDetectionTest" />
+      <option name="METHOD_NAME" value="TestXWithY1" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="java in raceCS" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CollisionDetectionTest.TestZ1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="raceCS" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/src/test/java" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="omg.lol.jplexer.race.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race" />
+      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.CollisionDetectionTest" />
+      <option name="METHOD_NAME" value="TestZ1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CollisionDetectionTest.TestZ1Swapped" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="raceCS" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="omg.lol.jplexer.race.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="omg.lol.jplexer.race" />
+      <option name="MAIN_CLASS_NAME" value="omg.lol.jplexer.race.CollisionDetectionTest" />
+      <option name="METHOD_NAME" value="TestZ1Swapped" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -196,6 +222,7 @@
                 <option value="install" />
               </list>
             </option>
+            <option name="multimoduleDir" />
             <option name="pomFileName" value="pom.xml" />
             <option name="profilesMap">
               <map />
@@ -226,23 +253,30 @@
     </configuration>
     <list>
       <item itemvalue="JAR Application.Paper" />
-      <item itemvalue="JUnit.RaceSessionTeamTest" />
-      <item itemvalue="JUnit.RaceSessionTeamTest.raceSession_TeamVictory" />
-      <item itemvalue="JUnit.RaceSessionTeamsTest" />
-      <item itemvalue="JUnit.TeamTest.setName" />
-      <item itemvalue="JUnit.java in raceCS" />
+      <item itemvalue="JUnit.CollisionDetectionTest.TestX1Swapped" />
+      <item itemvalue="JUnit.CollisionDetectionTest.TestZ1Swapped" />
+      <item itemvalue="JUnit.CollisionDetectionTest" />
+      <item itemvalue="JUnit.CollisionDetectionTest.TestXWithY1" />
+      <item itemvalue="JUnit.CollisionDetectionTest.TestZ1" />
       <item itemvalue="Maven.raceCS [install]" />
       <item itemvalue="Remote JVM Debug.Attach to Spigot" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RaceSessionTeamTest.raceSession_TeamVictory" />
-        <item itemvalue="JUnit.RaceSessionTeamTest" />
-        <item itemvalue="JUnit.TeamTest.setName" />
-        <item itemvalue="JUnit.java in raceCS" />
-        <item itemvalue="JUnit.RaceSessionTeamsTest" />
+        <item itemvalue="JUnit.CollisionDetectionTest" />
+        <item itemvalue="JUnit.CollisionDetectionTest.TestX1Swapped" />
+        <item itemvalue="JUnit.CollisionDetectionTest.TestZ1Swapped" />
+        <item itemvalue="JUnit.CollisionDetectionTest.TestXWithY1" />
+        <item itemvalue="JUnit.CollisionDetectionTest.TestZ1" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-f644763e9732-220112af" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -288,7 +322,13 @@
       <workItem from="1693007584249" duration="6768000" />
       <workItem from="1694418898823" duration="4687000" />
       <workItem from="1695700332366" duration="8510000" />
-      <workItem from="1696303819978" duration="6169000" />
+      <workItem from="1696303819978" duration="10360000" />
+      <workItem from="1697709546580" duration="13592000" />
+      <workItem from="1699098804920" duration="35145000" />
+      <workItem from="1699703207207" duration="8421000" />
+      <workItem from="1702451351025" duration="8000" />
+      <workItem from="1704441962470" duration="156000" />
+      <workItem from="1704442135916" duration="9963000" />
     </task>
     <task id="LOCAL-00001" summary="Add in player selectors">
       <created>1618407461284</created>
@@ -389,7 +429,55 @@
       <option name="project" value="LOCAL" />
       <updated>1696312502127</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Implement player disconnection timeout">
+      <option name="closed" value="true" />
+      <created>1696331660570</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1696331660570</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Remove unused code and disable flight on player setup&#10;&#10;Removed commented-out code related to targets in 'RaceManagement.java', as it's not used anymore, improving readability. Additionally, a player's ability to fly is now disabled during their setup in 'RaceSession.java'. This change was done to ensure the fairness of the game – no player should have the advantage of flying during racing sessions.">
+      <option name="closed" value="true" />
+      <created>1698017228993</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1698017228993</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Implement respawn points and handle player death event&#10;&#10;Introduced a new map to track players' respawn points in 'RaceSession.java'. The respawn point is updated every time a player visits a new station, ensuring players respawn at the last visited station. Also added an event handler for 'PlayerDeathEvent' that respawns the player at their saved respawn location. This feature was implemented to enhance the gameplay experience by reducing the time penalty when a player dies.">
+      <option name="closed" value="true" />
+      <created>1698018468008</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1698018468008</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Refactor flight setting logic in RaceSession&#10;&#10;Updated the RaceSession to set flight permissions for the entire team after finishing a race rather than the individual player. This changes the timing when flight is allowed. Also added checks in event handling methods to ensure operations are only performed on active and participant players. Exceptions were updated to make error messages more informative.&#10;&#10;Modified division logic in RaceSessionTeams to allow teams of size 5 and explicit support for 10 players. This allows more flexibility in the number of players that can be divided equally into teams.">
+      <option name="closed" value="true" />
+      <created>1699159918927</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1699159918927</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Add multithread player position tracking in Race plugin&#10;&#10;Implemented a job queue for checking player's positions to better handle concurrent updates in large servers. Also optimized station change detection to minimize location comparison operations and better handle server lag. Refactored PlayerStationTracker to use this new Queue system, resulting in improved game performance and smoother tracking. Removed unnecessary location tracking lines in PlayerStationTracker to reduce redundancy. Added new JobQueuePlayer class as a data carrier for the queue.&#10;&#10;Explanation: Prior to this update, PlayerStationTracker was handling all players synchronously during the same server thread which could cause performance problems in large servers. Now, using an ExecutorService with a concurrent job queue allows position tracking tasks to be handled concurrently across multiple threads. PlayerStationTracker simply adds players into the queue and PlayerJobQueue handles everything else. This update improves the performance and scalability of the Race plugin.">
+      <option name="closed" value="true" />
+      <created>1699178175055</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1699178175055</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Refactor PlayerJobQueue for concurrent processing&#10;&#10;Removed synchronous handling of player position tracking in PlayerJobQueue and PlayerStationTracker. Now using multithreaded ExecutorService to allow parallel processing of players, improving performance and scalability on larger servers. Also refactored station change detection for less redundant comparisons, resulting in lag reduction. &#10;&#10;The refactor is designed to resolve the previous performance issue where PlayerStationTracker managed all players synchronously within a server thread. This could cause performance degradation in servers with high player count. By introducing the use of ExecutorService and a concurrent job queue, player position tracking tasks are now managed concurrently across multiple threads. This significantly optimizes the performance and scalability of the Race plugin while reducing server lag.">
+      <option name="closed" value="true" />
+      <created>1699181486705</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1699181486706</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -421,6 +509,49 @@
     <MESSAGE value="Don't allow team to continually win" />
     <MESSAGE value="Optimize REST API calls and player movement tracking&#10;&#10;Made REST API calls asynchronous using 'asStringAsync()' method. This was done to eliminate potential bottlenecks in the game flow due to synchronous execution of REST API calls. Also optimized player movement tracking in 'PlayerStationTracker.java'. Now, the tracking mechanism checks the player's integer position changes, ignoring sub-block movements for more efficient tracking. This adjustment was needed to reduce unnecessary processing caused by sub-block player movements." />
     <MESSAGE value="Add FCo integration" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Implement player disconnection timeout" />
+    <MESSAGE value="Remove unused code and disable flight on player setup&#10;&#10;Removed commented-out code related to targets in 'RaceManagement.java', as it's not used anymore, improving readability. Additionally, a player's ability to fly is now disabled during their setup in 'RaceSession.java'. This change was done to ensure the fairness of the game – no player should have the advantage of flying during racing sessions." />
+    <MESSAGE value="Implement respawn points and handle player death event&#10;&#10;Introduced a new map to track players' respawn points in 'RaceSession.java'. The respawn point is updated every time a player visits a new station, ensuring players respawn at the last visited station. Also added an event handler for 'PlayerDeathEvent' that respawns the player at their saved respawn location. This feature was implemented to enhance the gameplay experience by reducing the time penalty when a player dies." />
+    <MESSAGE value="Correct vehicle location tracking when player is mounted&#10;&#10;Updated the PlayerStationTracker.java to determine a player's location from their vehicle, if they are inside of one. Previously, only the player’s location was considered which led to errors in tracking positions when a player was in a vehicle. This is essential to accurately track and update a player’s position especially in scenarios like a horse race within the game where the player is mounted on a vehicle." />
+    <MESSAGE value="Refactor flight setting logic in RaceSession&#10;&#10;Updated the RaceSession to set flight permissions for the entire team after finishing a race rather than the individual player. This changes the timing when flight is allowed. Also added checks in event handling methods to ensure operations are only performed on active and participant players. Exceptions were updated to make error messages more informative.&#10;&#10;Modified division logic in RaceSessionTeams to allow teams of size 5 and explicit support for 10 players. This allows more flexibility in the number of players that can be divided equally into teams." />
+    <MESSAGE value="Add multithread player position tracking in Race plugin&#10;&#10;Implemented a job queue for checking player's positions to better handle concurrent updates in large servers. Also optimized station change detection to minimize location comparison operations and better handle server lag. Refactored PlayerStationTracker to use this new Queue system, resulting in improved game performance and smoother tracking. Removed unnecessary location tracking lines in PlayerStationTracker to reduce redundancy. Added new JobQueuePlayer class as a data carrier for the queue.&#10;&#10;Explanation: Prior to this update, PlayerStationTracker was handling all players synchronously during the same server thread which could cause performance problems in large servers. Now, using an ExecutorService with a concurrent job queue allows position tracking tasks to be handled concurrently across multiple threads. PlayerStationTracker simply adds players into the queue and PlayerJobQueue handles everything else. This update improves the performance and scalability of the Race plugin." />
+    <MESSAGE value="Optimized player position tracking with multithreading&#10;&#10;Improved the Race plugin by implementing a job queue for player's position checking, allowing concurrent updates in larger servers. This was achieved by refactoring the PlayerStationTracker to use the new queue system, enhancing overall game performance and improving tracking smoothness. The station change detection was also optimized to reduce the number of location comparison operations and improve handling of server lag. Removed redundant location tracking lines in PlayerStationTracker. Added JobQueuePlayer class to manage the queue tasks.&#10;&#10;Explanation: The update resolves a performance issue where the PlayerStationTracker handled all players synchronously within the same server thread, causing potential problems in larger servers. Introducing the ExecutorService with a concurrent job queue, now position tracking tasks are managed across multiple threads concurrently. Players are added to the queue in PlayerStationTracker, and all the processing tasks are handled by PlayerJobQueue. This greatly improves the Race plugin's performance and scalability." />
+    <MESSAGE value="Refactor PlayerJobQueue for concurrent processing&#10;&#10;Removed synchronous handling of player position tracking in PlayerJobQueue and PlayerStationTracker. Now using multithreaded ExecutorService to allow parallel processing of players, improving performance and scalability on larger servers. Also refactored station change detection for less redundant comparisons, resulting in lag reduction. &#10;&#10;The refactor is designed to resolve the previous performance issue where PlayerStationTracker managed all players synchronously within a server thread. This could cause performance degradation in servers with high player count. By introducing the use of ExecutorService and a concurrent job queue, player position tracking tasks are now managed concurrently across multiple threads. This significantly optimizes the performance and scalability of the Race plugin while reducing server lag." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor PlayerJobQueue for concurrent processing&#10;&#10;Removed synchronous handling of player position tracking in PlayerJobQueue and PlayerStationTracker. Now using multithreaded ExecutorService to allow parallel processing of players, improving performance and scalability on larger servers. Also refactored station change detection for less redundant comparisons, resulting in lag reduction. &#10;&#10;The refactor is designed to resolve the previous performance issue where PlayerStationTracker managed all players synchronously within a server thread. This could cause performance degradation in servers with high player count. By introducing the use of ExecutorService and a concurrent job queue, player position tracking tasks are now managed concurrently across multiple threads. This significantly optimizes the performance and scalability of the Race plugin while reducing server lag." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/session/RaceSessionTest.java</url>
+          <line>48</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <condition expression="firstLocation.distance(secondLocation) &lt; 2" />
+          <url>file://$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint suspend="NONE" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/omg/lol/jplexer/race/CollisionDetectionTest.java</url>
+          <line>18</line>
+          <log-expression expression="firstVelocity" language="JAVA" />
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint suspend="NONE" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java</url>
+          <line>65</line>
+          <log-expression expression="firstVelocity" language="JAVA" />
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint suspend="NONE" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/omg/lol/jplexer/race/CollisionDetection.java</url>
+          <line>48</line>
+          <log-expression expression="firstVelocityNotNormalised" language="JAVA" />
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

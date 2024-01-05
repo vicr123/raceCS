@@ -12,9 +12,11 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.*;
+
 public class CollisionDetection {
-    static class Collsion {
-        public Collsion(Player first, Player second) {
+    static class Collision {
+        public Collision(Player first, Player second) {
             this.first = first;
             this.second = second;
         }
@@ -23,8 +25,17 @@ public class CollisionDetection {
         Player second;
     }
 
-    ArrayList<Collsion> collisions;
+    ArrayList<Collision> collisions;
     Server server;
+
+    public static Vector multiplyMatrixWithVector(double[][] matrix, Vector vector) {
+        double x = matrix[0][0] * vector.getX() + matrix[0][1] * vector.getY() + matrix[0][2] * vector.getZ();
+        double y = matrix[1][0] * vector.getX() + matrix[1][1] * vector.getY() + matrix[1][2] * vector.getZ();
+        double z = matrix[2][0] * vector.getX() + matrix[2][1] * vector.getY() + matrix[2][2] * vector.getZ();
+
+        return new Vector(x, y, z);
+    }
+
 
     CollisionDetection(Server server, Plugin plugin) {
         collisions = new ArrayList<>();
@@ -33,36 +44,40 @@ public class CollisionDetection {
         this.server = server;
     }
 
+    public static boolean isInCollision(Location firstLocation, Vector firstVelocityNotNormalised, Location secondLocation, Vector secondVelocityNotNormalised) {
+        var firstSpeed = firstVelocityNotNormalised.length();
+        var firstVelocity = firstVelocityNotNormalised.clone().normalize();
+        var secondVelocity = secondVelocityNotNormalised.clone().normalize();
+
+        var dotProduct = firstVelocity.dot(secondVelocity);
+        if (dotProduct > -0.5) return false;
+
+        var xy = -Math.atan2(firstVelocity.getZ(), firstVelocity.getX()); // u
+        var hyp = Math.hypot(firstVelocity.getX(), firstVelocity.getZ());
+        var xz = -Math.atan2(firstVelocity.getY(), hyp);
+
+        var matrix = new double[][] {
+                {cos(xy) * cos(xz), -sin(xz), sin(xy) * -cos(xz)},
+                {cos(xy) * sin(xz), cos(xz), -sin(xy) * sin(xz)},
+                {sin(xy), 0, cos(xy)}
+        };
+        var rotatedVector = multiplyMatrixWithVector(matrix, secondLocation.toVector().clone().subtract(firstLocation.toVector()));
+
+//        Bukkit.getServer().broadcastMessage(String.format("xy, h, xz: %f %f %f pj: %f, %f, %f", xy, hyp, xz, rotatedVector.getX(), rotatedVector.getY(), rotatedVector.getZ()));
+
+        return 0 <= rotatedVector.getX() && rotatedVector.getX() <= firstSpeed * 0.125 * 20 &&
+                Math.hypot(rotatedVector.getY(), rotatedVector.getZ()) <= 0.9;
+    }
+
     boolean isInCollision(Player first, Player second) {
-        Vector firstVelocity = first.getVehicle().getVelocity();
-        Vector secondVelocity = second.getVehicle().getVelocity();
-
-        Location firstLocation = first.getVehicle().getLocation();
-        Location secondLocation = second.getVehicle().getLocation();
-
-        boolean firstPrimaryIsX = Math.abs(firstVelocity.getX()) > Math.abs(firstVelocity.getZ());
-        boolean secondPrimaryIsX = Math.abs(secondVelocity.getX()) > Math.abs(secondVelocity.getZ());
-
-        if (firstPrimaryIsX != secondPrimaryIsX) return false;
-
-        int firstPrimaryCoordinate = firstPrimaryIsX ? firstLocation.getBlockX() : firstLocation.getBlockZ();
-        int firstSecondaryCoordinate = firstPrimaryIsX ? firstLocation.getBlockZ() : firstLocation.getBlockX();
-        int secondPrimaryCoordinate = secondPrimaryIsX ? secondLocation.getBlockX() : secondLocation.getBlockZ();
-        int secondSecondaryCoordinate = secondPrimaryIsX ? secondLocation.getBlockZ() : secondLocation.getBlockX();
-
-        if (firstSecondaryCoordinate != secondSecondaryCoordinate) return false;
-        if (firstPrimaryCoordinate - 3 >= secondPrimaryCoordinate || firstPrimaryCoordinate + 3 <= secondPrimaryCoordinate)  return false;
-
-        if (Math.abs(firstLocation.getBlockY() - secondLocation.getBlockY()) > 1) return false;
-
-        return true;
+        return isInCollision(first.getLocation(), first.getVehicle().getVelocity().clone(), second.getLocation(), second.getVehicle().getVelocity().clone());
     }
 
     void clearPath(Player player) {
         var nearby = player.getNearbyEntities(2, 2, 2);
         for (var entity : nearby) {
             if (!entity.getPassengers().isEmpty()) continue;
-            if (entity instanceof Animals || entity instanceof Vehicle) {
+            if (entity instanceof Animals || entity instanceof Vehicle || entity instanceof Monster) {
                 entity.remove();
             }
         }
@@ -88,7 +103,7 @@ public class CollisionDetection {
                 boolean isInCollision = this.isInCollision(p, otherPlayer);
                 int collisionIndex = -1;
                 for (int i = 0; i < collisions.size(); i++) {
-                    CollisionDetection.Collsion collision = collisions.get(i);
+                    Collision collision = collisions.get(i);
                     if ((collision.first == p && collision.second == otherPlayer) || (collision.first == otherPlayer && collision.second == p)) {
                         collisionIndex = i;
                     }
@@ -104,7 +119,7 @@ public class CollisionDetection {
                         otherPlayer.getVehicle().remove();
                     } else {
                         //The players are not in a valid station so this is a valid collision
-                        collisions.add(new CollisionDetection.Collsion(p, otherPlayer));
+                        collisions.add(new Collision(p, otherPlayer));
                         if (Race.getPlugin().hasCurrentRace()) {
                             Race.getPlugin().getCurrentRace().playersCollided(p, otherPlayer);
                         }
