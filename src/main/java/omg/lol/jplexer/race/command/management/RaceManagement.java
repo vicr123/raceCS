@@ -2,7 +2,6 @@ package omg.lol.jplexer.race.command.management;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.j256.ormlite.dao.Dao;
 import net.md_5.bungee.api.ChatColor;
 import omg.lol.jplexer.race.CommandUtils;
@@ -12,7 +11,8 @@ import omg.lol.jplexer.race.command.RaceCompleter;
 import omg.lol.jplexer.race.models.Station;
 import omg.lol.jplexer.race.session.TeamOrganizationException;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.block.CommandBlock;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
 import static omg.lol.jplexer.race.Race.CHAT_PREFIX;
 
 public class RaceManagement {
-    public static void RaceManagementCommand(CommandSender sender, String[] args) {
+    public static boolean RaceManagementCommand(CommandSender sender, String[] args) {
         String verb = args.length == 0 ? "help" : args[0];
         switch (verb) {
             case "help":
@@ -46,6 +46,8 @@ public class RaceManagement {
                     deregisterPlayer(sender, args[1]);
                 }
                 break;
+            case "ready":
+                return isReady(sender);
             case "stations":
                 showStations(sender);
                 break;
@@ -83,6 +85,30 @@ public class RaceManagement {
             case "close":
                 closeRace(sender);
                 break;
+        }
+        return true;
+    }
+
+    private static boolean isReady(CommandSender sender) {
+        final RaceSession raceSession = Race.getPlugin().getCurrentRace();
+        if (raceSession == null || raceSession.isEnded()) {
+            if (sender instanceof BlockCommandSender bcSender && bcSender.getBlock().getState() instanceof CommandBlock cb) {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(Race.getPlugin(), () -> {
+                    cb.setSuccessCount(0);
+                    cb.update();
+                });
+            }
+            sender.sendMessage("A race is not in progress.");
+            return false;
+        } else {
+            if (sender instanceof BlockCommandSender bcSender && bcSender.getBlock().getState() instanceof CommandBlock cb) {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(Race.getPlugin(), () -> {
+                    cb.setSuccessCount(15);
+                    cb.update();
+                });
+            }
+            sender.sendMessage("A race is in progress.");
+            return true;
         }
     }
 
@@ -146,8 +172,8 @@ public class RaceManagement {
     public static List<String> TabCompleteCommand(String[] args) {
         final RaceSession raceSession = Race.getPlugin().getCurrentRace();
         if (args.length == 0) {
-            if (raceSession == null || raceSession.isEnded()) return Arrays.asList("help", "register");
-            return Arrays.asList("help", "register", "deregister", "stations", "addstation", "addstations", "removestation", "close", "setterminalstation", "credit", "teamup", "setteamname");
+            if (raceSession == null || raceSession.isEnded()) return Arrays.asList("help", "register", "ready");
+            return Arrays.asList("help", "register", "deregister", "stations", "addstation", "addstations", "removestation", "close", "setterminalstation", "credit", "teamup", "setteamname", "ready");
         } else {
             Dao<Station, String> stationDao = Race.getPlugin().getStationDao();
 
@@ -162,6 +188,7 @@ public class RaceManagement {
                 case "clearstations":
                 case "teamup":
                 case "setteamname":
+                case "ready":
                     return null;
                 case "addstation":
                 case "setterminalstation":

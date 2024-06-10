@@ -40,8 +40,7 @@ public class RaceCommand implements CommandExecutor {
 //				viewUsers(sender);
 //				return true;
 			case "race":
-				RaceManagement.RaceManagementCommand(sender, Arrays.copyOfRange(args, 1, args.length));
-				return true;
+				return RaceManagement.RaceManagementCommand(sender, Arrays.copyOfRange(args, 1, args.length));
 //			case "adduser":
 //				addUser(sender, args);
 //				return true;
