@@ -11,7 +11,9 @@ import omg.lol.jplexer.race.command.RaceCompleter;
 import omg.lol.jplexer.race.models.Region;
 import omg.lol.jplexer.race.models.Station;
 import omg.lol.jplexer.race.session.RaceSession;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
@@ -19,7 +21,7 @@ import java.io.File;
 import java.sql.SQLException;
 
 
-public class Race extends JavaPlugin {
+public class Race extends JavaPlugin implements RaceCSApi {
 	private boolean testing = false;
 	// Feel free to change this to your own plugin's name and color of your choice.
 	public static final String CHAT_PREFIX = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Air" + ChatColor.WHITE + "" + ChatColor.BOLD + "CS" + ChatColor.GOLD + "" + ChatColor.BOLD + " Race Update: " + ChatColor.WHITE;
@@ -58,6 +60,9 @@ public class Race extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		plugin = this;
+
+		// Register service
+		Bukkit.getServicesManager().register(RaceCSApi.class, this, this, ServicePriority.Normal);
 
 		try {
 			JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource(testing ? "jdbc:sqlite::memory:" : "jdbc:sqlite:racecs.db");
@@ -112,6 +117,12 @@ public class Race extends JavaPlugin {
 		if (this.currentRace == null) return false;
 		if (this.currentRace.isEnded()) return false;
 		return true;
+	}
+
+	@Override
+	public boolean isParticipant(String playerName) {
+		if (!hasCurrentRace()) return false;
+		return this.currentRace.getJoinedPlayers().contains(playerName);
 	}
 
 	public void createNewRace() {
