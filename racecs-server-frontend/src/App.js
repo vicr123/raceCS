@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, {Suspense, useState} from 'react';
 import { withTranslation } from 'react-i18next';
 import Fetch from './Fetch';
 import aircs from './aircs.svg';
@@ -150,7 +150,7 @@ class App extends React.Component {
     })
     ws.on("close", () => {
       this.setState({
-        state: "error"
+        // state: "error"
       });
     })
 
@@ -265,7 +265,7 @@ class App extends React.Component {
             {this.renderMainView()}
             <iframe src="https://map.aircs.racing/" style={{flexGrow: 1, border: "none", display: this.state.currentView === "aircsmap" ? "block" : "none"}}/>
             <div style={{flexGrow: 1, border: "none", display: this.state.currentView === "sqtrmap" ? "block" : "none", background: "url(https://sqtr.aircs.racing/assets/images/sqtrmap2023.png) center center/contain no-repeat"}} />
-            <div style={{flexGrow: 1, border: "none", display: this.state.currentView === "clyrailmap" ? "block" : "none", background: "url(/clyrailmap.svg) center center/contain no-repeat, white"}} />
+            <Clyrail style={{display: this.state.currentView === "clyrailmap" ? "flex" : "none"}} />
           </>
         }
         return <>
@@ -283,7 +283,7 @@ class App extends React.Component {
           {this.renderMainView()}
           <iframe src="https://map.aircs.racing/" style={{flexGrow: 1, border: "none", display: this.state.currentView === "aircsmap" ? "block" : "none"}}/>
           <div style={{flexGrow: 1, border: "none", display: this.state.currentView === "sqtrmap" ? "block" : "none", background: "url(https://sqtr.aircs.racing/assets/images/sqtrmap2023.png) center center/contain no-repeat"}} />
-          <div style={{flexGrow: 1, border: "none", display: this.state.currentView === "clyrailmap" ? "block" : "none", background: "url(/clyrailmap.svg) center center/contain no-repeat, white"}} />
+          <Clyrail style={{display: this.state.currentView === "clyrailmap" ? "flex" : "none"}} />
           <NotificationDrawer stationData={this.state.stationData} websocket={this.state.ws} onNotification={this.notificationPosted.bind(this)} />
         </>
         case "error":
@@ -330,6 +330,25 @@ class AppContainer extends React.Component {
     // Update state so the next render will show the fallback UI.
     return { hasError: true };
   }
+}
+
+function Clyrail({style}) {
+  const [currentMap, setCurrentMap] = useState("bnbmc1");
+
+  return <div style={{
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
+    ...style
+  }}>
+    <div style={{
+      display: "flex",
+    }}>
+      <div style={{padding: "6px", cursor: "pointer", background: currentMap == "bnbmc1" ? "rgb(204, 0, 0)" : "transparent"}} onClick={() => setCurrentMap("bnbmc1")}>Bits 1</div>
+      <div style={{padding: "6px", cursor: "pointer", background: currentMap == "bnbmc2" ? "rgb(204, 0, 0)" : "transparent"}} onClick={() => setCurrentMap("bnbmc2")}>Bits 2</div>
+    </div>
+    <div style={{flexGrow: 1, border: "none", background: `url(${currentMap == "bnbmc1" ? "https://clyrail.bnbmc.net/maps/bnbmc1map.png" : "https://clyrail.bnbmc.net/maps/bnbmc2map.png"}) center center/contain no-repeat`}} />
+  </div>
 }
 
 export default AppContainer;
